@@ -9,18 +9,24 @@
           box-sizing: border-box;
 }
 
+html {
+  background: var(--color-primary);
+}
+
 .theme-light {
-  --color-primary: #0060df;
+  --color-primary: #FFFFFF;
   --color-secondary: #fbfbfe;
   --color-accent: #fd6f53;
-  --font-color: #000000;
+  --font-color: #572EE5;
+  --burguer-background:  rgba(87, 46, 229, 0.9);
 }
 
 .theme-dark {
-  --color-primary: #17ed90;
+  --color-primary: #37383C;
   --color-secondary: #243133;
   --color-accent: #12cdea;
-  --font-color: #ffffff;
+  --font-color: #FFFFFF;
+  --burguer-background: #000000;
 }
 
 .navBar {
@@ -37,7 +43,7 @@
   padding-left: 5.86%;
   padding-right: 6.93%;
   padding-top: 29px;
-  border-top: 5px solid #572EE5;
+  border-top: 5px solid var(--burguer-background);
 }
 
 .navBar .logoNav {
@@ -52,7 +58,7 @@
   left: 0;
   width: 100%;
   height: 484px;
-  background: rgba(87, 46, 229, 0.9);
+  background: var(--burguer-background);
 }
 
 .navBar .navMenu li {
