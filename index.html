@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
@@ -8,22 +9,46 @@
     <title>GIFOS</title>
 
 </head>
+
 <body>
-    <nav class="navBar">
-        <img id="logo" class="logo" alt="GIFOs logo">
-        <ul id="navMenu" class="navMenu">
-            <li id="changeMode">Modo Nocturno</li>
-            <hr>
-            <li>Favoritos</li>
-            <hr>
-            <li id="myGif">Mis GIFOS</li>
-            <hr>
-        </ul>
-        <img class="navIcon" alt="Menu" id="navIcon">
-    </nav>
+    <header>
+        <nav class="navBar">
+            <img id="logo" class="logo" alt="GIFOs logo">
+            <ul id="navMenu" class="navMenu">
+                <li id="changeMode">Modo Nocturno</li>
+                <hr>
+                <li>Favoritos</li>
+                <hr>
+                <li id="myGif">Mis GIFOS</li>
+                <hr>
+            </ul>
+            <img class="navIcon" alt="Menu" id="navIcon">
+        </nav>
+        <h1>Inspírate, busca, guarda, y crea los mejores <span>GIFOS</span></h1>
+        <img class="imageHeader" src="./images/ilustra_header.svg" alt="imagen in header">
+    </header>
+
     <main>
-        
+        <section class="search">
+            <div  class="searchContainer">
+                <input id="searchInput" type="text" placeholder="Busca GIFOS y más">
+                <img id="searchIcon" src="./images/icon-search.svg" alt="Search icon">
+            </div>
+
+            <div class="searchSuggestion">
+                <hr>
+                <p>text 1</p>
+                <p>text 2</p>
+                <p>text 3</p>
+                <p>text 4</p>
+            </div>
+
+        </section>
     </main>
+
+    <footer>
+
+    </footer>
 
 
 
@@ -31,4 +56,5 @@
 
     <script src="./scripts/index.js"></script>
 </body>
+
 </html>

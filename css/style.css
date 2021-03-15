@@ -13,6 +13,10 @@ html {
   background: var(--color-primary);
 }
 
+h1, h2, h3 {
+  font-family: "Montserrat", sans-serif;
+}
+
 .theme-light {
   --color-primary: #FFFFFF;
   --color-secondary: #fbfbfe;
@@ -74,5 +78,70 @@ html {
   width: 10.93%;
   margin: auto;
   border-top: 1px solid rgba(87, 46, 229, 0.5);
+}
+
+header h1 {
+  width: 76.27%;
+  margin: 24.2px auto 0;
+  font-size: 25px;
+  color: var(--font-color);
+  text-align: center;
+  line-height: 33px;
+}
+
+header h1 span {
+  color: #50e3c2;
+}
+
+header .imageHeader {
+  width: 72.8%;
+  display: block;
+  margin: 31px auto 0;
+}
+
+.search {
+  background: var(--color-primary);
+  border: 1px solid var(--font-color);
+  border-radius: 27px;
+  margin: 0 auto;
+  min-height: 50px;
+  width: 89.06%;
+}
+
+.search input {
+  padding-left: 10px;
+  border: 0px none white;
+  margin: 15px auto;
+  display: block;
+  width: 57.33%;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  color: #000000;
+  text-align: left;
+  background: var(--color-primary);
+}
+
+.search input:focus {
+  outline: none;
+}
+
+.search .searchContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin: 0 20px;
+}
+
+.search .searchSuggestion {
+  margin: 0 20px;
+  font-family: "Roboto", sans-serif;
+  color: #9CAFC3;
+  line-height: 29px;
+}
+
+.search .searchSuggestion hr {
+  width: 91.65%;
+  margin: auto;
+  border-top: 1px solid #9CAFC3;
 }
 /*# sourceMappingURL=style.css.map */
