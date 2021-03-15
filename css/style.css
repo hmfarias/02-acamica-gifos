@@ -45,7 +45,7 @@
   z-index: 10;
 }
 
-.navBar .menu {
+.navBar .navMenu {
   display: none;
   position: absolute;
   top: 90px;
@@ -55,7 +55,7 @@
   background: rgba(87, 46, 229, 0.9);
 }
 
-.navBar .menu li {
+.navBar .navMenu li {
   font-family: "Montserrat", sans-serif;
   font-size: 15px;
   color: #FFFFFF;
@@ -64,7 +64,7 @@
   cursor: pointer;
 }
 
-.navBar .menu hr {
+.navBar .navMenu hr {
   width: 10.93%;
   margin: auto;
   border-top: 1px solid rgba(87, 46, 229, 0.5);
