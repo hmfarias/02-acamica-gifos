@@ -48,11 +48,11 @@ h1, h2, h3 {
   padding-right: 6.93%;
   padding-top: 29px;
   border-top: 5px solid var(--burguer-background);
+  margin-bottom: 24.2px;
 }
 
 .navBar .logoNav {
   width: 48px;
-  z-index: 10;
 }
 
 .navBar .navMenu {
@@ -99,7 +99,7 @@ header .imageHeader {
   margin: 31px auto 0;
 }
 
-.search {
+.sectionSearch .search {
   background: var(--color-primary);
   border: 1px solid var(--font-color);
   border-radius: 27px;
@@ -108,7 +108,7 @@ header .imageHeader {
   width: 89.06%;
 }
 
-.search input {
+.sectionSearch .search input {
   padding-left: 10px;
   border: 0px none white;
   margin: 15px auto;
@@ -121,27 +121,36 @@ header .imageHeader {
   background: var(--color-primary);
 }
 
-.search input:focus {
+.sectionSearch .search input:focus {
   outline: none;
 }
 
-.search .searchContainer {
+.sectionSearch .search .searchContainer {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
   margin: 0 20px;
 }
 
-.search .searchSuggestion {
+.sectionSearch .search .searchSuggestion {
+  display: none;
   margin: 0 20px;
   font-family: "Roboto", sans-serif;
   color: #9CAFC3;
   line-height: 29px;
 }
 
-.search .searchSuggestion hr {
+.sectionSearch .search .searchSuggestion hr {
   width: 91.65%;
   margin: auto;
   border-top: 1px solid #9CAFC3;
+}
+
+.sectionSearch h3 {
+  font-size: 16px;
+  color: var(--font-color);
+  text-align: center;
+  line-height: 25px;
+  margin-top: 31px;
 }
 /*# sourceMappingURL=style.css.map */

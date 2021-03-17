@@ -6,6 +6,9 @@ let navIconImageClose = "";
 let navIconImageBurger = "";
 let searchIconImage = "";
 
+let search = document.getElementById('search');
+let searchContainer = document.getElementById('searchContainer');
+let ilustraHeader = document.getElementById('ilustraHeader');
 
 navIcon.addEventListener("click", () => {
     changeIconBurger();
@@ -77,3 +80,29 @@ changeMode.addEventListener("click", () => {
 });
 
 // END THEMES ------------------------------------------------
+
+//SEARCH BAR -----------------------------------------------
+searchIcon.addEventListener('click' , () => {
+    console.log(ilustraHeader.style.display === '' );
+    if(ilustraHeader.style.display === 'none') {    
+        ilustraHeader.style.display = 'block';
+        search.style.marginTop = '0px' ;
+        searchIconImage = "./images/icon-search.svg";
+    } else {
+        ilustraHeader.style.display = 'none';
+        search.style.marginTop = '24px' ;
+        searchIconImage = "./images/close.svg";
+    }
+    searchIcon.src = searchIconImage;
+});
+
+function changeIconSearch() {
+    // if (navMenu.style.display === "none") {
+    //     navIcon.src = navIconImageClose;
+    //     navMenu.style.display = "block";
+    // } else {
+    //     navIcon.src = navIconImageBurger;
+    //     navMenu.style.display = "none";
+    // }
+}
+//SEARCH BAR -----------------------------------------------
