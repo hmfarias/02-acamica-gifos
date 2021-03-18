@@ -1,5 +1,5 @@
 @import url(../css/reset.css);
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@700&family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Roboto&display=swap");
 *,
 *::after,
 *::before {
@@ -13,8 +13,9 @@ html {
   background: var(--color-primary);
 }
 
-h1, h2, h3 {
+h1, h2, h3, p {
   font-family: "Montserrat", sans-serif;
+  font-weight: 700;
 }
 
 .theme-light {
@@ -99,6 +100,10 @@ header .imageHeader {
   margin: 31px auto 0;
 }
 
+.sectionSearch {
+  margin-bottom: 45px;
+}
+
 .sectionSearch .search {
   background: var(--color-primary);
   border: 1px solid var(--font-color);
@@ -116,7 +121,7 @@ header .imageHeader {
   width: 57.33%;
   font-family: "Roboto", sans-serif;
   font-size: 16px;
-  color: #000000;
+  color: #9CAFC3;
   text-align: left;
   background: var(--color-primary);
 }
@@ -152,5 +157,14 @@ header .imageHeader {
   text-align: center;
   line-height: 25px;
   margin-top: 31px;
+}
+
+.sectionSearch p {
+  color: var(--font-color);
+  width: 60%;
+  text-align: center;
+  font-weight: 500;
+  line-height: 25px;
+  margin: auto;
 }
 /*# sourceMappingURL=style.css.map */

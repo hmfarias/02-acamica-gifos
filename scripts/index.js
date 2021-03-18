@@ -1,3 +1,6 @@
+//FOR THEMES
+let themeName= ''; //create theme name variable global for use later
+
 // FOR BURGER MENU IN MOBILE MODE -------------
 let navIcon = document.getElementById("navIcon"); //burger or X image
 let navMenu = document.getElementById("navMenu"); //options menu
@@ -6,6 +9,8 @@ let navIconImageClose = "";
 let navIconImageBurger = "";
 let searchIconImage = "";
 
+//FOR SECTION SEARCH
+let sectionSearch = document.getElementById('sectionSearch');
 let search = document.getElementById('search');
 let searchContainer = document.getElementById('searchContainer');
 let ilustraHeader = document.getElementById('ilustraHeader');
@@ -14,6 +19,7 @@ navIcon.addEventListener("click", () => {
     changeIconBurger();
 });
 
+//function to change the burger menu icon when the user clicks on it
 function changeIconBurger() {
     if (navMenu.style.display === "none") {
         navIcon.src = navIconImageClose;
@@ -29,11 +35,16 @@ function changeIconBurger() {
 let logo = document.getElementById("logo"); //para poder cambiar al logo modo light o dark
 
 // function to set a given theme/color-scheme and icons update
-function setTheme(themeName) {
-    localStorage.setItem("theme", themeName);
-    document.documentElement.className = themeName;
+function setTheme(theme) {
+    localStorage.setItem("theme", theme);
+    document.documentElement.className = theme;
+    iconsUpdate();
+}
 
+//function to update de icons between light or dark theme in order to selected mode
+function iconsUpdate() {
     // for the icons, principal logo and search icon
+    console.log(themeName);
     if (themeName === "theme-light") {
         logo.src = "./images/logo-mobile.svg"; //principal logo light mode
         navIconImageClose = "./images/close.svg"; // X icon in light mode
@@ -52,28 +63,38 @@ function setTheme(themeName) {
         : (navIcon.src = navIconImageClose);
     
     //update the search icon
-    searchIcon.src = searchIconImage;
+    console.log('entre en ilustra header');
+    console.log(ilustraHeader.style.display);
+    ilustraHeader.style.display === 'none' 
+    ? (searchIcon.src = navIconImageClose)
+    : (searchIcon.src = searchIconImage);
+
 }
+
 
 // function to toggle between light and dark theme
 function toggleTheme() {
     if (localStorage.getItem("theme") === "theme-dark") {
-        setTheme("theme-light");
+        themeName = "theme-light";
+        setTheme(themeName);
     } else {
-        setTheme("theme-dark");
+        themeName = "theme-dark";
+        setTheme(themeName);
     }
 }
 
 // Immediately invoked function to set the theme on initial load
 (function () {
     if (localStorage.getItem("theme") === "theme-dark") {
-        setTheme("theme-dark");
+        themeName = "theme-dark";
+        setTheme(themeName);
     } else {
-        setTheme("theme-light");
+        themeName = "theme-light";
+        setTheme(themeName);
     }
 })();
 
-// nocturn mode menu option
+// nocturn or light mode menu option
 let changeMode = document.getElementById("changeMode");
 changeMode.addEventListener("click", () => {
     toggleTheme();
@@ -86,23 +107,13 @@ searchIcon.addEventListener('click' , () => {
     console.log(ilustraHeader.style.display === '' );
     if(ilustraHeader.style.display === 'none') {    
         ilustraHeader.style.display = 'block';
-        search.style.marginTop = '0px' ;
-        searchIconImage = "./images/icon-search.svg";
+        sectionSearch.style.marginTop = '0px' ;
     } else {
         ilustraHeader.style.display = 'none';
-        search.style.marginTop = '24px' ;
-        searchIconImage = "./images/close.svg";
+        console.log(sectionSearch);
+        sectionSearch.style.marginTop = '41.2px' ;
     }
-    searchIcon.src = searchIconImage;
+    iconsUpdate();
 });
 
-function changeIconSearch() {
-    // if (navMenu.style.display === "none") {
-    //     navIcon.src = navIconImageClose;
-    //     navMenu.style.display = "block";
-    // } else {
-    //     navIcon.src = navIconImageBurger;
-    //     navMenu.style.display = "none";
-    // }
-}
 //SEARCH BAR -----------------------------------------------
