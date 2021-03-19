@@ -141,10 +141,24 @@ let facebook = document.getElementById("facebook"); // get facebook icon node
 let twitter = document.getElementById("twitter"); // get twitter icon node 
 let instagram = document.getElementById("instagram"); // get instagram icon node 
 
-facebook.addEventListener("mouseover", (event) => event.target.src = './images/icon-face-hover.svg');
+facebook.addEventListener("mouseover", (event) => {
+    themeName === "theme-dark"
+    ? (event.target.src = './images/icon-face-hover-noct.svg')
+    : (event.target.src = './images/icon-face-hover.svg');
+});
 facebook.addEventListener("mouseout", (event) => event.target.src = './images/icon-face-normal.svg');
-twitter.addEventListener("mouseover", (event) => event.target.src = './images/icon-twitter-hover.svg');
+
+twitter.addEventListener("mouseover", (event) => {
+    themeName === "theme-dark"
+    ? (event.target.src = './images/icon-twitter-hover-noct.svg')
+    : (event.target.src = './images/icon-twitter-hover.svg');
+});
 twitter.addEventListener("mouseout", (event) => event.target.src = './images/icon-twitter-normal.svg');
-instagram.addEventListener("mouseover", (event) => event.target.src = './images/icon-instagram-hover.svg')
+
+instagram.addEventListener("mouseover", (event) => {
+    themeName === "theme-dark"
+    ? (event.target.src = './images/icon-instagram-hover-noct.svg')
+    : (event.target.src = './images/icon-instagram-hover.svg');
+});
 instagram.addEventListener("mouseout", (event) => event.target.src = './images/icon-instagram-normal.svg');
 //END for hovers on social media icons ----------------
