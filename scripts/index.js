@@ -27,6 +27,7 @@ function changeIconBurger() {
     } else {
         navIcon.src = navIconImageBurger;
         navMenu.style.display = "none";
+        // navMenu.style.display = "none";
     }
 }
 // END FOR BURGER MENU IN MOBILE MODE ---------

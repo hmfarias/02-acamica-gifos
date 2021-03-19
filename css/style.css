@@ -68,6 +68,7 @@ h1, h2, h3, p {
 
 .navBar .navMenu li {
   font-family: "Montserrat", sans-serif;
+  font-weight: 700;
   font-size: 15px;
   color: #FFFFFF;
   line-height: 60px;
@@ -166,5 +167,129 @@ header .imageHeader {
   font-weight: 500;
   line-height: 25px;
   margin: auto;
+}
+
+.sectionResults hr {
+  margin: 35px auto 43px;
+  width: 157px;
+  opacity: 0.5;
+  border: 1px solid #9cafc3;
+}
+
+.sectionResults h2 {
+  font-weight: 700;
+  font-size: 25px;
+  color: var(--font-color);
+  text-align: center;
+  line-height: 40px;
+}
+
+.sectionResults .searchImgs {
+  display: -ms-grid;
+  display: grid;
+  -ms-grid-columns: 1fr 1fr;
+      grid-template-columns: 1fr 1fr;
+  -webkit-column-gap: 21px;
+          column-gap: 21px;
+  row-gap: 25px;
+  justify-items: center;
+  width: 88.8vw;
+  margin: 38px auto 0;
+}
+
+.sectionResults .searchImgs img {
+  width: 41.6vw;
+}
+
+.sectionResults input {
+  border: 1px solid #572EE5;
+  font-family: "Montserrat", sans-serif;
+  font-size: 13px;
+  color: #572EE5;
+  letter-spacing: 0;
+  border-radius: 25px;
+  width: 127px;
+  height: 50px;
+  background: var(--color-primary);
+  margin: 78px auto 79px;
+  display: block;
+}
+
+.trending {
+  background: #F3F5F8;
+}
+
+.trending h3 {
+  font-size: 20px;
+  font-weight: 700;
+  color: var(--font-color);
+  text-align: center;
+  line-height: 30px;
+  padding-top: 46px;
+}
+
+.trending #pMobile {
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  color: var(--font-color-secondary);
+  text-align: center;
+  line-height: 23px;
+}
+
+.trending #pDesktop {
+  display: none;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  color: var(--font-color-secondary);
+  text-align: center;
+  line-height: 23px;
+}
+
+.trending .carrusel {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: row;
+          flex-direction: row;
+  overflow: auto;
+  margin: 32px 0px 82px 0px;
+}
+
+.trending .carrusel img {
+  margin: 0px 22px;
+  width: 64.8vw;
+}
+
+footer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+footer p {
+  font-family: "Roboto", sans-serif;
+  font-size: 14px;
+  color: #000000;
+  letter-spacing: 0;
+  line-height: 20px;
+  margin-top: 47px;
+  margin-bottom: 23px;
+}
+
+footer .socialMedia {
+  margin: 24px 0 0px;
+}
+
+footer .socialMedia img {
+  margin-right: 19px;
 }
 /*# sourceMappingURL=style.css.map */
