@@ -8,13 +8,9 @@ let searchIcon = document.getElementById("searchIcon"); // search icon
 let navIconImageClose = "";
 let navIconImageBurger = "";
 let searchIconImage = "";
-
-//FOR SECTION SEARCH
-let sectionSearch = document.getElementById('sectionSearch');
-let search = document.getElementById('search');
-let searchContainer = document.getElementById('searchContainer');
 let ilustraHeader = document.getElementById('ilustraHeader');
 
+// burguer menu changes
 navIcon.addEventListener("click", () => {
     changeIconBurger();
 });
@@ -101,9 +97,14 @@ changeMode.addEventListener("click", () => {
     toggleTheme();
 });
 
-// END THEMES ------------------------------------------------
+//END THEMES ------------------------------------------------
 
-//SEARCH BAR -----------------------------------------------
+//SEARCH SECTION -----------------------------------------------
+let sectionSearch = document.getElementById('sectionSearch');
+let search = document.getElementById('search');
+let searchContainer = document.getElementById('searchContainer');
+
+
 searchIcon.addEventListener('click' , () => {
     console.log(ilustraHeader.style.display === '' );
     if(ilustraHeader.style.display === 'none') {    
@@ -117,4 +118,4 @@ searchIcon.addEventListener('click' , () => {
     iconsUpdate();
 });
 
-//SEARCH BAR -----------------------------------------------
+//END SEARCH SECTION -----------------------------------------------

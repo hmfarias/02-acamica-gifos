@@ -1,5 +1,5 @@
 @import url(../css/reset.css);
-@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Roboto&display=swap");
+@import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Roboto:wght@300;400&display=swap");
 *,
 *::after,
 *::before {
@@ -20,17 +20,17 @@ h1, h2, h3, p {
 
 .theme-light {
   --color-primary: #FFFFFF;
-  --color-secondary: #fbfbfe;
-  --color-accent: #fd6f53;
+  --color-secondary: #F3F5F8;
   --font-color: #572EE5;
+  --font-color-secondary: #000000;
   --burguer-background:  rgba(87, 46, 229, 0.9);
 }
 
 .theme-dark {
   --color-primary: #37383C;
-  --color-secondary: #243133;
-  --color-accent: #12cdea;
+  --color-secondary: #222326  ;
   --font-color: #FFFFFF;
+  --font-color-secondary: #FFFFFF;
   --burguer-background: #000000;
 }
 
@@ -52,8 +52,8 @@ h1, h2, h3, p {
   margin-bottom: 24.2px;
 }
 
-.navBar .logoNav {
-  width: 48px;
+.navBar .logo {
+  width: 56px;
 }
 
 .navBar .navMenu {
@@ -164,7 +164,7 @@ header .imageHeader {
   color: var(--font-color);
   width: 60%;
   text-align: center;
-  font-weight: 500;
+  font-weight: 400;
   line-height: 25px;
   margin: auto;
 }
@@ -202,10 +202,11 @@ header .imageHeader {
 }
 
 .sectionResults input {
-  border: 1px solid #572EE5;
+  border: 1px solid var(--font-color);
   font-family: "Montserrat", sans-serif;
+  font-weight: 700;
   font-size: 13px;
-  color: #572EE5;
+  color: var(--font-color);
   letter-spacing: 0;
   border-radius: 25px;
   width: 127px;
@@ -216,7 +217,7 @@ header .imageHeader {
 }
 
 .trending {
-  background: #F3F5F8;
+  background: VAR(--color-secondary);
 }
 
 .trending h3 {
@@ -228,8 +229,9 @@ header .imageHeader {
   padding-top: 46px;
 }
 
-.trending #pMobile {
+.trending #pMobile, .trending #pDesktop {
   font-family: "Roboto", sans-serif;
+  font-weight: 300;
   font-size: 16px;
   color: var(--font-color-secondary);
   text-align: center;
@@ -238,11 +240,6 @@ header .imageHeader {
 
 .trending #pDesktop {
   display: none;
-  font-family: "Roboto", sans-serif;
-  font-size: 16px;
-  color: var(--font-color-secondary);
-  text-align: center;
-  line-height: 23px;
 }
 
 .trending .carrusel {
@@ -273,12 +270,14 @@ footer {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
+  border-bottom: 5px solid var(--burguer-background);
 }
 
 footer p {
   font-family: "Roboto", sans-serif;
   font-size: 14px;
-  color: #000000;
+  font-weight: 400;
+  color: var(--font-color-secondary);
   letter-spacing: 0;
   line-height: 20px;
   margin-top: 47px;
