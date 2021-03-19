@@ -17,7 +17,7 @@ navIcon.addEventListener("click", () => {
 
 //function to change the burger menu icon when the user clicks on it
 function changeIconBurger() {
-    if (navMenu.style.display === "none") {
+    if (navMenu.style.display === '' || navMenu.style.display === "none") {
         navIcon.src = navIconImageClose;
         navMenu.style.display = "block";
     } else {
@@ -41,7 +41,6 @@ function setTheme(theme) {
 //function to update de icons between light or dark theme in order to selected mode
 function iconsUpdate() {
     // for the icons, principal logo and search icon
-    console.log(themeName);
     if (themeName === "theme-light") {
         logo.src = "./images/logo-mobile.svg"; //principal logo light mode
         navIconImageClose = "./images/close.svg"; // X icon in light mode
@@ -60,8 +59,6 @@ function iconsUpdate() {
         : (navIcon.src = navIconImageClose);
     
     //update the search icon
-    console.log('entre en ilustra header');
-    console.log(ilustraHeader.style.display);
     ilustraHeader.style.display === 'none' 
     ? (searchIcon.src = navIconImageClose)
     : (searchIcon.src = searchIconImage);
@@ -105,17 +102,34 @@ let search = document.getElementById('search');
 let searchContainer = document.getElementById('searchContainer');
 
 
+
 searchIcon.addEventListener('click' , () => {
-    console.log(ilustraHeader.style.display === '' );
     if(ilustraHeader.style.display === 'none') {    
         ilustraHeader.style.display = 'block';
         sectionSearch.style.marginTop = '0px' ;
     } else {
         ilustraHeader.style.display = 'none';
-        console.log(sectionSearch);
         sectionSearch.style.marginTop = '41.2px' ;
     }
     iconsUpdate();
 });
 
 //END SEARCH SECTION -----------------------------------------------
+
+//RESULT SECTION -----------------------------------------------
+let btnShowMore = document.getElementById('btnShowMore'); //get "Show More" button node
+
+btnShowMore.addEventListener('mouseover' , (event)=> {
+    if(themeName === "theme-dark"){ 
+        event.target.style.color = 'black';
+        event.target.style.backgroundColor = 'white';
+    } else{
+        event.target.style.color = 'white';
+        event.target.style.backgroundColor = '#572EE5';
+    }
+});
+
+btnShowMore.addEventListener('mouseout' , (event)=> {
+        event.target.style.color = 'var(--font-color)';
+        event.target.style.backgroundColor = 'var(--color-primary)';
+});
