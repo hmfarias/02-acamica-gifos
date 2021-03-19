@@ -1,5 +1,5 @@
 //FOR THEMES
-let themeName= ''; //create theme name variable global for use later
+let themeName = ""; //create theme name variable global for use later
 
 // FOR BURGER MENU IN MOBILE MODE -------------
 let navIcon = document.getElementById("navIcon"); //burger or X image
@@ -8,7 +8,7 @@ let searchIcon = document.getElementById("searchIcon"); // search icon
 let navIconImageClose = "";
 let navIconImageBurger = "";
 let searchIconImage = "";
-let ilustraHeader = document.getElementById('ilustraHeader');
+let ilustraHeader = document.getElementById("ilustraHeader");
 
 // burguer menu changes
 navIcon.addEventListener("click", () => {
@@ -17,7 +17,7 @@ navIcon.addEventListener("click", () => {
 
 //function to change the burger menu icon when the user clicks on it
 function changeIconBurger() {
-    if (navMenu.style.display === '' || navMenu.style.display === "none") {
+    if (navMenu.style.display === "" || navMenu.style.display === "none") {
         navIcon.src = navIconImageClose;
         navMenu.style.display = "block";
     } else {
@@ -57,14 +57,12 @@ function iconsUpdate() {
     navMenu.style.display === "none" || navMenu.style.display === ""
         ? (navIcon.src = navIconImageBurger)
         : (navIcon.src = navIconImageClose);
-    
+
     //update the search icon
-    ilustraHeader.style.display === 'none' 
-    ? (searchIcon.src = navIconImageClose)
-    : (searchIcon.src = searchIconImage);
-
+    ilustraHeader.style.display === "none"
+        ? (searchIcon.src = navIconImageClose)
+        : (searchIcon.src = searchIconImage);
 }
-
 
 // function to toggle between light and dark theme
 function toggleTheme() {
@@ -94,42 +92,59 @@ changeMode.addEventListener("click", () => {
     toggleTheme();
 });
 
-//END THEMES ------------------------------------------------
+//END THEMES ------------------------------------------------------
 
-//SEARCH SECTION -----------------------------------------------
-let sectionSearch = document.getElementById('sectionSearch');
-let search = document.getElementById('search');
-let searchContainer = document.getElementById('searchContainer');
+//SEARCH SECTION --------------------------------------------------
+let sectionSearch = document.getElementById("sectionSearch");
+let search = document.getElementById("search");
+let searchContainer = document.getElementById("searchContainer");
 
-
-
-searchIcon.addEventListener('click' , () => {
-    if(ilustraHeader.style.display === 'none') {    
-        ilustraHeader.style.display = 'block';
-        sectionSearch.style.marginTop = '0px' ;
+searchIcon.addEventListener("click", () => {
+    if (ilustraHeader.style.display === "none") {
+        ilustraHeader.style.display = "block";
+        sectionSearch.style.marginTop = "0px";
     } else {
-        ilustraHeader.style.display = 'none';
-        sectionSearch.style.marginTop = '41.2px' ;
+        ilustraHeader.style.display = "none";
+        sectionSearch.style.marginTop = "41.2px";
     }
     iconsUpdate();
 });
 
 //END SEARCH SECTION -----------------------------------------------
 
-//RESULT SECTION -----------------------------------------------
-let btnShowMore = document.getElementById('btnShowMore'); //get "Show More" button node
+//RESULT SECTION ---------------------------------------------------
+let btnShowMore = document.getElementById("btnShowMore"); //get "Show More" button node
 
-btnShowMore.addEventListener('mouseover' , (event)=> {
-    if(themeName === "theme-dark"){ 
-        event.target.style.color = 'black';
-        event.target.style.backgroundColor = 'white';
-    } else{
-        event.target.style.color = 'white';
-        event.target.style.backgroundColor = '#572EE5';
+//for hover efect ------
+btnShowMore.addEventListener("mouseover", (event) => {
+    if (themeName === "theme-dark") {
+        event.target.style.color = "black";
+        event.target.style.backgroundColor = "white";
+    } else {
+        event.target.style.color = "white";
+        event.target.style.backgroundColor = "#572EE5";
     }
 });
 
-btnShowMore.addEventListener('mouseout' , (event)=> {
-        event.target.style.color = 'var(--font-color)';
-        event.target.style.backgroundColor = 'var(--color-primary)';
+btnShowMore.addEventListener("mouseout", (event) => {
+    event.target.style.color = "var(--font-color)";
+    event.target.style.backgroundColor = "var(--color-primary)";
 });
+//end for hover efect ------
+
+//END RESULT SECTION --------------------------------------------------
+
+//FOOTER ----------------------------------------------------------
+
+//for hovers on social media icons ----------------
+let facebook = document.getElementById("facebook"); // get facebook icon node 
+let twitter = document.getElementById("twitter"); // get twitter icon node 
+let instagram = document.getElementById("instagram"); // get instagram icon node 
+
+facebook.addEventListener("mouseover", (event) => event.target.src = './images/icon-face-hover.svg');
+facebook.addEventListener("mouseout", (event) => event.target.src = './images/icon-face-normal.svg');
+twitter.addEventListener("mouseover", (event) => event.target.src = './images/icon-twitter-hover.svg');
+twitter.addEventListener("mouseout", (event) => event.target.src = './images/icon-twitter-normal.svg');
+instagram.addEventListener("mouseover", (event) => event.target.src = './images/icon-instagram-hover.svg')
+instagram.addEventListener("mouseout", (event) => event.target.src = './images/icon-instagram-normal.svg');
+//END for hovers on social media icons ----------------
