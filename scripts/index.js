@@ -95,17 +95,26 @@ changeMode.addEventListener("click", () => {
 //END THEMES ------------------------------------------------------
 
 //SEARCH SECTION --------------------------------------------------
-let sectionSearch = document.getElementById("sectionSearch");
-let search = document.getElementById("search");
-let searchContainer = document.getElementById("searchContainer");
+let sectionSearch = document.getElementById("sectionSearch"); //gets the Section node corresponding to the search, to be able to hide it and show it accordingly
+let search = document.getElementById("search");//gets the div node that contains the Div node for search bar, and the div node for the hints
+let searchContainer = document.getElementById("searchContainer"); //gets the div node that contains the search bar
+let titleSearch = document.getElementById("titleSearch"); //gets the h2 node to put the search text in it
 
+//to show search icon or X icon
 searchIcon.addEventListener("click", () => {
+    //show search icon
     if (ilustraHeader.style.display === "none") {
         ilustraHeader.style.display = "block";
         sectionSearch.style.marginTop = "0px";
+        sectionResults.style.display = "none";
+        searchInput.value = '';
+        searchGif.innerHTML = '';
+    //show X icon
     } else {
         ilustraHeader.style.display = "none";
         sectionSearch.style.marginTop = "41.2px";
+        sectionResults.style.display = "block";
+        searchInput.focus();
     }
     iconsUpdate();
 });
@@ -113,9 +122,48 @@ searchIcon.addEventListener("click", () => {
 //END SEARCH SECTION -----------------------------------------------
 
 //RESULT SECTION ---------------------------------------------------
+const URL_BASE_SEARCH = 'https://api.giphy.com/v1/gifs/search?api_key=4SgwG4zh1E8ChFfX2AFRCifOP8Y1bXGx&limit=20&offset=';
+let offset = 0; //for button SHOW MORE in orden to show 'offset' elements more
+
+let searchInput = document.getElementById('searchInput'); //gets input node where the user puts the search
+let searchGif = document.getElementById('searchGif'); // gets the DIV node where the searched gifs appear
 let btnShowMore = document.getElementById("btnShowMore"); //get "Show More" button node
 
-//for hover efect ------
+//function that shows search gifs
+async function showSearch(word, start) {
+    try {
+        const URL = URL_BASE_SEARCH + start + '&q=' + word; //url base + offset + word to search
+        const response  = await fetch(URL);
+        const info = await response.json();
+
+        //here we have each trending gif through iteration
+        info.data.forEach(element => {
+            searchGif.innerHTML += `
+                <img src="${element.images.fixed_height.url}">
+            `;
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+//search gifs when the usr press Enter
+searchInput.addEventListener('keypress' , (event) => {
+    if(event.key === 'Enter') {
+        offset = 0;
+        searchGif.innerHTML = '';
+        titleSearch.textContent = searchInput.value;
+        showSearch(searchInput.value,offset);
+    }
+});
+
+//search gifs when the usr press "Show More" button
+btnShowMore.addEventListener('click' , () => {
+    offset += 20;
+    showSearch(searchInput.value, offset);
+});
+
+//for hover efect in "Show More"button ------
 btnShowMore.addEventListener("mouseover", (event) => {
     if (themeName === "theme-dark") {
         event.target.style.color = "black";
@@ -133,6 +181,38 @@ btnShowMore.addEventListener("mouseout", (event) => {
 //end for hover efect ------
 
 //END RESULT SECTION --------------------------------------------------
+
+//TRENDING SECTION ---------------------------------------------------
+// API KEY: 4SgwG4zh1E8ChFfX2AFRCifOP8Y1bXGx
+// URL TRENDING: https://api.giphy.com/v1/gifs/trending?api_key=4SgwG4zh1E8ChFfX2AFRCifOP8Y1bXGx&limit=25&rating=g
+
+const URL_BASE_TRENDING = 'https://api.giphy.com/v1/gifs/trending?api_key=4SgwG4zh1E8ChFfX2AFRCifOP8Y1bXGx&limit=25';
+let trendingGif = document.getElementById('trendingGif'); //get DIV node where show the trending gifs
+
+//function that shows trending gifs
+async function showTrendign () {
+    try {
+        const response  = await fetch(URL_BASE_TRENDING);
+        const info = await response.json();
+
+        //here we have each trending gif through iteration
+        info.data.forEach(element => {
+            trendingGif.innerHTML += `
+                <img src="${element.images.fixed_height.url}">
+            `;
+        });
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+showTrendign(); //run the function
+
+
+
+
+
+//END TRENDING SECTION ---------------------------------------------------
 
 //FOOTER ----------------------------------------------------------
 

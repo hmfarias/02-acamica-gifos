@@ -169,6 +169,10 @@ header .imageHeader {
   margin: auto;
 }
 
+.sectionResults {
+  display: none;
+}
+
 .sectionResults hr {
   margin: 35px auto 43px;
   width: 157px;
@@ -182,9 +186,10 @@ header .imageHeader {
   color: var(--font-color);
   text-align: center;
   line-height: 40px;
+  text-transform: capitalize;
 }
 
-.sectionResults .searchImgs {
+.sectionResults .searchGif {
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 1fr 1fr;
@@ -197,7 +202,7 @@ header .imageHeader {
   margin: 38px auto 0;
 }
 
-.sectionResults .searchImgs img {
+.sectionResults .searchGif img {
   width: 41.6vw;
 }
 
@@ -242,7 +247,7 @@ header .imageHeader {
   display: none;
 }
 
-.trending .carrusel {
+.trending .trendingGif {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -250,13 +255,16 @@ header .imageHeader {
   -webkit-box-direction: normal;
       -ms-flex-direction: row;
           flex-direction: row;
-  overflow: auto;
+  overflow: scroll;
   margin: 32px 0px 82px 0px;
 }
 
-.trending .carrusel img {
-  margin: 0px 22px;
-  width: 64.8vw;
+.trending .trendingGif img {
+  margin: 0px 11px 0 11px;
+}
+
+.trending .trendingGif img:first-of-type {
+  margin-left: 22px;
 }
 
 footer {
