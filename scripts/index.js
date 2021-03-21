@@ -5,10 +5,14 @@ let themeName = ""; //create theme name variable global for use later
 let navIcon = document.getElementById("navIcon"); //burger or X image
 let navMenu = document.getElementById("navMenu"); //options menu
 let searchIcon = document.getElementById("searchIcon"); // search icon
+let searchingIcon = document.getElementById("searchingIcon"); // the search icon appears on the left of the search bar
 let navIconImageClose = "";
 let navIconImageBurger = "";
 let searchIconImage = "";
 let ilustraHeader = document.getElementById("ilustraHeader");
+
+let searching = false ; //variable to know if searching mode is active or not 
+
 
 // burguer menu changes
 navIcon.addEventListener("click", () => {
@@ -59,9 +63,7 @@ function iconsUpdate() {
         : (navIcon.src = navIconImageClose);
 
     //update the search icon
-    ilustraHeader.style.display === "none"
-        ? (searchIcon.src = navIconImageClose)
-        : (searchIcon.src = searchIconImage);
+    searching ? (searchIcon.src = navIconImageClose) : (searchIcon.src = searchIconImage);
 }
 
 // function to toggle between light and dark theme
@@ -100,27 +102,9 @@ let search = document.getElementById("search");//gets the div node that contains
 let searchContainer = document.getElementById("searchContainer"); //gets the div node that contains the search bar
 let titleSearch = document.getElementById("titleSearch"); //gets the h2 node to put the search text  title in it
 
-//to show search icon or X icon
-searchIcon.addEventListener("click", () => {
-    //the usr want close de search. So hide section results, if ilustra header is hide or search results its not empty
-    if (ilustraHeader.style.display === "none" || searchGif.innerHTML !== 0) {
-        ilustraHeader.style.display = "block";
-        console.log('entra a la X');
-        sectionSearch.style.marginTop = "0px";
-        sectionResults.style.display = "none";
-        searchInput.value = '';
-        searchGif.innerHTML = '';
-        titleSearch.textContent = '';
-    //show X icon
-    } else {
-        ilustraHeader.style.display = "none";
-        sectionSearch.style.marginTop = "41.2px";
-        sectionResults.style.display = "block";
-        searchGif.className = "searchGif";
-        searchInput.focus();
-    }
-    iconsUpdate();
-});
+
+//when usr click in search icon 
+searchIcon.addEventListener("click", searchPrepare);
 
 //END SEARCH SECTION -----------------------------------------------
 
@@ -130,6 +114,8 @@ let offset = 0; //for button SHOW MORE in orden to show 'offset' elements more
 
 let searchInput = document.getElementById('searchInput'); //gets input node where the user puts the search
 let searchGif = document.getElementById('searchGif'); // gets the DIV node where the searched gifs appear
+searchGif.innerHTML ='';
+
 let btnShowMore = document.getElementById("btnShowMore"); //get "Show More" button node
 
 //function that shows search gifs
@@ -152,13 +138,16 @@ async function showSearch(word, start) {
             sectionSearch.style.marginTop = "0px";
             //-----------------------------------------
         }else {
-            btnShowMore.style.display = 'none';
-            searchGif.className = "searchGifWithoutResult";
-            searchGif.innerHTML += `
+            btnShowMore.style.display = 'none'; //if there are no more gifs, hide "Show More" button
+            if (!searchGif.innerHTML) {
+                btnShowMore.style.display = 'none';
+                searchGif.className = "searchGifWithoutResult";
+                searchGif.innerHTML += `
                 <img src="./images/icon-busqueda-sin-resultado.svg">
                 <h3> Intenta con otra búsqueda.</h3>
-            `;
-        }
+                `;
+            }
+        }    
     } catch (error) {
         console.log(error);
     }
@@ -166,30 +155,62 @@ async function showSearch(word, start) {
 
 //search gifs when the usr press Enter
 searchInput.addEventListener('keypress' , (event) => {
-    if(event.key === 'Enter') {
+    if(event.key === 'Enter' ) {        
+        searching = true;
+        searchingIcon.style.display = 'block'
+        ilustraHeader.style.display = "none";
+        sectionSearch.style.marginTop = "41.2px";
+        sectionResults.style.display = "block";
+        searchGif.innerHTML == 0 ? btnShowMore.style.display = 'none' : btnShowMore.style.display = 'block'; // if there aren't results in section results, "Show More" button must be hide 
+        // searchInput.focus();
+        iconsUpdate();
+        searchInput.value !== '' ? searchGifs() : searchPrepare();
+    }    
+});
+
+//when usr click on search input prepare the screen for search gifs
+// searchInput.addEventListener('click' , searchPrepare);
+
+//search gifs when the usr press search icon on the left of te search bar
+searchingIcon.addEventListener('click' , searchGifs);
+
+function searchGifs() {
+    if(searchInput.value !== '') {
         offset = 0;
         searchGif.innerHTML = '';
         titleSearch.textContent = searchInput.value;
         showSearch(searchInput.value,offset);
     }
-});
+}
 
-//when usr click on search input prepare the screen for search gifs
-searchInput.addEventListener('click' , () => {
-    ilustraHeader.style.display = "none";
-    sectionSearch.style.marginTop = "41.2px";
-    sectionResults.style.display = "block";
-    searchGif.innerHTML == 0 ? btnShowMore.style.display = 'none' : btnShowMore.style.display = 'block'; // if there aren't results in section results, "Show More" button must be hide 
+
+function searchPrepare() {
+    //the usr want close the search. So hide section results, if ilustra header is hide or search results its not empty
+    // if (ilustraHeader.style.display === "none" || searchGif.innerHTML !== 0) {
+    if(searching) {
+        ilustraHeader.style.display = "block";
+        console.log('display despues: '+ ilustraHeader.style.display);
+        sectionSearch.style.marginTop = "0px";
+        sectionResults.style.display = "none";
+        searchInput.value = '';
+        searchGif.innerHTML = '';
+        titleSearch.textContent = '';
+        searching = false;
+        searchingIcon.style.display = 'none';
+    //show X icon
+    } else {
+        searching = true;
+        searchingIcon.style.display = 'block'
+        ilustraHeader.style.display = "none";
+        sectionSearch.style.marginTop = "41.2px";
+        sectionResults.style.display = "block";
+        searchGif.innerHTML == 0 ? btnShowMore.style.display = 'none' : btnShowMore.style.display = 'block'; // if there aren't results in section results, "Show More" button must be hide 
+        // searchInput.focus();
+        if(searchInput.value !== '') searchGifs();
+    }
     iconsUpdate();
-
-});
-
-// searchInput.addEventListener('blur' , () => {
-//     ilustraHeader.style.display = "block";
-//     sectionSearch.style.marginTop = "0px";
-//     iconsUpdate();
-
-// });
+        
+}
 
 //search gifs when the usr press "Show More" button
 btnShowMore.addEventListener('click' , () => {

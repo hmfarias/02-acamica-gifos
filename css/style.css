@@ -102,6 +102,10 @@ header .imageHeader {
   margin: 31px auto 0;
 }
 
+header #ilustraHeader {
+  display: block;
+}
+
 .sectionSearch {
   margin-bottom: 45px;
 }
@@ -139,6 +143,10 @@ header .imageHeader {
   margin: 0 20px;
 }
 
+.sectionSearch .search .searchContainer #searchingIcon {
+  display: none;
+}
+
 .sectionSearch .search .searchSuggestion {
   display: none;
   margin: 0 20px;
@@ -172,6 +180,7 @@ header .imageHeader {
 
 .sectionResults {
   display: none;
+  margin-bottom: 80px;
 }
 
 .sectionResults hr {
