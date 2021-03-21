@@ -11,6 +11,7 @@
 
 html {
   background: var(--color-primary);
+  scroll-behavior: smooth;
 }
 
 h1, h2, h3, p {
@@ -204,6 +205,35 @@ header .imageHeader {
 
 .sectionResults .searchGif img {
   width: 41.6vw;
+}
+
+.sectionResults .searchGifWithoutResult {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 88.8vw;
+  margin: 109px auto 0;
+}
+
+.sectionResults .searchGifWithoutResult img {
+  width: 41.6vw;
+}
+
+.sectionResults .searchGifWithoutResult h3 {
+  margin-top: 29px;
+  margin-bottom: 149px;
+  color: #50E3C2;
+  font-size: 22px;
 }
 
 .sectionResults input {

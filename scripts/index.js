@@ -102,9 +102,10 @@ let titleSearch = document.getElementById("titleSearch"); //gets the h2 node to 
 
 //to show search icon or X icon
 searchIcon.addEventListener("click", () => {
-    //show search icon
-    if (ilustraHeader.style.display === "none") {
+    //the usr want close de search. So hide section results, if ilustra header is hide or search results its not empty
+    if (ilustraHeader.style.display === "none" || searchGif.innerHTML !== 0) {
         ilustraHeader.style.display = "block";
+        console.log('entra a la X');
         sectionSearch.style.marginTop = "0px";
         sectionResults.style.display = "none";
         searchInput.value = '';
@@ -115,6 +116,7 @@ searchIcon.addEventListener("click", () => {
         ilustraHeader.style.display = "none";
         sectionSearch.style.marginTop = "41.2px";
         sectionResults.style.display = "block";
+        searchGif.className = "searchGif";
         searchInput.focus();
     }
     iconsUpdate();
@@ -136,13 +138,27 @@ async function showSearch(word, start) {
         const URL = URL_BASE_SEARCH + start + '&q=' + word; //url base + offset + word to search
         const response  = await fetch(URL);
         const info = await response.json();
-
-        //here we have each trending gif through iteration
-        info.data.forEach(element => {
-            searchGif.innerHTML += `
+        if(info.data.length > 0){
+            //here we have each trending gif through iteration
+            info.data.forEach(element => {
+                btnShowMore.style.display = 'block';
+                searchGif.className = "searchGif";
+                searchGif.innerHTML += `
                 <img src="${element.images.fixed_height.url}">
+                `;
+            });
+            //after search, show ilustra header again
+            ilustraHeader.style.display = "block";
+            sectionSearch.style.marginTop = "0px";
+            //-----------------------------------------
+        }else {
+            btnShowMore.style.display = 'none';
+            searchGif.className = "searchGifWithoutResult";
+            searchGif.innerHTML += `
+                <img src="./images/icon-busqueda-sin-resultado.svg">
+                <h3> Intenta con otra búsqueda.</h3>
             `;
-        });
+        }
     } catch (error) {
         console.log(error);
     }
@@ -157,6 +173,23 @@ searchInput.addEventListener('keypress' , (event) => {
         showSearch(searchInput.value,offset);
     }
 });
+
+//when usr click on search input prepare the screen for search gifs
+searchInput.addEventListener('click' , () => {
+    ilustraHeader.style.display = "none";
+    sectionSearch.style.marginTop = "41.2px";
+    sectionResults.style.display = "block";
+    searchGif.innerHTML == 0 ? btnShowMore.style.display = 'none' : btnShowMore.style.display = 'block'; // if there aren't results in section results, "Show More" button must be hide 
+    iconsUpdate();
+
+});
+
+// searchInput.addEventListener('blur' , () => {
+//     ilustraHeader.style.display = "block";
+//     sectionSearch.style.marginTop = "0px";
+//     iconsUpdate();
+
+// });
 
 //search gifs when the usr press "Show More" button
 btnShowMore.addEventListener('click' , () => {
