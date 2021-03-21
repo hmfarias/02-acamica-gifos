@@ -98,7 +98,7 @@ changeMode.addEventListener("click", () => {
 let sectionSearch = document.getElementById("sectionSearch"); //gets the Section node corresponding to the search, to be able to hide it and show it accordingly
 let search = document.getElementById("search");//gets the div node that contains the Div node for search bar, and the div node for the hints
 let searchContainer = document.getElementById("searchContainer"); //gets the div node that contains the search bar
-let titleSearch = document.getElementById("titleSearch"); //gets the h2 node to put the search text in it
+let titleSearch = document.getElementById("titleSearch"); //gets the h2 node to put the search text  title in it
 
 //to show search icon or X icon
 searchIcon.addEventListener("click", () => {
@@ -109,6 +109,7 @@ searchIcon.addEventListener("click", () => {
         sectionResults.style.display = "none";
         searchInput.value = '';
         searchGif.innerHTML = '';
+        titleSearch.textContent = '';
     //show X icon
     } else {
         ilustraHeader.style.display = "none";
@@ -163,7 +164,7 @@ btnShowMore.addEventListener('click' , () => {
     showSearch(searchInput.value, offset);
 });
 
-//for hover efect in "Show More"button ------
+//for hover efect in "Show More" button ------
 btnShowMore.addEventListener("mouseover", (event) => {
     if (themeName === "theme-dark") {
         event.target.style.color = "black";
@@ -205,7 +206,6 @@ async function showTrendign () {
         console.log(error);
     }
 }
-
 showTrendign(); //run the function
 
 
