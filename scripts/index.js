@@ -62,10 +62,12 @@ function iconsUpdate() {
         ? (navIcon.src = navIconImageBurger)
         : (navIcon.src = navIconImageClose);
 
-    //update the search icon
-    searching ? (searchIcon.src = navIconImageClose) : (searchIcon.src = searchIconImage);
-}
-
+        //update the search icon
+        searching ? (searchIcon.src = navIconImageClose) : (searchIcon.src = searchIconImage);
+        //update the searching icon
+        searchingIcon.src = searchIconImage;
+    }
+        
 // function to toggle between light and dark theme
 function toggleTheme() {
     if (localStorage.getItem("theme") === "theme-dark") {
@@ -97,19 +99,67 @@ changeMode.addEventListener("click", () => {
 //END THEMES ------------------------------------------------------
 
 //SEARCH SECTION --------------------------------------------------
+const URL_BASE_SUGGESTIONS = 'https://api.giphy.com/v1/gifs/search/tags?api_key=4SgwG4zh1E8ChFfX2AFRCifOP8Y1bXGx&q=';
+const URL_BASE_TRENDING_SEARCH = 'https://api.giphy.com/v1/tags/related/{term}?api_key=4SgwG4zh1E8ChFfX2AFRCifOP8Y1bXGx';
+//voy aca
+
 let sectionSearch = document.getElementById("sectionSearch"); //gets the Section node corresponding to the search, to be able to hide it and show it accordingly
 let search = document.getElementById("search");//gets the div node that contains the Div node for search bar, and the div node for the hints
 let searchContainer = document.getElementById("searchContainer"); //gets the div node that contains the search bar
 let titleSearch = document.getElementById("titleSearch"); //gets the h2 node to put the search text  title in it
-
+let searchSuggestion = document.getElementById('searchSuggestion');
 
 //when usr click in search icon 
 searchIcon.addEventListener("click", searchPrepare);
 
+//function that shows SUGGESTIONS TO SEARCH
+async function showSuggestions(word) {
+    try {
+        const URL = URL_BASE_SUGGESTIONS + word; //url base + word to search
+        const response  = await fetch(URL);
+        const info = await response.json();
+        console.log(info);
+        searchSuggestion.innerHTML = '<hr>';
+        
+        if(info.data.length > 0){ // only if the fetch brings data 
+            searchSuggestion.style.display = 'block'; //show the suggestions container
+            
+            //here we have each suggestion through iteration
+            info.data.forEach(element => {
+                
+                //create the elements for suggestions list and set its properties
+                let divContainSuggest = document.createElement('div');
+                divContainSuggest.classList = 'containerFlex';
+                let imgSearchSuggest = document.createElement('img');
+                imgSearchSuggest.src = searchIconImage;
+                let paragraphSuggest = document.createElement('p');
+                paragraphSuggest.textContent = element.name;
+
+                //add the items from the suggestion list to the container
+                searchSuggestion.appendChild(divContainSuggest);
+                divContainSuggest.appendChild(imgSearchSuggest);
+                divContainSuggest.appendChild(paragraphSuggest);
+
+                //subscribe the paragraph to the click event so that its text passes to the input
+                paragraphSuggest.addEventListener('click' , () => {
+                    console.log('entra al click de la sugerencia');
+                    searchInput.value = paragraphSuggest.textContent;
+                    searchSuggestion.style.display = 'none';
+                    searchGifs();
+                });
+            });
+        }    
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+
+
 //END SEARCH SECTION -----------------------------------------------
 
 //RESULT SECTION ---------------------------------------------------
-const URL_BASE_SEARCH = 'https://api.giphy.com/v1/gifs/search?api_key=4SgwG4zh1E8ChFfX2AFRCifOP8Y1bXGx&limit=20&offset=';
+const URL_BASE_SEARCH = 'https://api.giphy.com/v1/gifs/search?api_key=4SgwG4zh1E8ChFfX2AFRCifOP8Y1bXGx&limit=12&offset=';
 let offset = 0; //for button SHOW MORE in orden to show 'offset' elements more
 
 let searchInput = document.getElementById('searchInput'); //gets input node where the user puts the search
@@ -156,20 +206,30 @@ async function showSearch(word, start) {
 //search gifs when the usr press Enter
 searchInput.addEventListener('keypress' , (event) => {
     if(event.key === 'Enter' ) {        
-        searching = true;
-        searchingIcon.style.display = 'block'
-        ilustraHeader.style.display = "none";
-        sectionSearch.style.marginTop = "41.2px";
-        sectionResults.style.display = "block";
-        searchGif.innerHTML == 0 ? btnShowMore.style.display = 'none' : btnShowMore.style.display = 'block'; // if there aren't results in section results, "Show More" button must be hide 
-        // searchInput.focus();
-        iconsUpdate();
+        hideIlustraHeader();
         searchInput.value !== '' ? searchGifs() : searchPrepare();
-    }    
+    } else {
+        showSuggestions(searchInput.value);
+    }   
 });
 
 //when usr click on search input prepare the screen for search gifs
-// searchInput.addEventListener('click' , searchPrepare);
+searchInput.addEventListener('focus' , hideIlustraHeader);
+
+// searchInput.addEventListener('keydown' , () => {
+//     showSuggestions(searchInput.value);
+// });
+
+function hideIlustraHeader() {
+    searching = true;
+    searchingIcon.style.display = 'block'
+    ilustraHeader.style.display = "none";
+    sectionSearch.style.marginTop = "41.2px";
+    sectionResults.style.display = "block";
+    // if there aren't results in section results, "Show More" button must be hide 
+    searchGif.innerHTML == 0 ? btnShowMore.style.display = 'none' : btnShowMore.style.display = 'block';
+    iconsUpdate();
+}
 
 //search gifs when the usr press search icon on the left of te search bar
 searchingIcon.addEventListener('click' , searchGifs);
@@ -205,7 +265,7 @@ function searchPrepare() {
         sectionSearch.style.marginTop = "41.2px";
         sectionResults.style.display = "block";
         searchGif.innerHTML == 0 ? btnShowMore.style.display = 'none' : btnShowMore.style.display = 'block'; // if there aren't results in section results, "Show More" button must be hide 
-        // searchInput.focus();
+        searchInput.focus();
         if(searchInput.value !== '') searchGifs();
     }
     iconsUpdate();
@@ -214,7 +274,7 @@ function searchPrepare() {
 
 //search gifs when the usr press "Show More" button
 btnShowMore.addEventListener('click' , () => {
-    offset += 20;
+    offset += 12;
     showSearch(searchInput.value, offset);
 });
 

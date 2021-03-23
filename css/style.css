@@ -147,18 +147,41 @@ header #ilustraHeader {
   display: none;
 }
 
+.sectionSearch .search .searchContainer input {
+  margin-left: 5px;
+}
+
 .sectionSearch .search .searchSuggestion {
   display: none;
   margin: 0 20px;
-  font-family: "Roboto", sans-serif;
-  color: #9CAFC3;
-  line-height: 29px;
 }
 
 .sectionSearch .search .searchSuggestion hr {
   width: 91.65%;
   margin: auto;
   border-top: 1px solid #9CAFC3;
+}
+
+.sectionSearch .search .searchSuggestion p {
+  display: block;
+  font-family: "Roboto", sans-serif;
+  font-size: 16px;
+  line-height: 21px;
+  color: #9CAFC3;
+  text-align: left;
+  margin: 0 0 0 15px;
+}
+
+.sectionSearch .search .searchSuggestion img {
+  width: 15.8px;
+  height: auto;
+}
+
+.sectionSearch .search .searchSuggestion .containerFlex {
+  margin-left: 5px;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
 }
 
 .sectionSearch h3 {
