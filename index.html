@@ -18,7 +18,7 @@
             <ul id="navMenu" class="navMenu">
                 <li id="changeMode">Modo Nocturno</li>
                 <hr>
-                <li>Favoritos</li>
+                <li id="favoritesNav">Favoritos</li>
                 <hr>
                 <li id="myGif">Mis GIFOS</li>
                 <hr>
@@ -43,17 +43,15 @@
                 </div>
 
                 <div id="searchSuggestion" class="searchSuggestion">
-                    <!-- <hr>
-                    <p>text 1</p>
-                    <p>text 2</p>
-                    <p>text 3</p>
-                    <p>text 4</p> -->
                 </div>
 
             </div>
 
             <h3>Trending:</h3>
-            <p id="descriptionTrending">Reactions, Entertainment, Sports, Stickers, Artists</p>
+            
+            <div id="trendingDescription" class="trendingDescription">
+                <p>Reactions, Entertainment, Sports, Stickers, Artists</p>
+            </div>
 
         </section>
 
@@ -61,16 +59,27 @@
 
             <hr>
 
-            <h2 id="titleSearch"></h2>
+            <h2 id="resultsTitle"></h2>
 
             <div id="searchGif" class="searchGif">
             </div>
 
-            <input id="btnShowMore" type="button" value="VER MAS">
+            <input id="btnShowMore" class="btnshowMore" type="button" value="VER MAS">
 
         </section>
 
-        <section class="trending">
+        <section id="sectionFavorites" class="sectionFavorites">
+            <img src="./images/icon-favoritos.svg" alt="ícono Favoritos">
+            <h2 id="favoriteTitle">Favoritos</h2>
+
+            <div id="favoritesGifs" class="searchGif">
+            </div>
+
+            <input id="btnShowMoreFavorites" type="button" value="VER MAS">
+
+        </section>
+
+        <section id="sectionTrending" class="trending">
             <h3>Trending GIFOS</h3>
 
             <p id="pMobile">Mira los últimos <br> GIFOS de nuestra comunidad.</p>
@@ -106,11 +115,28 @@
 
     </footer>
 
+    <div id="gifMax" class="gifMax">
+        <img id="gifMaxClose" class="gifMaxClose" src="./images/close.svg" alt="cerrar">
+        <img id="selectedGif" class="gifMaxGif" src="" alt="selected gif">
+        <div class="gifMaxDetails">
+            <div>
+                <h4>User</h4>
+                <h3>Titulo Gif</h3>
+            </div>
+            <div class="gifMaxIcons">
+                <img src="./images/icon-fav-active.svg" alt="icono favorito">
+                <a id="downloadGif" href="" target="_blank" download>
+                    <img src="./images/icon-download-hover.svg" alt="descargar gif">
+                </a>
+            </div>
+        </div>
+    </div>
 
 
 
 
-    <script src="./scripts/index.js"></script>
+    <script src="./scripts/services.js" type="module"></script>
+    <script src="./scripts/index.js" type="module"></script>
 </body>
 
 </html>

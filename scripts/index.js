@@ -1,3 +1,12 @@
+// import async functions to comunicate with the API
+import {getTrendings , getTrendingsSearch , getSuggestions, getSearchByWord , getSearchById} from './services.js';
+
+window.onload = function () {
+    themeLoad(); //load de diurn or nocturn theme as appropriate
+    showTrending(); //load the trendings carousel
+    showTrendingSearch(); //load the trendings search suggestions
+}
+
 //FOR THEMES
 let themeName = ""; //create theme name variable global for use later
 
@@ -81,8 +90,8 @@ function toggleTheme() {
     }
 }
 
-// Immediately invoked function to set the theme on initial load
-(function () {
+//load the teme saved on localStorage
+function themeLoad() {
     if (localStorage.getItem("theme") === "theme-dark") {
         themeName = "theme-dark";
         setTheme(themeName);
@@ -90,26 +99,22 @@ function toggleTheme() {
         themeName = "theme-light";
         setTheme(themeName);
     }
-})();
+}
 
 // nocturn or light mode menu option
 let changeMode = document.getElementById("changeMode");
 changeMode.addEventListener("click", () => {
     toggleTheme();
-    changeIconBurger()
+    changeIconBurger();
 });
 
 //END THEMES ------------------------------------------------------
 
 //SEARCH SECTION --------------------------------------------------
-const URL_BASE_SUGGESTIONS = 'https://api.giphy.com/v1/gifs/search/tags?api_key=4SgwG4zh1E8ChFfX2AFRCifOP8Y1bXGx&q=';
-const URL_BASE_TRENDING_SEARCH = 'https://api.giphy.com/v1/tags/related/{term}?api_key=4SgwG4zh1E8ChFfX2AFRCifOP8Y1bXGx';
-//voy aca
-
 let sectionSearch = document.getElementById("sectionSearch"); //gets the Section node corresponding to the search, to be able to hide it and show it accordingly
 let search = document.getElementById("search");//gets the div node that contains the Div node for search bar, and the div node for the hints
 let searchContainer = document.getElementById("searchContainer"); //gets the div node that contains the search bar
-let titleSearch = document.getElementById("titleSearch"); //gets the h2 node to put the search text  title in it
+let resultsTitle = document.getElementById("resultsTitle"); //gets the h2 node to put the search text  title in it
 let searchSuggestion = document.getElementById('searchSuggestion');
 
 //when usr click in search icon 
@@ -118,17 +123,15 @@ searchIcon.addEventListener("click", searchPrepare);
 //function that shows SUGGESTIONS TO SEARCH
 async function showSuggestions(word) {
     try {
-        const URL = URL_BASE_SUGGESTIONS + word; //url base + word to search
-        const response  = await fetch(URL);
-        const info = await response.json();
+        const info = await getSuggestions(word);
         console.log(info);
         searchSuggestion.innerHTML = '<hr>';
         
-        if(info.data.length > 0){ // only if the fetch brings data 
+        if(info.length > 0){ // only if the fetch brings data 
             searchSuggestion.style.display = 'block'; //show the suggestions container
             
             //here we have each suggestion through iteration
-            info.data.forEach(element => {
+            info.forEach(element => {
                 
                 //create the elements for suggestions list and set its properties
                 let divContainSuggest = document.createElement('div');
@@ -145,7 +148,6 @@ async function showSuggestions(word) {
 
                 //subscribe the paragraph to the click event so that its text passes to the input
                 paragraphSuggest.addEventListener('click' , () => {
-                    console.log('entra al click de la sugerencia');
                     searchInput.value = paragraphSuggest.textContent;
                     searchSuggestion.style.display = 'none';
                     searchGifs();
@@ -156,13 +158,10 @@ async function showSuggestions(word) {
         console.log(error);
     }
 }
-
-
-
 //END SEARCH SECTION -----------------------------------------------
 
+
 //RESULT SECTION ---------------------------------------------------
-const URL_BASE_SEARCH = 'https://api.giphy.com/v1/gifs/search?api_key=4SgwG4zh1E8ChFfX2AFRCifOP8Y1bXGx&limit=12&offset=';
 let offset = 0; //for button SHOW MORE in orden to show 'offset' elements more
 
 let searchInput = document.getElementById('searchInput'); //gets input node where the user puts the search
@@ -172,18 +171,16 @@ searchGif.innerHTML ='';
 let btnShowMore = document.getElementById("btnShowMore"); //get "Show More" button node
 
 //function that shows search gifs
-async function showSearch(word, start) {
+async function showSearch(word, offset) {
     try {
-        const URL = URL_BASE_SEARCH + start + '&q=' + word; //url base + offset + word to search
-        const response  = await fetch(URL);
-        const info = await response.json();
-        if(info.data.length > 0){
+        const info = await getSearchByWord(word, offset);
+        if(info.length > 0){
             //here we have each trending gif through iteration
-            info.data.forEach(element => {
+            info.forEach(element => {
                 btnShowMore.style.display = 'block';
                 searchGif.className = "searchGif";
                 searchGif.innerHTML += `
-                <img src="${element.images.fixed_height.url}">
+                <img id="${element.id}" src="${element.images.fixed_height.url}">
                 `;
             });
             //after search, show ilustra header again
@@ -219,10 +216,6 @@ searchInput.addEventListener('keypress' , (event) => {
 //when usr click on search input prepare the screen for search gifs
 searchInput.addEventListener('focus' , hideIlustraHeader);
 
-// searchInput.addEventListener('keydown' , () => {
-//     showSuggestions(searchInput.value);
-// });
-
 function hideIlustraHeader() {
     searching = true;
     searchingIcon.style.display = 'block'
@@ -241,7 +234,8 @@ function searchGifs() {
     if(searchInput.value !== '') {
         offset = 0;
         searchGif.innerHTML = '';
-        titleSearch.textContent = searchInput.value;
+        resultsTitle.textContent = searchInput.value;
+        searchSuggestion.style.display = 'none';
         showSearch(searchInput.value,offset);
     }
 }
@@ -252,12 +246,11 @@ function searchPrepare() {
     // if (ilustraHeader.style.display === "none" || searchGif.innerHTML !== 0) {
     if(searching) {
         ilustraHeader.style.display = "block";
-        console.log('display despues: '+ ilustraHeader.style.display);
         sectionSearch.style.marginTop = "0px";
         sectionResults.style.display = "none";
         searchInput.value = '';
         searchGif.innerHTML = '';
-        titleSearch.textContent = '';
+        resultsTitle.textContent = '';
         searching = false;
         searchingIcon.style.display = 'none';
     //show X icon
@@ -301,35 +294,121 @@ btnShowMore.addEventListener("mouseout", (event) => {
 //END RESULT SECTION --------------------------------------------------
 
 //TRENDING SECTION ---------------------------------------------------
-// API KEY: 4SgwG4zh1E8ChFfX2AFRCifOP8Y1bXGx
-// URL TRENDING: https://api.giphy.com/v1/gifs/trending?api_key=4SgwG4zh1E8ChFfX2AFRCifOP8Y1bXGx&limit=25&rating=g
-
-const URL_BASE_TRENDING = 'https://api.giphy.com/v1/gifs/trending?api_key=4SgwG4zh1E8ChFfX2AFRCifOP8Y1bXGx&limit=25';
+let sectionTrending = document.getElementById('sectionTrending'); //get DIV node where show the trending gifs
 let trendingGif = document.getElementById('trendingGif'); //get DIV node where show the trending gifs
+let trendingDescription = document.getElementById('trendingDescription'); //get DIV node where places the trendig descriptions
 
 //function that shows trending gifs
-async function showTrendign () {
+async function showTrending() {
     try {
-        const response  = await fetch(URL_BASE_TRENDING);
-        const info = await response.json();
-
-        //here we have each trending gif through iteration
-        info.data.forEach(element => {
+        let info = await getTrendings();
+        trendingGif.innerHTML ='';
+        info.forEach((element) => {
+            // construct the inerHTML for trendings carrousel
             trendingGif.innerHTML += `
-                <img src="${element.images.fixed_height.url}">
+                <img id="${element.id}" src="${element.images.fixed_height.url}" alt= "${element.title}"/>
             `;
         });
+        //suscribe each Gif to click event in order to changge it to full screen mode
+        trendingGif.querySelectorAll('.trendingGif img').forEach(gif => {
+            gif.addEventListener('click', clickOnGif, false);
+        });
+
     } catch (error) {
         console.log(error);
     }
 }
-showTrendign(); //run the function
+
+let gifMax = document.getElementById('gifMax'); //get Div node for show the gif in max window
+let gifMaxClose = document.getElementById('gifMaxClose'); //get img node for close max window
+let selectedGif = document.getElementById('selectedGif'); //get img node for place de gif selected with click
+let gifMaxUser = document.querySelector('#gifMax h4'); //get h4 node  to put the username of the gif
+let gifMaxTitle = document.querySelector('#gifMax h3'); // get h3 node  to put the title of the gif
+let downloadGif = document.getElementById('downloadGif'); //get img node with download icon
 
 
+//show gif max window with details and buttons download and favorite
+async function clickOnGif(gif) {
+    try {
+        let info = await getSearchById(gif.target.id);
+        console.log(info);
+        selectedGif.src = info.images.original.url;
+        gifMaxUser.textContent = info.username;
+        gifMaxTitle.textContent = info.title;
+        downloadGif.href = info.images.downsized.url;
+        gifMax.style.display = 'flex';
 
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+gifMaxClose.addEventListener('click' , () => {
+    gifMax.style.display = 'none';
+});
+
+
+//function that shows trending SEARCH SUGGESTIONS
+async function showTrendingSearch() {
+    try {
+        let info = await getTrendingsSearch();
+        trendingDescription.innerHTML = '';
+        let paragraph = '';
+        //here we have each trending gif through iteration
+        info.forEach((element , index) => {
+            // construct the inerHTML for descriptions trending
+            let trendingLimitDescription = 5;
+            if(index < trendingLimitDescription){
+                paragraph = element + (index === trendingLimitDescription -1 ? '' : ', ')
+                trendingDescription.innerHTML += `<span>${paragraph}</span>`;
+            }
+        });
+        //suscribe each description trending to click event in order to search it 
+        trendingDescription.querySelectorAll('.sectionSearch span').forEach(paragraph => {
+            paragraph.addEventListener('click' , clickOnParagraph, false);
+        });
+
+    } catch (error) {
+        console.log(error);
+    }
+}
+
+function clickOnParagraph () {
+    let texto = this.textContent;
+    //trim the final comma when the suggestion has it
+    searchInput.value = texto.substring(texto.length -1, texto.length -2) === ',' ?
+                        texto.substring(0, texto.length -2) :
+                        texto;
+    searching = false;
+    searchPrepare();
+}
 
 
 //END TRENDING SECTION ---------------------------------------------------
+
+//FAVORITES----------------------------------------------------------
+
+let sectionFavorites = document.getElementById('sectionFavorites'); //get the favorites Section node
+let favoritesNav = document.getElementById('favoritesNav'); //get the favorites li node from the menu
+
+favoritesNav.addEventListener('click' , () => {
+    //hide the sections that should not appear
+    ilustraHeader.style.display = 'none';
+    sectionSearch.style.display = 'none';
+    sectionResults.style.display = 'none';
+    //show favorites section
+    sectionFavorites.style.display = 'block';
+    changeIconBurger();
+
+    //must immediately upload the favorite gifs (if any)
+
+});
+
+//END FAVORITES ----------------------------------------------------------
+
+
+
+
 
 //FOOTER ----------------------------------------------------------
 
