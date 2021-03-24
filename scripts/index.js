@@ -183,6 +183,12 @@ async function showSearch(word, offset) {
                 <img id="${element.id}" src="${element.images.fixed_height.url}">
                 `;
             });
+            
+            //suscribe each Gif to click event in order to changge it to full screen mode
+            searchGif.querySelectorAll('.searchGif img').forEach(gif => {
+                gif.addEventListener('click', clickOnGif, false);
+            });
+            
             //after search, show ilustra header again
             ilustraHeader.style.display = "block";
             sectionSearch.style.marginTop = "0px";
