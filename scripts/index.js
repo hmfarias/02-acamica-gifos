@@ -72,9 +72,11 @@ function iconsUpdate() {
 function toggleTheme() {
     if (localStorage.getItem("theme") === "theme-dark") {
         themeName = "theme-light";
+        changeMode.textContent = 'Modo Nocturno';
         setTheme(themeName);
     } else {
         themeName = "theme-dark";
+        changeMode.textContent = 'Modo Diurno';
         setTheme(themeName);
     }
 }
@@ -94,6 +96,7 @@ function toggleTheme() {
 let changeMode = document.getElementById("changeMode");
 changeMode.addEventListener("click", () => {
     toggleTheme();
+    changeIconBurger()
 });
 
 //END THEMES ------------------------------------------------------
