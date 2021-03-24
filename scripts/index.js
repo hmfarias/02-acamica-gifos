@@ -343,10 +343,12 @@ async function clickOnGif(gif) {
     }
 }
 
-gifMaxClose.addEventListener('click' , () => {
-    gifMax.style.display = 'none';
+// if usr click over the X icon or in a blank part of the window then close
+gifMax.addEventListener('click', (event) => {
+    if (event.target.id === 'gifMax' || event.target.id === 'gifMaxClose') {
+        gifMax.style.display = 'none';
+    }
 });
-
 
 //function that shows trending SEARCH SUGGESTIONS
 async function showTrendingSearch() {
