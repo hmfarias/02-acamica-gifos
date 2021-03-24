@@ -336,6 +336,7 @@ async function clickOnGif(gif) {
         gifMaxUser.textContent = info.username;
         gifMaxTitle.textContent = info.title;
         downloadGif.href = info.images.downsized.url;
+        window.scrollTo(0, 0);
         gifMax.style.display = 'flex';
 
     } catch (error) {
