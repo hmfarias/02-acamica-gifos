@@ -114,6 +114,7 @@ header #ilustraHeader {
   width: 60%;
   text-align: center;
   margin: auto;
+  font-family: "Montserrat", sans-serif;
 }
 
 .sectionSearch .trendingDescription span {
@@ -121,6 +122,7 @@ header #ilustraHeader {
   font-weight: 400;
   line-height: 25px;
   text-transform: capitalize;
+  font-size: 14px;
 }
 
 .sectionSearch .search {
@@ -260,7 +262,7 @@ header #ilustraHeader {
       -ms-flex-align: center;
           align-items: center;
   width: 88.8vw;
-  margin: 109px auto 0;
+  margin: 87px auto 0 auto;
 }
 
 .sectionResults .searchGifWithoutResult img, .sectionFavorites .searchGifWithoutResult img {
@@ -272,6 +274,7 @@ header #ilustraHeader {
   margin-bottom: 149px;
   color: #50E3C2;
   font-size: 22px;
+  text-align: center;
 }
 
 .sectionResults input, .sectionFavorites input {
@@ -427,12 +430,16 @@ footer .socialMedia a img {
   width: 84.8%;
 }
 
-.gifMaxDetails div h4 {
+.gifMaxDetails .gifMaxDescript {
+  width: 72%;
+}
+
+.gifMaxDetails .gifMaxDescript h4 {
   font-size: 15px;
   font-family: "Roboto", sans-serif;
 }
 
-.gifMaxIcons {
+.gifMaxDetails .gifMaxIcons {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -442,6 +449,10 @@ footer .socialMedia a img {
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
-  width: 78px;
+  width: 28%;
+}
+
+.gifMaxDetails .gifMaxIcons img {
+  width: 32px;
 }
 /*# sourceMappingURL=style.css.map */

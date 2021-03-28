@@ -34,6 +34,28 @@ export async function getSearchById(id) {
     const URL_BASE_SEARCH_ID =`https://api.giphy.com/v1/gifs/${id}?api_key=${API_KEY}`;
     const response = await fetch(URL_BASE_SEARCH_ID);
     const gif = await response.json();
-    console.log(gif);
     return gif.data;
+}
+
+
+export async function downloadGifFunction(id , name) {
+    const a = document.createElement("a");
+    a.href = await descargar(id);
+    a.download = name;
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+}
+
+async function descargar(id) {
+    var source = `https://api.giphy.com/v1/gifs/${id}?api_key=${API_KEY}`;
+                
+    let response = await fetch(source);
+    let info = await response.json();
+
+    return fetch(info.data.images.downsized_large.url).then((response) => {
+        return response.blob();
+    }).then(blob => {
+        return URL.createObjectURL(blob);
+    });
 }
