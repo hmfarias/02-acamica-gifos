@@ -521,8 +521,14 @@ function loadFavorites(){
 
 function updateFavorites() {
     console.log('Offset Favorites:'+ offSetFavorites);
-    if (myFavorites.length - offSetFavorites >=0) {
-        
+    if (myFavorites.length === 0) {
+        favoriteGifs.className = 'searchGifWithoutResult';
+        favoriteGifs.innerHTML = `
+        <img src= ./images/icon-fav-sin-contenido.svg>
+        <h3>¡Guarda tu primer GIFO en Favoritos para que se muestre aquí!</h3>
+        `;
+    } else if (myFavorites.length - offSetFavorites >=0) {
+        console.log('entra aca');
         //show the button showMore if there are more gifs to bring
         myFavorites.length - offSetFavorites >= 12
             ? btnShowMoreFavorites.style.display = "block" 
@@ -539,13 +545,7 @@ function updateFavorites() {
             showFavorites(element);
         }
 
-    } else {
-        favoriteGifs.className = 'searchGifWithoutResult';
-        favoriteGifs.innerHTML = `
-        <img src= ./images/icon-fav-sin-contenido.svg>
-        <h3>¡Guarda tu primer GIFO en Favoritos para que se muestre aquí!</h3>
-        `;
-    }
+    } 
 }
 
 
