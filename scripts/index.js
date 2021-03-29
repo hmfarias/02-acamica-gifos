@@ -128,9 +128,11 @@ function themeLoad() {
     if (localStorage.getItem("theme") === "theme-dark") {
         themeName = "theme-dark";
         setTheme(themeName);
+        changeMode.textContent = "Modo Diurno";
     } else {
         themeName = "theme-light";
         setTheme(themeName);
+        changeMode.textContent = "Modo Nocturno";
     }
 }
 
