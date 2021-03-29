@@ -2,34 +2,38 @@ const API_KEY= '4SgwG4zh1E8ChFfX2AFRCifOP8Y1bXGx';
 const URL_BASE_TRENDING = `https://api.giphy.com/v1/gifs/trending?api_key=${API_KEY}&limit=12`;
 const URL_BASE_TRENDING_SEARCH = `https://api.giphy.com/v1/trending/searches?api_key=${API_KEY}&limit=12`;
 const URL_BASE_SUGGESTIONS = `https://api.giphy.com/v1/gifs/search/tags?api_key=${API_KEY}&q=`;
-// const URL_BASE_SEARCH = 'https://api.giphy.com/v1/gifs/search?api_key=4SgwG4zh1E8ChFfX2AFRCifOP8Y1bXGx&limit=12&offset=';
 const URL_BASE_SEARCH = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&limit=12&offset=`;
 
 
+// get all Trending gifs an return trending.data
 export async function getTrendings() {
     const response = await fetch(URL_BASE_TRENDING);
     const trendings = await response.json();
     return trendings.data;
 }
 
+// get trending suggestions to search later
 export async function getTrendingsSearch() {
     const response = await fetch(URL_BASE_TRENDING_SEARCH);
     const trendings = await response.json();
     return trendings.data;
 }
 
+//get suggestions for search bar
 export async function getSuggestions(word) {
     const response = await fetch(URL_BASE_SUGGESTIONS + word);
     const suggestions = await response.json();
     return suggestions.data;
 }
 
+//searches for gifs based on what is written in the search bar and the amount set in offset
 export async function getSearchByWord(word , offset) {
     const response = await fetch(URL_BASE_SEARCH + offset + '&q='+ word);
     const suggestions = await response.json();
     return suggestions.data;
 }
 
+//search for a gif based on its id
 export async function getSearchById(id) {
     const URL_BASE_SEARCH_ID =`https://api.giphy.com/v1/gifs/${id}?api_key=${API_KEY}`;
     const response = await fetch(URL_BASE_SEARCH_ID);
@@ -38,6 +42,7 @@ export async function getSearchById(id) {
 }
 
 
+//download the gif passed in the id parameter and name it according to the name parameter
 export async function downloadGifFunction(id , name) {
     const a = document.createElement("a");
     a.href = await descargar(id);
@@ -47,6 +52,7 @@ export async function downloadGifFunction(id , name) {
     document.body.removeChild(a);
 }
 
+//Complementary function of the downloadGifFunction function; download the gif passed in the id parameter
 async function descargar(id) {
     var source = `https://api.giphy.com/v1/gifs/${id}?api_key=${API_KEY}`;
                 
