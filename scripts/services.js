@@ -45,7 +45,7 @@ export async function getSearchById(id) {
 //download the gif passed in the id parameter and name it according to the name parameter
 export async function downloadGifFunction(id , name) {
     const a = document.createElement("a");
-    a.href = await descargar(id);
+    a.href = await downloadGif(id);
     a.download = name;
     document.body.appendChild(a);
     a.click();
@@ -53,7 +53,7 @@ export async function downloadGifFunction(id , name) {
 }
 
 //Complementary function of the downloadGifFunction function; download the gif passed in the id parameter
-async function descargar(id) {
+async function downloadGif(id) {
     var source = `https://api.giphy.com/v1/gifs/${id}?api_key=${API_KEY}`;
                 
     let response = await fetch(source);
@@ -65,3 +65,14 @@ async function descargar(id) {
         return URL.createObjectURL(blob);
     });
 }
+
+//fix the section results margins when the button show more disappears
+export function fixMarginSectionResult(button) {
+    console.log('llega a fix');
+    console.log(button.style.display);
+    button.style.display === "none" 
+    ? sectionResults.style.marginBottom ='74px'
+    : sectionResults.style.marginBottom ='0';
+    console.log(sectionResults.style.marginBottom);
+}
+

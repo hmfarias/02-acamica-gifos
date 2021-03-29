@@ -6,6 +6,7 @@ import {
     getSearchByWord,
     getSearchById,
     downloadGifFunction,
+    fixMarginSectionResult,
 } from "./services.js";
 
 window.onload = function () {
@@ -16,27 +17,27 @@ window.onload = function () {
     showTrendingSearch(); //load the trendings search suggestions
 };
 
-let myGifs = []; //for use with localStorage in my gifs case
-let myFavorites = []; //for use with localStorage in my favorites case
+let myGifsLS = []; //for use with localStorage in my gifs case
+let myFavoritesLS = []; //for use with localStorage in my favorites case
 
 //function load favorites from LocalStorage
 function loadFavoritesFromLS() {
     let favoriteGifs = JSON.parse(localStorage.getItem("myFavorites"));
     if (favoriteGifs) {
-        myFavorites = favoriteGifs;
+        myFavoritesLS = favoriteGifs;
     }
     console.log("Favorites Loaded");
-    console.log(myFavorites);
+    console.log(myFavoritesLS);
 }
 
 //function load myGifs from LocalStorage
 function loadMyGifsFromLS() {
     let myOwnGifs = JSON.parse(localStorage.getItem("myGifs"));
     if (myOwnGifs) {
-        myGifs = myOwnGifs;
+        myGifsLS = myOwnGifs;
     }
     console.log("My Gifs Loaded");
-    console.log(myGifs);
+    console.log(myGifsLS);
 }
 
 //FOR THEMES
@@ -214,6 +215,10 @@ async function showSearch(word, offset) {
                 info.length >= 12 // only if first result bring more than 11 gifs show button "show More"
                     ? btnShowMore.style.display = "block" 
                     : btnShowMore.style.display = "none";
+                
+                //fix the section margins when the button disappears
+                fixMarginSectionResult(btnShowMore);
+
                 searchGif.className = "searchGif";
                 searchGif.innerHTML += `
                 <img id="${element.id}" src="${element.images.fixed_height.url}">
@@ -231,8 +236,15 @@ async function showSearch(word, offset) {
             //-----------------------------------------
         } else {
             btnShowMore.style.display = "none"; //if there are no more gifs, hide "Show More" button
+            
+            //fix the section margins when the button disappears
+            fixMarginSectionResult(btnShowMore);
+
             if (!searchGif.innerHTML) {
                 btnShowMore.style.display = "none";
+                //fix the section margins when the button disappears
+                fixMarginSectionResult(btnShowMore);
+
                 searchGif.className = "searchGifWithoutResult";
                 searchGif.innerHTML += `
                 <img src="./images/icon-busqueda-sin-resultado.svg">
@@ -255,6 +267,8 @@ searchInput.addEventListener("keypress", (event) => {
     }
 });
 
+
+
 //when usr click on search input prepare the screen for search gifs
 searchInput.addEventListener("focus", hideIlustraHeader);
 
@@ -265,9 +279,14 @@ function hideIlustraHeader() {
     sectionSearch.style.marginTop = "41.2px";
     sectionResults.style.display = "block";
     // if there aren't results in section results, "Show More" button must be hide
-    searchGif.innerHTML == 0
+    searchGif.innerHTML === 0
         ? (btnShowMore.style.display = "none")
         : (btnShowMore.style.display = "block");
+    
+    //fix the section margins when the button disappears
+    fixMarginSectionResult(btnShowMore);
+
+    //update icons
     iconsUpdate();
 }
 
@@ -306,13 +325,18 @@ function searchPrepare() {
         searchGif.innerHTML == 0
             ? (btnShowMore.style.display = "none")
             : (btnShowMore.style.display = "block"); // if there aren't results in section results, "Show More" button must be hide
+            
+        //fix the section margins when the button disappears
+        fixMarginSectionResult(btnShowMore);
+
+
         searchInput.focus();
         if (searchInput.value !== "") searchGifs();
     }
     iconsUpdate();
 }
 
-//search gifs when the usr press "Show More" button
+//search more gifs when the usr press "Show More" button and Update offset
 btnShowMore.addEventListener("click", () => {
     offset += 12;
     showSearch(searchInput.value, offset);
@@ -388,35 +412,35 @@ async function clickOnGif(gif) {
         gifMax.style.display = "flex";
 
 
-        myFavorites.includes(gif.target.id) //if this gif is in favorite favorite icons must be active
+        myFavoritesLS.includes(gif.target.id) //if this gif is in favorite favorite icons must be active
             ? (favoriteIcon.src = "./images/icon-favorite-active.svg")
             : (favoriteIcon.src = "./images/icon-favorite-inactive.svg");
 
         favoriteIcon.addEventListener("click", () => {
             console.log("inicio del evento click src: " + favoriteIcon.src);
-            if (myFavorites.includes(gif.target.id)) {
+            if (myFavoritesLS.includes(gif.target.id)) {
                 favoriteIcon.src = "./images/icon-favorite-inactive.svg";
                 console.log("pasó a inactivo");
 
                 //eliminate gif from Favorites
-                if (myFavorites.indexOf(gif.target.id) !== -1) {
-                    myFavorites.splice(myFavorites.indexOf(gif.target.id), 1);
+                if (myFavoritesLS.indexOf(gif.target.id) !== -1) {
+                    myFavoritesLS.splice(myFavoritesLS.indexOf(gif.target.id), 1);
                     console.log("favoritos despues de eliminar: ");
-                    console.log(myFavorites);
+                    console.log(myFavoritesLS);
                 }
             } else {
                 favoriteIcon.src = "./images/icon-favorite-active.svg";
                 console.log("pasó a activo");
 
                 //add gif to favorites
-                if (myFavorites.indexOf(gif.target.id) === -1) {
+                if (myFavoritesLS.indexOf(gif.target.id) === -1) {
                     //only add the gif if it doesn't exist
-                    myFavorites.push(gif.target.id);
+                    myFavoritesLS.push(gif.target.id);
                     console.log("favoritos despues de agregar: ");
-                    console.log(myFavorites);
+                    console.log(myFavoritesLS);
                 }
             }
-            localStorage.setItem("myFavorites", JSON.stringify(myFavorites));
+            localStorage.setItem("myFavorites", JSON.stringify(myFavoritesLS));
         });
 
         downloadGif.addEventListener('click' , () => {
@@ -479,8 +503,8 @@ function clickOnParagraph() {
     searching = false;
     searchPrepare();
 }
-
 //END TRENDING SECTION ---------------------------------------------------
+
 
 //FAVORITES SECTION-------------------------------------------------
 let offSetFavorites = 0;
@@ -510,6 +534,7 @@ function loadFavorites(){
     ilustraHeader.style.display = "none";
     sectionSearch.style.display = "none";
     sectionResults.style.display = "none";
+    sectionMyGifs.style.display = "none";
     //show favorites section
     sectionFavorites.style.display = "block";
     navIcon.src = navIconImageClose;
@@ -523,45 +548,147 @@ function loadFavorites(){
 
 function updateFavorites() {
     console.log('Offset Favorites:'+ offSetFavorites);
-    if (myFavorites.length === 0) {
+    if (myFavoritesLS.length === 0) {
+        console.log('no hay gifs va grafica');
         favoriteGifs.className = 'searchGifWithoutResult';
         favoriteGifs.innerHTML = `
         <img src= ./images/icon-fav-sin-contenido.svg>
         <h3>¡Guarda tu primer GIFO en Favoritos para que se muestre aquí!</h3>
         `;
-    } else if (myFavorites.length - offSetFavorites >=0) {
+
+        btnShowMoreFavorites.style.display = "none";
+        //fix the section margins when the button disappears
+        fixMarginSectionResult(btnShowMoreFavorites);
+        console.log('despues de la funcion:');
+        console.log(sectionResults.style.marginBottom);
+
+
+    } else if (myFavoritesLS.length - offSetFavorites >=0) {
         console.log('entra aca');
         //show the button showMore if there are more gifs to bring
-        myFavorites.length - offSetFavorites >= 12
+        myFavoritesLS.length - offSetFavorites >= 12
             ? btnShowMoreFavorites.style.display = "block" 
             : btnShowMoreFavorites.style.display = "none";
+
+        //fix the section margins when the button disappears
+        fixMarginSectionResult(btnShowMoreFavorites);
+        
         favoriteGifs.className = 'searchGif';
 
         //if the number of gifs are less than the limit, new limit is the length of the favorites array
-        if ((offSetFavorites + limitFavorites) > myFavorites.length) {
-            limitFavorites = myFavorites.length;
+        if ((offSetFavorites + limitFavorites) > myFavoritesLS.length) {
+            limitFavorites = myFavoritesLS.length;
         } 
 
         for (let index = offSetFavorites; index < limitFavorites; index++){
-            const element = myFavorites[index];
+            const element = myFavoritesLS[index];
             showFavorites(element);
         }
 
     } 
 }
 
-
-
+//update favorite gifs when the usr press "Show More" button and Update offset
 btnShowMoreFavorites.addEventListener('click' , () => { 
     offSetFavorites += 12;
     updateFavorites();
 });
 
+//END FAVORITES SECTION --------------------------------------------------
 
-//END FAVORITES ----------------------------------------------------------
+//MY GIFOS SECTION-------------------------------------------------
+let offSetMyGifs = 0;
+let limitMyGifs = 12; // mark the limit of gifs to bring
+let sectionMyGifs = document.getElementById("sectionMyGifs"); //get the myGifs Section node
+let myGifsNav = document.getElementById("myGifsNav"); //get the myGifs li node from the menu
+let myGifs = document.getElementById("myGifs"); //get the myGifs div node wher puts myGifs
+let btnShowMoreMyGifs = document.getElementById("btnShowMoreMyGifs"); //get "Show More" button node
+
+//function that shows search gifs by id
+async function showMyGifs(element) {
+    try {
+        const myGif = await getSearchById(element);
+        myGifs.innerHTML += `<img id="${myGif.id}" src="${myGif.images.fixed_height.url}">`;
+    } catch (error) {
+        console.error(error);
+    }
+}
+
+myGifsNav.addEventListener("click", loadMyGifs);
+
+function loadMyGifs(){
+    offSetMyGifs = 0;
+    limitMyGifs = 12;
+    myGifs.innerHTML ='';
+    //hide the sections that should not appear
+    ilustraHeader.style.display = "none";
+    sectionSearch.style.display = "none";
+    sectionResults.style.display = "none";
+    sectionFavorites.style.display = "none";
+    //show favorites section
+    sectionMyGifs.style.display = "block";
+    navIcon.src = navIconImageClose;
+    navMenu.style.display = "block";
+    changeIconBurger();
+
+    //must immediately upload the favorite gifs (if any)
+    updateMyGifs();
+
+}
+
+function updateMyGifs() {
+    console.log('Offset myGifs:'+ offSetMyGifs);
+    if (myGifsLS.length === 0) {
+        myGifs.className = 'searchGifWithoutResult';
+        myGifs.innerHTML = `
+        <img src= ./images/icon-mis-gifos-sin-contenido.svg>
+        <h3>¡Anímate a crear tu primer GIFO!</h3>
+        `;
+
+        btnShowMoreMyGifs.style.display = "none";
+        //fix the section margins when the button disappears
+        fixMarginSectionResult(btnShowMoreMyGifs);
+
+
+    } else if (myGifsLS.length - offSetMyGifs >=0) {
+        console.log('entra aca');
+        //show the button showMore if there are more gifs to bring
+        myGifsLS.length - offSetMyGifs >= 12
+            ? btnShowMoreMyGifs.style.display = "block" 
+            : btnShowMoreMyGifs.style.display = "none";
+
+        //fix the section margins when the button disappears
+        fixMarginSectionResult(btnShowMoreMyGifs);
+
+        myGifs.className = 'searchGif';
+
+        //if the number of gifs are less than the limit, new limit is the length of the myGifsLS array
+        if ((offSetMyGifs + limitMyGifs) > myGifsLS.length) {
+            limitMyGifs = myGifsLS.length;
+        } 
+
+        for (let index = offSetMyGifs; index < limitMyGifs; index++){
+            const element = myGifsLS[index];
+            showMyGifs(element);
+        }
+
+    } 
+}
+
+//update favorite gifs when the usr press "Show More" button and Update offset
+btnShowMoreMyGifs.addEventListener('click' , () => { 
+    offSetMyGifs += 12;
+    updateMyGifs();
+});
+
+//END MY GIFOS SECTION --------------------------------------------------
+
+
+
+
+
 
 //FOOTER ----------------------------------------------------------
-
 //for hovers on social media icons ----------------
 let facebook = document.getElementById("facebook"); // get facebook icon node
 let twitter = document.getElementById("twitter"); // get twitter icon node

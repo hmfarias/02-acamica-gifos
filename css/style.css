@@ -80,7 +80,26 @@ h1, h2, h3, p {
 .navBar .navMenu hr {
   width: 10.93%;
   margin: auto;
-  border-top: 1px solid rgba(87, 46, 229, 0.5);
+  border-top: px solid rgba(87, 46, 229, 0.5);
+}
+
+.navBar .navMenu a {
+  text-decoration: none;
+  color: #FFFFFF;
+}
+
+.navBar .navMenu #createGif {
+  width: 54px;
+  height: 54px;
+  margin: auto;
+  background: var(--burguer-background);
+  border: 1px solid #FFFFFF;
+  border-radius: 50%;
+  text-align: center;
+  font-size: 36px;
+  font-weight: 100;
+  margin-top: 20px;
+  line-height: 51px;
 }
 
 header h1 {
@@ -207,19 +226,19 @@ header #ilustraHeader {
   margin-top: 31px;
 }
 
-.sectionResults, .sectionFavorites {
+.sectionResults {
   display: none;
-  margin-bottom: 80px;
+  margin-bottom: 74px;
 }
 
-.sectionResults hr, .sectionFavorites hr {
+.sectionResults hr {
   margin: 35px auto 43px;
   width: 157px;
   opacity: 0.5;
   border: 1px solid #9cafc3;
 }
 
-.sectionResults h2, .sectionFavorites h2 {
+.sectionResults h2 {
   font-weight: 700;
   font-size: 25px;
   color: var(--font-color);
@@ -230,7 +249,7 @@ header #ilustraHeader {
   margin: auto;
 }
 
-.sectionResults .searchGif, .sectionFavorites .searchGif {
+.sectionResults .searchGif {
   display: -ms-grid;
   display: grid;
   -ms-grid-columns: 1fr 1fr;
@@ -243,11 +262,11 @@ header #ilustraHeader {
   margin: 38px auto 0;
 }
 
-.sectionResults .searchGif img, .sectionFavorites .searchGif img {
+.sectionResults .searchGif img {
   width: 41.6vw;
 }
 
-.sectionResults .searchGifWithoutResult, .sectionFavorites .searchGifWithoutResult {
+.sectionResults .searchGifWithoutResult {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -265,19 +284,19 @@ header #ilustraHeader {
   margin: 87px auto 0 auto;
 }
 
-.sectionResults .searchGifWithoutResult img, .sectionFavorites .searchGifWithoutResult img {
+.sectionResults .searchGifWithoutResult img {
   width: 41.6vw;
 }
 
-.sectionResults .searchGifWithoutResult h3, .sectionFavorites .searchGifWithoutResult h3 {
+.sectionResults .searchGifWithoutResult h3 {
   margin-top: 29px;
-  margin-bottom: 149px;
+  margin-bottom: 0;
   color: #50E3C2;
   font-size: 22px;
   text-align: center;
 }
 
-.sectionResults input, .sectionFavorites input {
+.sectionResults input {
   border: 1px solid var(--font-color);
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
@@ -292,7 +311,7 @@ header #ilustraHeader {
   display: none;
 }
 
-.sectionResults img, .sectionFavorites img {
+.sectionResults img {
   display: block;
   width: 28px;
   margin: 22px auto 7px auto;
