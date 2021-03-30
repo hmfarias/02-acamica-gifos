@@ -68,11 +68,8 @@ async function downloadGif(id) {
 
 //fix the section results margins when the button show more disappears
 export function fixMarginSectionResult(button) {
-    console.log('llega a fix');
-    console.log(button.style.display);
     button.style.display === "none" 
     ? sectionResults.style.marginBottom ='74px'
     : sectionResults.style.marginBottom ='0';
-    console.log(sectionResults.style.marginBottom);
 }
 

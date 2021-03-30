@@ -211,7 +211,6 @@ async function showSearch(word, offset) {
         if (info.length > 0) {
             //here we have each trending gif through iteration
             info.forEach((element) => {
-                console.log('elementos: ' + info.length);
                 info.length >= 12 // only if first result bring more than 11 gifs show button "show More"
                     ? btnShowMore.style.display = "block" 
                     : btnShowMore.style.display = "none";
@@ -378,8 +377,8 @@ async function showTrending() {
             `;
         });
         //suscribe each Gif to click event in order to changge it to full screen mode
-        trendingGif.querySelectorAll(".trendingGif img").forEach((gif) => {
-            gif.addEventListener("click", clickOnGif, false);
+        trendingGif.querySelectorAll(".trendingGif img").forEach((element) => {
+            element.addEventListener("click", clickOnGif, false);
         });
 
     } catch (error) {
@@ -416,43 +415,58 @@ async function clickOnGif(gif) {
             ? (favoriteIcon.src = "./images/icon-favorite-active.svg")
             : (favoriteIcon.src = "./images/icon-favorite-inactive.svg");
 
-        favoriteIcon.addEventListener("click", () => {
-            console.log("inicio del evento click src: " + favoriteIcon.src);
-            if (myFavoritesLS.includes(gif.target.id)) {
-                favoriteIcon.src = "./images/icon-favorite-inactive.svg";
-                console.log("pasó a inactivo");
-
-                //eliminate gif from Favorites
-                if (myFavoritesLS.indexOf(gif.target.id) !== -1) {
-                    myFavoritesLS.splice(myFavoritesLS.indexOf(gif.target.id), 1);
-                    console.log("favoritos despues de eliminar: ");
-                    console.log(myFavoritesLS);
-                }
-            } else {
-                favoriteIcon.src = "./images/icon-favorite-active.svg";
-                console.log("pasó a activo");
-
-                //add gif to favorites
-                if (myFavoritesLS.indexOf(gif.target.id) === -1) {
-                    //only add the gif if it doesn't exist
-                    myFavoritesLS.push(gif.target.id);
-                    console.log("favoritos despues de agregar: ");
-                    console.log(myFavoritesLS);
-                }
-            }
-            localStorage.setItem("myFavorites", JSON.stringify(myFavoritesLS));
-        });
-
+        favoriteIcon.id = gif.target.id;
+        console.log(favoriteIcon.id);
+        favoriteIcon.addEventListener("click", manageFavorite, false);
+        
         downloadGif.addEventListener('click' , () => {
             let string = info.title;
             let name = string.replace(/ /g, '-');
             downloadGifFunction(gif.target.id,name );
         });
-
+        
     } catch (error) {
         console.error(error);
     }
 }
+
+function manageFavorite(gif) {
+    console.log("inicio del evento click src: " + favoriteIcon.src);
+    console.log('gif ID: ' + gif.target.accessKey);
+    console.log(gif);
+    let gifID = gif.target.id;
+    console.log('gifID: ' + gifID);
+    if (myFavoritesLS.includes(gifID)) {
+        favoriteIcon.src = "./images/icon-favorite-inactive.svg";
+        console.log("pasó a inactivo");
+        
+        //eliminate gif from Favorites
+        if (myFavoritesLS.indexOf(gifID) !== -1) {
+            myFavoritesLS.splice(myFavoritesLS.indexOf(gifID), 1);
+            console.log("favoritos despues de eliminar: ");
+            console.log(myFavoritesLS);
+        }
+    } else {
+        favoriteIcon.src = "./images/icon-favorite-active.svg";
+        console.log("pasó a activo");
+        
+        //add gif to favorites
+        if (myFavoritesLS.indexOf(gifID) === -1) {
+            //only add the gif if it doesn't exist
+            myFavoritesLS.push(gifID);
+            console.log("favoritos despues de agregar: ");
+            console.log(myFavoritesLS);
+        }
+    }
+    localStorage.setItem("myFavorites", JSON.stringify(myFavoritesLS));
+    // favoriteIcon.removeEventListener("click", manageFavorite, false);
+}
+
+
+
+
+
+
 
 // if usr click over the X icon or in a blank part of the window then close
 gifMax.addEventListener("click", (event) => {
@@ -462,6 +476,7 @@ gifMax.addEventListener("click", (event) => {
             loadFavorites(); //update favorites
         }
         gifMax.style.display = "none";
+        favoriteIcon.removeEventListener("click", manageFavorite, false);
     }
 });
 
@@ -547,9 +562,7 @@ function loadFavorites(){
 }
 
 function updateFavorites() {
-    console.log('Offset Favorites:'+ offSetFavorites);
     if (myFavoritesLS.length === 0) {
-        console.log('no hay gifs va grafica');
         favoriteGifs.className = 'searchGifWithoutResult';
         favoriteGifs.innerHTML = `
         <img src= ./images/icon-fav-sin-contenido.svg>
@@ -559,12 +572,9 @@ function updateFavorites() {
         btnShowMoreFavorites.style.display = "none";
         //fix the section margins when the button disappears
         fixMarginSectionResult(btnShowMoreFavorites);
-        console.log('despues de la funcion:');
-        console.log(sectionResults.style.marginBottom);
 
 
     } else if (myFavoritesLS.length - offSetFavorites >=0) {
-        console.log('entra aca');
         //show the button showMore if there are more gifs to bring
         myFavoritesLS.length - offSetFavorites >= 12
             ? btnShowMoreFavorites.style.display = "block" 
@@ -637,7 +647,6 @@ function loadMyGifs(){
 }
 
 function updateMyGifs() {
-    console.log('Offset myGifs:'+ offSetMyGifs);
     if (myGifsLS.length === 0) {
         myGifs.className = 'searchGifWithoutResult';
         myGifs.innerHTML = `
@@ -651,7 +660,6 @@ function updateMyGifs() {
 
 
     } else if (myGifsLS.length - offSetMyGifs >=0) {
-        console.log('entra aca');
         //show the button showMore if there are more gifs to bring
         myGifsLS.length - offSetMyGifs >= 12
             ? btnShowMoreMyGifs.style.display = "block" 
