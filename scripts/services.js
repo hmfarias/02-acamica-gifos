@@ -43,10 +43,10 @@ export async function getSearchById(id) {
 
 
 //download the gif passed in the id parameter and name it according to the name parameter
-export async function downloadGifFunction(id , name) {
+export async function downloadGifFunction(gif) {
     const a = document.createElement("a");
-    a.href = await downloadGif(id);
-    a.download = name;
+    a.href = await downloadGif(gif.target.id);
+    a.download = gif.target.name;
     document.body.appendChild(a);
     a.click();
     document.body.removeChild(a);

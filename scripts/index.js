@@ -22,9 +22,9 @@ let myFavoritesLS = []; //for use with localStorage in my favorites case
 
 //function load favorites from LocalStorage
 function loadFavoritesFromLS() {
-    let favoriteGifs = JSON.parse(localStorage.getItem("myFavorites"));
-    if (favoriteGifs) {
-        myFavoritesLS = favoriteGifs;
+    let favoriteGifsLS = JSON.parse(localStorage.getItem("myFavorites"));
+    if (favoriteGifsLS) {
+        myFavoritesLS = favoriteGifsLS;
     }
     console.log("Favorites Loaded");
     console.log(myFavoritesLS);
@@ -225,8 +225,8 @@ async function showSearch(word, offset) {
             });
 
             //suscribe each Gif to click event in order to changge it to full screen mode
-            searchGif.querySelectorAll(".searchGif img").forEach((gif) => {
-                gif.addEventListener("click", clickOnGif, false);
+            searchGif.querySelectorAll(".searchGif img").forEach((gifElement) => {
+                gifElement.addEventListener("click", clickOnGif, false);
             });
 
             //after search, show ilustra header again
@@ -265,7 +265,6 @@ searchInput.addEventListener("keypress", (event) => {
         showSuggestions(searchInput.value);
     }
 });
-
 
 
 //when usr click on search input prepare the screen for search gifs
@@ -377,8 +376,8 @@ async function showTrending() {
             `;
         });
         //suscribe each Gif to click event in order to changge it to full screen mode
-        trendingGif.querySelectorAll(".trendingGif img").forEach((element) => {
-            element.addEventListener("click", clickOnGif, false);
+        trendingGif.querySelectorAll(".trendingGif img").forEach((gifElement) => {
+            gifElement.addEventListener("click", clickOnGif, false);
         });
 
     } catch (error) {
@@ -391,7 +390,7 @@ let gifMaxClose = document.getElementById("gifMaxClose"); //get img node for clo
 let selectedGif = document.getElementById("selectedGif"); //get img node for place de gif selected with click
 let gifMaxUser = document.querySelector("#gifMax h4"); //get h4 node  to put the username of the gif
 let gifMaxTitle = document.querySelector("#gifMax h3"); // get h3 node  to put the title of the gif
-let downloadGif = document.getElementById("downloadGif"); //get img node with download icon
+let downloadIcon = document.getElementById("downloadIcon"); //get img node with download icon
 
 let favoriteIcon = document.getElementById("favoriteIcon"); //get img node for favorite icon
 
@@ -415,21 +414,29 @@ async function clickOnGif(gif) {
             ? (favoriteIcon.src = "./images/icon-favorite-active.svg")
             : (favoriteIcon.src = "./images/icon-favorite-inactive.svg");
 
-        favoriteIcon.id = gif.target.id;
-        console.log(favoriteIcon.id);
+        //save the id of the gif inside the object subscribed to the click event        
+        favoriteIcon.id = gif.target.id; 
+        
+        //save the id and id for the gif inside the object subscribed to the click event
+        downloadIcon.id = gif.target.id; 
+        
+        //save the name for the gif inside the object subscribed to the click event
+        let string = info.title;
+        let formatedNname = string.replace(/ /g, '-');
+        downloadIcon.name = formatedNname;
+
+        //subscribe favorite icon to the click event
         favoriteIcon.addEventListener("click", manageFavorite, false);
         
-        downloadGif.addEventListener('click' , () => {
-            let string = info.title;
-            let name = string.replace(/ /g, '-');
-            downloadGifFunction(gif.target.id,name );
-        });
-        
+        //subscribe download icon to the click event
+        downloadIcon.addEventListener("click", downloadGifFunction, false);
+
     } catch (error) {
         console.error(error);
     }
 }
 
+// add or delete the gif from the favorites section
 function manageFavorite(gif) {
     console.log("inicio del evento click src: " + favoriteIcon.src);
     console.log('gif ID: ' + gif.target.accessKey);
@@ -456,16 +463,12 @@ function manageFavorite(gif) {
             myFavoritesLS.push(gifID);
             console.log("favoritos despues de agregar: ");
             console.log(myFavoritesLS);
+            console.log(myFavoritesLS.sort());
         }
     }
     localStorage.setItem("myFavorites", JSON.stringify(myFavoritesLS));
     // favoriteIcon.removeEventListener("click", manageFavorite, false);
 }
-
-
-
-
-
 
 
 // if usr click over the X icon or in a blank part of the window then close
@@ -476,7 +479,10 @@ gifMax.addEventListener("click", (event) => {
             loadFavorites(); //update favorites
         }
         gifMax.style.display = "none";
+        
+        //unsubscribe favorite and download icons to the click event
         favoriteIcon.removeEventListener("click", manageFavorite, false);
+        downloadIcon.removeEventListener("click", downloadGifFunction, false);
     }
 });
 
@@ -530,10 +536,21 @@ let favoriteGifs = document.getElementById("favoriteGifs"); //get the favorites 
 let btnShowMoreFavorites = document.getElementById("btnShowMoreFavorites"); //get "Show More" button node
 
 //function that shows search gifs by id
-async function showFavorites(element) {
+async function showFavorites(id) {
     try {
-        const favorite = await getSearchById(element);
-        favoriteGifs.innerHTML += `<img id="${favorite.id}" src="${favorite.images.fixed_height.url}">`;
+        const favorite = await getSearchById(id);
+        
+        //create gif
+        let favoriteGifNew = document.createElement('img');
+        favoriteGifNew.src = favorite.images.fixed_height.url;
+        favoriteGifNew.alt = 'Gif favorito';
+        favoriteGifNew.id = favorite.id;
+        favoriteGifs.appendChild(favoriteGifNew);
+        
+         //suscribe each Gif to click event in order to changge it to full screen mode and manage favorite or download
+        favoriteGifNew.addEventListener("click", clickOnGif, false);
+
+
     } catch (error) {
         console.error(error);
     }
