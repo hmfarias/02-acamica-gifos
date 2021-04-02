@@ -731,10 +731,6 @@ console.log(containerSteps);
 // when selecting the option to create gif in the navigation bar
 createGifNav.addEventListener("click", createGif);
 
-//show step buttons
-sectionCreateGif.querySelectorAll('.btnRadius').forEach((button) => {
-    button.style.display="block";
-})
 
 function createGif(){
     //hide the sections that should not appear
@@ -745,10 +741,15 @@ function createGif(){
     sectionMyGifs.style.display = "none";
     sectionTrending.style.display = "none";
     //show createGif section
-    sectionCreateGif.style.display = "block";
+    sectionCreateGif.style.display = "flex";
     navIcon.src = navIconImageClose;
     navMenu.style.display = "block";
     changeIconBurger();
+    
+    //show start buttons
+    sectionCreateGif.querySelectorAll('.btnRadius').forEach((button) => {
+        button.style.display="block";
+    })
 }
 
 //END CREATE GIF SECTION --------------------------------------------------
