@@ -486,6 +486,7 @@ footer .socialMedia a img {
 }
 
 .sectionCreateGif {
+  display: none;
   width: 95%;
   margin: auto;
   -webkit-box-orient: vertical;
@@ -515,14 +516,13 @@ footer .socialMedia a img {
 }
 
 .sectionCreateGif .cameraContainer #projectionLight {
+  display: none;
   width: 91px;
   height: auto;
   margin-left: 1px;
   -webkit-clip-path: polygon(0 38%, 100% 0, 100% 100%, 0 64%);
           clip-path: polygon(0 38%, 100% 0, 100% 100%, 0 64%);
   background-image: linear-gradient(267deg, rgba(136, 243, 226, 0) 22%, #50E3C2 100%);
-  -webkit-animation: twinkle 1.5s ease 1s infinite normal backwards;
-          animation: twinkle 1.5s ease 1s infinite normal backwards;
 }
 
 @-webkit-keyframes twinkle {
@@ -774,11 +774,6 @@ footer .socialMedia a img {
   background: var(--color-primary);
 }
 
-.sectionCreateGif .stepsContainer .containerSteps .btnStep:hover {
-  background: var(--font-color);
-  color: var(--color-primary);
-}
-
 .sectionCreateGif .stepsContainer .filmContainer {
   -ms-flex-item-align: end;
       align-self: flex-end;
@@ -797,8 +792,6 @@ footer .socialMedia a img {
   width: 40%;
   -webkit-transition: 1s;
   transition: 1s;
-  -webkit-animation: rotateFilm 1.5s linear 1s infinite normal backwards;
-          animation: rotateFilm 1.5s linear 1s infinite normal backwards;
 }
 
 @-webkit-keyframes rotateFilm {

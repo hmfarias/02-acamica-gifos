@@ -728,9 +728,15 @@ btnShowMoreMyGifs.addEventListener('click' , () => {
 //===================================================================================================
 let sectionCreateGif = document.getElementById('sectionCreateGif');
 let btnCreateGif = document.getElementById('btnCreateGif');
-
+let canvasCamera = document.getElementById('canvasCamera'); //get canvas zone for show message and video
+let stepOne = document.getElementById('stepOne'); //get button node for step one
+let stepTwo = document.getElementById('stepTwo'); //get button node for step two
+let stepThree = document.getElementById('stepThree'); //get button node for step three
+let projectionLight = document.getElementById('projectionLight'); //get projection light node for animation
 
 createGifNav.addEventListener("click", createGif);
+
+btnCreateGif.addEventListener('click' , createGifStepOne);
 
 
 function createGif(){
@@ -749,6 +755,23 @@ function createGif(){
     
     //show start buttons
     btnCreateGif.style.display = 'block';
+}
+
+function createGifStepOne() {
+    canvasCamera.innerHTML = `
+        <h2>¿Nos das acceso <br> a tu cámara?</h2>
+        <p>El acceso a tu cámara será válido sólo <br> por el tiempo en el que estés creando el GIFO</p>
+    `
+
+    stepOne.style.background = 'var(--font-color)';
+    stepOne.style.color= 'var(--color-primary)';
+
+    //Animations Start--------------------------------------------------------------
+    projectionLight.style.display = 'block';
+    projectionLight.style.animation = 'twinkle 1.5s ease 0s infinite normal backwards';
+    filmImg.style.animation = 'rotateFilm 1.5s linear 0s infinite normal backwards';
+    //End animations start ---------------------------------------------------------
+
 }
 
 //END CREATE GIF SECTION --------------------------------------------------
