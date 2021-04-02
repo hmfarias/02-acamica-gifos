@@ -518,11 +518,9 @@ footer .socialMedia a img {
   width: 91px;
   height: auto;
   margin-left: 1px;
-  -webkit-clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 65%);
-          clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 65%);
-  background-image: linear-gradient(267deg, rgba(136, 243, 226, 0) 22%, #50E3C2 100%);
-  -webkit-animation: twinkle 1.5s ease 1s infinite normal backwards;
-          animation: twinkle 1.5s ease 1s infinite normal backwards;
+  -webkit-clip-path: polygon(0 38%, 100% 0, 100% 100%, 0 63%);
+          clip-path: polygon(0 38%, 100% 0, 100% 100%, 0 63%);
+  background-image: linear-gradient(267deg, rgba(136, 243, 226, 0) 22%, #d4754f 100%);
 }
 
 @-webkit-keyframes twinkle {
