@@ -96,14 +96,14 @@ function iconsUpdate() {
         navIconImageBurger = "./images/burger.svg"; // burger icon in light mode
         searchIconImage = "./images/icon-search.svg"; //search icon in light mode
         cameraImage = "./images/camara.svg"; //camera img in create my gif section
-        filmImage="./images/pelicula.svg"; //film img in create my gif section
+        filmImage="./images/film.svg"; //film img in create my gif section
     } else {
         logo.src = "./images/logo-mobile-modo-noct.svg"; //principal logo dark mode
         navIconImageClose = "./images/close-modo-noct.svg"; // X icon in dark mode
         navIconImageBurger = "./images/burger-modo-noct.svg"; // burger icon in dark mode
         searchIconImage = "./images/icon-search-modo-noct.svg"; // search icon in dark mode
         cameraImage = "./images/camara-modo-noc.svg"; //camera img in create my gif section
-        filmImage="./images/pelicula-modo-noc.svg"; //film img in create my gif section
+        filmImage="./images/film-noct.svg"; //film img in create my gif section
     }
 
     //update the burger icon
@@ -727,8 +727,9 @@ btnShowMoreMyGifs.addEventListener('click' , () => {
 //CREATE GIF SECTION ================================================================================
 //===================================================================================================
 let sectionCreateGif = document.getElementById('sectionCreateGif');
-console.log(containerSteps);
-// when selecting the option to create gif in the navigation bar
+let btnCreateGif = document.getElementById('btnCreateGif');
+
+
 createGifNav.addEventListener("click", createGif);
 
 
@@ -747,9 +748,7 @@ function createGif(){
     changeIconBurger();
     
     //show start buttons
-    sectionCreateGif.querySelectorAll('.btnRadius').forEach((button) => {
-        button.style.display="block";
-    })
+    btnCreateGif.style.display = 'block';
 }
 
 //END CREATE GIF SECTION --------------------------------------------------
