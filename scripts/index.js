@@ -48,9 +48,13 @@ let navIcon = document.getElementById("navIcon"); //burger or X image
 let navMenu = document.getElementById("navMenu"); //options menu
 let searchIcon = document.getElementById("searchIcon"); // search icon
 let searchingIcon = document.getElementById("searchingIcon"); // the search icon appears on the left of the search bar
-let navIconImageClose = "";
-let navIconImageBurger = "";
-let searchIconImage = "";
+let cameraImg = document.getElementById("cameraImg");
+let filmImg = document.getElementById("filmImg");
+let navIconImageClose = ""; // X icon in light mode
+let navIconImageBurger = ""; // burger icon in light mode
+let searchIconImage = ""; // search icon in dark mode
+let cameraImage = ""; //camera img in create my gif section
+let filmImage = ""; //film img in create my gif section
 let ilustraHeader = document.getElementById("ilustraHeader");
 
 let searching = false; //variable to know if searching mode is active or not
@@ -91,11 +95,15 @@ function iconsUpdate() {
         navIconImageClose = "./images/close.svg"; // X icon in light mode
         navIconImageBurger = "./images/burger.svg"; // burger icon in light mode
         searchIconImage = "./images/icon-search.svg"; //search icon in light mode
+        cameraImage = "./images/camara.svg"; //camera img in create my gif section
+        filmImage="./images/pelicula.svg"; //film img in create my gif section
     } else {
         logo.src = "./images/logo-mobile-modo-noct.svg"; //principal logo dark mode
         navIconImageClose = "./images/close-modo-noct.svg"; // X icon in dark mode
         navIconImageBurger = "./images/burger-modo-noct.svg"; // burger icon in dark mode
         searchIconImage = "./images/icon-search-modo-noct.svg"; // search icon in dark mode
+        cameraImage = "./images/camara-modo-noc.svg"; //camera img in create my gif section
+        filmImage="./images/pelicula-modo-noc.svg"; //film img in create my gif section
     }
 
     //update the burger icon
@@ -107,8 +115,14 @@ function iconsUpdate() {
     searching
         ? (searchIcon.src = navIconImageClose)
         : (searchIcon.src = searchIconImage);
+    
     //update the searching icon
     searchingIcon.src = searchIconImage;
+
+    //update img in create Gif Section
+    cameraImg.src = cameraImage;
+    filmImg.src = filmImage;
+
 }
 
 // function to toggle between light and dark theme
@@ -143,10 +157,10 @@ changeMode.addEventListener("click", () => {
     toggleTheme();
     changeIconBurger();
 });
-
 //END THEMES ------------------------------------------------------
 
-//SEARCH SECTION --------------------------------------------------
+//SEARCH SECTION ====================================================================================
+//===================================================================================================
 let sectionSearch = document.getElementById("sectionSearch"); //gets the Section node corresponding to the search, to be able to hide it and show it accordingly
 let search = document.getElementById("search"); //gets the div node that contains the Div node for search bar, and the div node for the hints
 let searchContainer = document.getElementById("searchContainer"); //gets the div node that contains the search bar
@@ -195,7 +209,8 @@ async function showSuggestions(word) {
 }
 //END SEARCH SECTION -----------------------------------------------
 
-//RESULT SECTION ---------------------------------------------------
+//RESULT SECTION ====================================================================================
+//===================================================================================================
 let offset = 0; //for button SHOW MORE in orden to show 'offset' elements more
 
 let searchInput = document.getElementById("searchInput"); //gets input node where the user puts the search
@@ -340,26 +355,10 @@ btnShowMore.addEventListener("click", () => {
     showSearch(searchInput.value, offset);
 });
 
-//for hover efect in "Show More" button ------
-btnShowMore.addEventListener("mouseover", (event) => {
-    if (themeName === "theme-dark") {
-        event.target.style.color = "black";
-        event.target.style.backgroundColor = "white";
-    } else {
-        event.target.style.color = "white";
-        event.target.style.backgroundColor = "#572EE5";
-    }
-});
-
-btnShowMore.addEventListener("mouseout", (event) => {
-    event.target.style.color = "var(--font-color)";
-    event.target.style.backgroundColor = "var(--color-primary)";
-});
-//end for hover efect ------
-
 //END RESULT SECTION --------------------------------------------------
 
-//TRENDING SECTION ---------------------------------------------------
+//TRENDING SECTION ==================================================================================
+//===================================================================================================
 let sectionTrending = document.getElementById("sectionTrending"); //get DIV node where show the trending gifs
 let trendingGif = document.getElementById("trendingGif"); //get DIV node where show the trending gifs
 let trendingDescription = document.getElementById("trendingDescription"); //get DIV node where places the trendig descriptions
@@ -495,7 +494,7 @@ async function showTrendingSearch() {
         //here we have each trending gif through iteration
         info.forEach((element, index) => {
             // construct the inerHTML for descriptions trending
-            let trendingLimitDescription = 5;
+            let trendingLimitDescription = 7;
             if (index < trendingLimitDescription) {
                 paragraph =
                     element +
@@ -526,8 +525,8 @@ function clickOnParagraph() {
 }
 //END TRENDING SECTION ---------------------------------------------------
 
-
-//FAVORITES SECTION-------------------------------------------------
+//FAVORITES SECTION =================================================================================
+//===================================================================================================
 let offSetFavorites = 0;
 let limitFavorites = 12; // mark the limit of gifs to bring
 let sectionFavorites = document.getElementById("sectionFavorites"); //get the favorites Section node
@@ -556,6 +555,7 @@ async function showFavorites(id) {
     }
 }
 
+// when selecting the option see favorites gif in the navigation bar
 favoritesNav.addEventListener("click", loadFavorites);
 
 function loadFavorites(){
@@ -567,6 +567,7 @@ function loadFavorites(){
     sectionSearch.style.display = "none";
     sectionResults.style.display = "none";
     sectionMyGifs.style.display = "none";
+    sectionCreateGif.style.display = "none";
     //show favorites section
     sectionFavorites.style.display = "block";
     navIcon.src = navIconImageClose;
@@ -623,7 +624,8 @@ btnShowMoreFavorites.addEventListener('click' , () => {
 
 //END FAVORITES SECTION --------------------------------------------------
 
-//MY GIFOS SECTION-------------------------------------------------
+//MY GIFOS SECTION ==================================================================================
+//===================================================================================================
 let offSetMyGifs = 0;
 let limitMyGifs = 12; // mark the limit of gifs to bring
 let sectionMyGifs = document.getElementById("sectionMyGifs"); //get the myGifs Section node
@@ -636,11 +638,24 @@ async function showMyGifs(element) {
     try {
         const myGif = await getSearchById(element);
         myGifs.innerHTML += `<img id="${myGif.id}" src="${myGif.images.fixed_height.url}">`;
+
+        //create gif
+        let myGifNew = document.createElement('img');
+        myGifNew.src = myGif.images.fixed_height.url;
+        myGifNew.alt = 'Gif Mis Gifos';
+        myGifNew.id = myGif.id;
+        myGifs.appendChild(favoriteGifNew);
+        
+         //suscribe each Gif to click event in order to changge it to full screen mode and manage favorite or download
+         myGifNew.addEventListener("click", clickOnGif, false);
+
+
     } catch (error) {
         console.error(error);
     }
 }
 
+// when selecting the option see my gifs in the navigation bar
 myGifsNav.addEventListener("click", loadMyGifs);
 
 function loadMyGifs(){
@@ -652,6 +667,7 @@ function loadMyGifs(){
     sectionSearch.style.display = "none";
     sectionResults.style.display = "none";
     sectionFavorites.style.display = "none";
+    sectionCreateGif.style.display = "none";
     //show favorites section
     sectionMyGifs.style.display = "block";
     navIcon.src = navIconImageClose;
@@ -708,12 +724,47 @@ btnShowMoreMyGifs.addEventListener('click' , () => {
 
 //END MY GIFOS SECTION --------------------------------------------------
 
+//CREATE GIF SECTION ================================================================================
+//===================================================================================================
+let sectionCreateGif = document.getElementById('sectionCreateGif');
+console.log(containerSteps);
+// when selecting the option to create gif in the navigation bar
+createGifNav.addEventListener("click", createGif);
+
+//show step buttons
+sectionCreateGif.querySelectorAll('.btnRadius').forEach((button) => {
+    button.style.display="block";
+})
+
+function createGif(){
+    //hide the sections that should not appear
+    ilustraHeader.style.display = "none";
+    sectionSearch.style.display = "none";
+    sectionResults.style.display = "none";
+    sectionFavorites.style.display = "none";
+    sectionMyGifs.style.display = "none";
+    sectionTrending.style.display = "none";
+    //show createGif section
+    sectionCreateGif.style.display = "block";
+    navIcon.src = navIconImageClose;
+    navMenu.style.display = "block";
+    changeIconBurger();
+}
+
+//END CREATE GIF SECTION --------------------------------------------------
 
 
 
 
 
-//FOOTER ----------------------------------------------------------
+
+
+
+
+
+
+//FOOTER ============================================================================================
+//===================================================================================================
 //for hovers on social media icons ----------------
 let facebook = document.getElementById("facebook"); // get facebook icon node
 let twitter = document.getElementById("twitter"); // get twitter icon node

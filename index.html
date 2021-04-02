@@ -22,7 +22,7 @@
                 <hr>
                 <li id="myGifsNav">Mis GIFOS</li>
                 <hr>              
-                <li id="createGif">+</li>
+                <li id="createGifNav">+</li>
             </ul>
             <img class="navIcon" alt="Menu" id="navIcon">
         </nav>
@@ -65,7 +65,7 @@
             <div id="searchGif" class="searchGif">
             </div>
 
-            <input id="btnShowMore" class="btnshowMore" type="button" value="VER MAS">
+            <input id="btnShowMore" class="btnRadius" type="button" value="VER MAS">
 
         </section>
 
@@ -76,7 +76,7 @@
             <div id="favoriteGifs" class="searchGif">
             </div>
 
-            <input id="btnShowMoreFavorites" type="button" value="VER MAS">
+            <input id="btnShowMoreFavorites" class="btnRadius" type="button" value="VER MAS">
 
         </section>
 
@@ -87,7 +87,7 @@
             <div id="myGifs" class="searchGif">
             </div>
 
-            <input id="btnShowMoreMyGifs" type="button" value="VER MAS">
+            <input id="btnShowMoreMyGifs" class="btnRadius" type="button" value="VER MAS">
 
         </section>
 
@@ -104,6 +104,39 @@
             <br>
 
         </section>
+
+        <section id="sectionCreateGif" class="sectionCreateGif">
+
+            <div class="cameraContainer">
+                <img id="cameraImg" src="./images/camara.svg" alt="Imágen de una cámara a rollo">
+                <div id="projectionLight"></div>
+            </div>
+            
+            <div class="canvasContainer">
+                <div id="canvasCamera" class="canvasCamera">
+                    <h2>Aquí podrás <br> crear tus propios <span>GIFOS</span></h2>
+                    <p>¡Crea tu GIFO en sólo 3 pasos!</p>
+                    <p>(sólo necesitas una cámara para grabar un video)</p>
+                </div>
+            </div>
+                
+            <div class="stepsContainer">
+                <div id="containerSteps" class="containerSteps">
+                    <input id="stepOne" class="btnStep" type="button" value="1">
+                    <input id="stepTwo" class="btnStep" type="button" value="2">
+                    <input id="stepThree" class="btnStep" type="button" value="3">
+                </div>
+                
+                <img id="filmImg" src="./images/pelicula.svg" alt="Imágen de una rollo de película">
+            </div>
+            
+            <div class="separator"></div>    
+            
+            <input id="btnStart" class="btnRadius" type="button" value="COMENZAR">
+                
+        </section>
+
+
 
     </main>
 

@@ -19,6 +19,41 @@ h1, h2, h3, p {
   font-weight: 700;
 }
 
+h2 {
+  font-weight: 700;
+  font-size: 25px;
+  color: var(--font-color);
+  text-align: center;
+  line-height: 40px;
+  text-transform: capitalize;
+  width: 89%;
+  margin: auto;
+}
+
+h2 span {
+  color: #50e3c2;
+}
+
+.btnRadius {
+  border: 1px solid var(--font-color);
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--font-color);
+  letter-spacing: 0;
+  border-radius: 25px;
+  width: 127px;
+  height: 50px;
+  background: var(--color-primary);
+  margin: 78px auto 79px;
+  display: none;
+}
+
+.btnRadius:hover {
+  background: var(--font-color);
+  color: var(--color-primary);
+}
+
 .theme-light {
   --color-primary: #FFFFFF;
   --color-secondary: #F3F5F8;
@@ -88,7 +123,7 @@ h1, h2, h3, p {
   color: #FFFFFF;
 }
 
-.navBar .navMenu #createGif {
+.navBar .navMenu #createGifNav {
   width: 54px;
   height: 54px;
   margin: auto;
@@ -238,17 +273,6 @@ header #ilustraHeader {
   border: 1px solid #9cafc3;
 }
 
-.sectionResults h2 {
-  font-weight: 700;
-  font-size: 25px;
-  color: var(--font-color);
-  text-align: center;
-  line-height: 40px;
-  text-transform: capitalize;
-  width: 89%;
-  margin: auto;
-}
-
 .sectionResults .searchGif {
   display: -ms-grid;
   display: grid;
@@ -294,21 +318,6 @@ header #ilustraHeader {
   color: #50E3C2;
   font-size: 22px;
   text-align: center;
-}
-
-.sectionResults input {
-  border: 1px solid var(--font-color);
-  font-family: "Montserrat", sans-serif;
-  font-weight: 700;
-  font-size: 13px;
-  color: var(--font-color);
-  letter-spacing: 0;
-  border-radius: 25px;
-  width: 127px;
-  height: 50px;
-  background: var(--color-primary);
-  margin: 78px auto 79px;
-  display: none;
 }
 
 .sectionResults img {
@@ -473,5 +482,145 @@ footer .socialMedia a img {
 
 .gifMaxDetails .gifMaxIcons img {
   width: 32px;
+}
+
+.sectionCreateGif {
+  width: 95%;
+  margin: auto;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+}
+
+.sectionCreateGif .cameraContainer {
+  -ms-flex-item-align: start;
+      align-self: flex-start;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  margin-bottom: 10px;
+}
+
+.sectionCreateGif .cameraContainer #projectionLight {
+  width: 91px;
+  height: 151px;
+  margin-left: 1px;
+  -webkit-clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 68%);
+          clip-path: polygon(0 40%, 100% 0, 100% 100%, 0 68%);
+  background-image: linear-gradient(267deg, rgba(136, 243, 226, 0) 22%, #50E3C2 100%);
+}
+
+.sectionCreateGif .canvasContainer {
+  width: 95vw;
+  height: 53.85vw;
+  margin: auto;
+  border: 1px solid var(--font-color);
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  margin: 5px auto 24px auto;
+}
+
+.sectionCreateGif .canvasContainer .canvasCamera {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  -webkit-box-pack: center;
+      -ms-flex-pack: center;
+          justify-content: center;
+  width: 95%;
+  height: 95%;
+  margin: auto;
+  background: linear-gradient(to right, #50e3c2 1px, transparent 1px) 0 0, linear-gradient(to right, #50e3c2 1px, transparent 1px) 0 100%, linear-gradient(to left, #50e3c2 1px, transparent 1px) 100% 0, linear-gradient(to left, #50e3c2 1px, transparent 1px) 100% 100%, linear-gradient(to bottom, #50e3c2 1px, transparent 1px) 0 0, linear-gradient(to bottom, #50e3c2 1px, transparent 1px) 100% 0, linear-gradient(to top, #50e3c2 1px, transparent 1px) 0 100%, linear-gradient(to top, #50e3c2 1px, transparent 1px) 100% 100%;
+  background-repeat: no-repeat;
+  background-size: 20px 20px;
+}
+
+.sectionCreateGif .canvasContainer .canvasCamera h2 {
+  margin: 0;
+}
+
+.sectionCreateGif .canvasContainer .canvasCamera p {
+  font-family: "Roboto", sans-serif;
+  font-weight: 300;
+  font-size: 14px;
+  color: var(--font-color-secondary);
+  text-align: center;
+  line-height: 29px;
+}
+
+.sectionCreateGif .stepsContainer {
+  width: 95%;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -ms-flex-pack: distribute;
+      justify-content: space-around;
+  text-align: center;
+}
+
+.sectionCreateGif .stepsContainer .containerSteps {
+  width: 148px;
+  margin: 0 20px 10px;
+  -ms-flex-item-align: start;
+      align-self: flex-start;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: justify;
+      -ms-flex-pack: justify;
+          justify-content: space-between;
+}
+
+.sectionCreateGif .stepsContainer .containerSteps .btnStep {
+  width: 32px;
+  height: 32px;
+  border: 1px solid var(--font-color);
+  font-family: "Montserrat", sans-serif;
+  font-weight: 700;
+  font-size: 13px;
+  color: var(--font-color);
+  letter-spacing: 0;
+  border-radius: 50%;
+  background: var(--color-primary);
+}
+
+.sectionCreateGif .stepsContainer .containerSteps .btnStep:hover {
+  background: var(--font-color);
+  color: var(--color-primary);
+}
+
+.sectionCreateGif .stepsContainer #filmImg {
+  -ms-flex-item-align: end;
+      align-self: flex-end;
+}
+
+.sectionCreateGif #btnStart {
+  margin-top: 10px;
+  margin-bottom: 26px;
+}
+
+.sectionCreateGif .separator {
+  width: 55.28%;
+  height: 6px;
+  background-color: var(--font-color);
+  margin: 20px auto;
 }
 /*# sourceMappingURL=style.css.map */
