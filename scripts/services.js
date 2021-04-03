@@ -73,3 +73,14 @@ export function fixMarginSectionResult(button) {
     : sectionResults.style.marginBottom ='0';
 }
 
+
+//prepares the array of buttons according to the type of display sent
+export function buttonsPrepare(arrayButtons, typeDisplay, arrayButtons2, typeDisplay2) {
+    arrayButtons.forEach(button => {
+        button.style.display = typeDisplay;
+    });
+
+    arrayButtons2.forEach(button2 => {
+        button2.style.display = typeDisplay2;
+    });
+}

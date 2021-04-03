@@ -7,6 +7,7 @@ import {
     getSearchById,
     downloadGifFunction,
     fixMarginSectionResult,
+    buttonsPrepare,
 } from "./services.js";
 
 window.onload = function () {
@@ -66,7 +67,7 @@ navIcon.addEventListener("click", () => {
 
 //function to change the burger menu icon when the user clicks on it
 function changeIconBurger() {
-    if (navMenu.style.display === "" || navMenu.style.display === "none"){
+    if (navMenu.style.display === "" || navMenu.style.display === "none") {
         navIcon.src = navIconImageClose;
         navMenu.style.display = "block";
     } else {
@@ -96,14 +97,14 @@ function iconsUpdate() {
         navIconImageBurger = "./images/burger.svg"; // burger icon in light mode
         searchIconImage = "./images/icon-search.svg"; //search icon in light mode
         cameraImage = "./images/camara.svg"; //camera img in create my gif section
-        filmImage="./images/film.svg"; //film img in create my gif section
+        filmImage = "./images/film.svg"; //film img in create my gif section
     } else {
         logo.src = "./images/logo-mobile-modo-noct.svg"; //principal logo dark mode
         navIconImageClose = "./images/close-modo-noct.svg"; // X icon in dark mode
         navIconImageBurger = "./images/burger-modo-noct.svg"; // burger icon in dark mode
         searchIconImage = "./images/icon-search-modo-noct.svg"; // search icon in dark mode
         cameraImage = "./images/camara-modo-noc.svg"; //camera img in create my gif section
-        filmImage="./images/film-noct.svg"; //film img in create my gif section
+        filmImage = "./images/film-noct.svg"; //film img in create my gif section
     }
 
     //update the burger icon
@@ -115,14 +116,13 @@ function iconsUpdate() {
     searching
         ? (searchIcon.src = navIconImageClose)
         : (searchIcon.src = searchIconImage);
-    
+
     //update the searching icon
     searchingIcon.src = searchIconImage;
 
     //update img in create Gif Section
     cameraImg.src = cameraImage;
     filmImg.src = filmImage;
-
 }
 
 // function to toggle between light and dark theme
@@ -227,9 +227,9 @@ async function showSearch(word, offset) {
             //here we have each trending gif through iteration
             info.forEach((element) => {
                 info.length >= 12 // only if first result bring more than 11 gifs show button "show More"
-                    ? btnShowMore.style.display = "block" 
-                    : btnShowMore.style.display = "none";
-                
+                    ? (btnShowMore.style.display = "block")
+                    : (btnShowMore.style.display = "none");
+
                 //fix the section margins when the button disappears
                 fixMarginSectionResult(btnShowMore);
 
@@ -240,9 +240,11 @@ async function showSearch(word, offset) {
             });
 
             //suscribe each Gif to click event in order to changge it to full screen mode
-            searchGif.querySelectorAll(".searchGif img").forEach((gifElement) => {
-                gifElement.addEventListener("click", clickOnGif, false);
-            });
+            searchGif
+                .querySelectorAll(".searchGif img")
+                .forEach((gifElement) => {
+                    gifElement.addEventListener("click", clickOnGif, false);
+                });
 
             //after search, show ilustra header again
             ilustraHeader.style.display = "block";
@@ -250,7 +252,7 @@ async function showSearch(word, offset) {
             //-----------------------------------------
         } else {
             btnShowMore.style.display = "none"; //if there are no more gifs, hide "Show More" button
-            
+
             //fix the section margins when the button disappears
             fixMarginSectionResult(btnShowMore);
 
@@ -281,7 +283,6 @@ searchInput.addEventListener("keypress", (event) => {
     }
 });
 
-
 //when usr click on search input prepare the screen for search gifs
 searchInput.addEventListener("focus", hideIlustraHeader);
 
@@ -295,7 +296,7 @@ function hideIlustraHeader() {
     searchGif.innerHTML === 0
         ? (btnShowMore.style.display = "none")
         : (btnShowMore.style.display = "block");
-    
+
     //fix the section margins when the button disappears
     fixMarginSectionResult(btnShowMore);
 
@@ -338,10 +339,9 @@ function searchPrepare() {
         searchGif.innerHTML == 0
             ? (btnShowMore.style.display = "none")
             : (btnShowMore.style.display = "block"); // if there aren't results in section results, "Show More" button must be hide
-            
+
         //fix the section margins when the button disappears
         fixMarginSectionResult(btnShowMore);
-
 
         searchInput.focus();
         if (searchInput.value !== "") searchGifs();
@@ -375,10 +375,11 @@ async function showTrending() {
             `;
         });
         //suscribe each Gif to click event in order to changge it to full screen mode
-        trendingGif.querySelectorAll(".trendingGif img").forEach((gifElement) => {
-            gifElement.addEventListener("click", clickOnGif, false);
-        });
-
+        trendingGif
+            .querySelectorAll(".trendingGif img")
+            .forEach((gifElement) => {
+                gifElement.addEventListener("click", clickOnGif, false);
+            });
     } catch (error) {
         console.error(error);
     }
@@ -404,32 +405,30 @@ async function clickOnGif(gif) {
         info.title === ""
             ? (gifMaxTitle.textContent = "Unregistered Title")
             : (gifMaxTitle.textContent = info.title);
- 
+
         window.scrollTo(0, 0);
         gifMax.style.display = "flex";
-
 
         myFavoritesLS.includes(gif.target.id) //if this gif is in favorite favorite icons must be active
             ? (favoriteIcon.src = "./images/icon-favorite-active.svg")
             : (favoriteIcon.src = "./images/icon-favorite-inactive.svg");
 
-        //save the id of the gif inside the object subscribed to the click event        
-        favoriteIcon.id = gif.target.id; 
-        
+        //save the id of the gif inside the object subscribed to the click event
+        favoriteIcon.id = gif.target.id;
+
         //save the id and id for the gif inside the object subscribed to the click event
-        downloadIcon.id = gif.target.id; 
-        
+        downloadIcon.id = gif.target.id;
+
         //save the name for the gif inside the object subscribed to the click event
         let string = info.title;
-        let formatedNname = string.replace(/ /g, '-');
+        let formatedNname = string.replace(/ /g, "-");
         downloadIcon.name = formatedNname;
 
         //subscribe favorite icon to the click event
         favoriteIcon.addEventListener("click", manageFavorite, false);
-        
+
         //subscribe download icon to the click event
         downloadIcon.addEventListener("click", downloadGifFunction, false);
-
     } catch (error) {
         console.error(error);
     }
@@ -438,14 +437,14 @@ async function clickOnGif(gif) {
 // add or delete the gif from the favorites section
 function manageFavorite(gif) {
     console.log("inicio del evento click src: " + favoriteIcon.src);
-    console.log('gif ID: ' + gif.target.accessKey);
+    console.log("gif ID: " + gif.target.accessKey);
     console.log(gif);
     let gifID = gif.target.id;
-    console.log('gifID: ' + gifID);
+    console.log("gifID: " + gifID);
     if (myFavoritesLS.includes(gifID)) {
         favoriteIcon.src = "./images/icon-favorite-inactive.svg";
         console.log("pasó a inactivo");
-        
+
         //eliminate gif from Favorites
         if (myFavoritesLS.indexOf(gifID) !== -1) {
             myFavoritesLS.splice(myFavoritesLS.indexOf(gifID), 1);
@@ -455,7 +454,7 @@ function manageFavorite(gif) {
     } else {
         favoriteIcon.src = "./images/icon-favorite-active.svg";
         console.log("pasó a activo");
-        
+
         //add gif to favorites
         if (myFavoritesLS.indexOf(gifID) === -1) {
             //only add the gif if it doesn't exist
@@ -469,16 +468,15 @@ function manageFavorite(gif) {
     // favoriteIcon.removeEventListener("click", manageFavorite, false);
 }
 
-
 // if usr click over the X icon or in a blank part of the window then close
 gifMax.addEventListener("click", (event) => {
     if (event.target.id === "gifMax" || event.target.id === "gifMaxClose") {
         // favoriteIcon.removeEventListener("click");
-        if(sectionFavorites.style.display === "block"){
+        if (sectionFavorites.style.display === "block") {
             loadFavorites(); //update favorites
         }
         gifMax.style.display = "none";
-        
+
         //unsubscribe favorite and download icons to the click event
         favoriteIcon.removeEventListener("click", manageFavorite, false);
         downloadIcon.removeEventListener("click", downloadGifFunction, false);
@@ -538,18 +536,16 @@ let btnShowMoreFavorites = document.getElementById("btnShowMoreFavorites"); //ge
 async function showFavorites(id) {
     try {
         const favorite = await getSearchById(id);
-        
+
         //create gif
-        let favoriteGifNew = document.createElement('img');
+        let favoriteGifNew = document.createElement("img");
         favoriteGifNew.src = favorite.images.fixed_height.url;
-        favoriteGifNew.alt = 'Gif favorito';
+        favoriteGifNew.alt = "Gif favorito";
         favoriteGifNew.id = favorite.id;
         favoriteGifs.appendChild(favoriteGifNew);
-        
-         //suscribe each Gif to click event in order to changge it to full screen mode and manage favorite or download
+
+        //suscribe each Gif to click event in order to changge it to full screen mode and manage favorite or download
         favoriteGifNew.addEventListener("click", clickOnGif, false);
-
-
     } catch (error) {
         console.error(error);
     }
@@ -558,10 +554,10 @@ async function showFavorites(id) {
 // when selecting the option see favorites gif in the navigation bar
 favoritesNav.addEventListener("click", loadFavorites);
 
-function loadFavorites(){
+function loadFavorites() {
     offSetFavorites = 0;
     limitFavorites = 12;
-    favoriteGifs.innerHTML ='';
+    favoriteGifs.innerHTML = "";
     //hide the sections that should not appear
     ilustraHeader.style.display = "none";
     sectionSearch.style.display = "none";
@@ -576,12 +572,11 @@ function loadFavorites(){
 
     //must immediately upload the favorite gifs (if any)
     updateFavorites();
-
 }
 
 function updateFavorites() {
     if (myFavoritesLS.length === 0) {
-        favoriteGifs.className = 'searchGifWithoutResult';
+        favoriteGifs.className = "searchGifWithoutResult";
         favoriteGifs.innerHTML = `
         <img src= ./images/icon-fav-sin-contenido.svg>
         <h3>¡Guarda tu primer GIFO en Favoritos para que se muestre aquí!</h3>
@@ -590,34 +585,31 @@ function updateFavorites() {
         btnShowMoreFavorites.style.display = "none";
         //fix the section margins when the button disappears
         fixMarginSectionResult(btnShowMoreFavorites);
-
-
-    } else if (myFavoritesLS.length - offSetFavorites >=0) {
+    } else if (myFavoritesLS.length - offSetFavorites >= 0) {
         //show the button showMore if there are more gifs to bring
         myFavoritesLS.length - offSetFavorites >= 12
-            ? btnShowMoreFavorites.style.display = "block" 
-            : btnShowMoreFavorites.style.display = "none";
+            ? (btnShowMoreFavorites.style.display = "block")
+            : (btnShowMoreFavorites.style.display = "none");
 
         //fix the section margins when the button disappears
         fixMarginSectionResult(btnShowMoreFavorites);
-        
-        favoriteGifs.className = 'searchGif';
+
+        favoriteGifs.className = "searchGif";
 
         //if the number of gifs are less than the limit, new limit is the length of the favorites array
-        if ((offSetFavorites + limitFavorites) > myFavoritesLS.length) {
+        if (offSetFavorites + limitFavorites > myFavoritesLS.length) {
             limitFavorites = myFavoritesLS.length;
-        } 
+        }
 
-        for (let index = offSetFavorites; index < limitFavorites; index++){
+        for (let index = offSetFavorites; index < limitFavorites; index++) {
             const element = myFavoritesLS[index];
             showFavorites(element);
         }
-
-    } 
+    }
 }
 
 //update favorite gifs when the usr press "Show More" button and Update offset
-btnShowMoreFavorites.addEventListener('click' , () => { 
+btnShowMoreFavorites.addEventListener("click", () => {
     offSetFavorites += 12;
     updateFavorites();
 });
@@ -640,16 +632,14 @@ async function showMyGifs(element) {
         myGifs.innerHTML += `<img id="${myGif.id}" src="${myGif.images.fixed_height.url}">`;
 
         //create gif
-        let myGifNew = document.createElement('img');
+        let myGifNew = document.createElement("img");
         myGifNew.src = myGif.images.fixed_height.url;
-        myGifNew.alt = 'Gif Mis Gifos';
+        myGifNew.alt = "Gif Mis Gifos";
         myGifNew.id = myGif.id;
         myGifs.appendChild(favoriteGifNew);
-        
-         //suscribe each Gif to click event in order to changge it to full screen mode and manage favorite or download
-         myGifNew.addEventListener("click", clickOnGif, false);
 
-
+        //suscribe each Gif to click event in order to changge it to full screen mode and manage favorite or download
+        myGifNew.addEventListener("click", clickOnGif, false);
     } catch (error) {
         console.error(error);
     }
@@ -658,10 +648,10 @@ async function showMyGifs(element) {
 // when selecting the option see my gifs in the navigation bar
 myGifsNav.addEventListener("click", loadMyGifs);
 
-function loadMyGifs(){
+function loadMyGifs() {
     offSetMyGifs = 0;
     limitMyGifs = 12;
-    myGifs.innerHTML ='';
+    myGifs.innerHTML = "";
     //hide the sections that should not appear
     ilustraHeader.style.display = "none";
     sectionSearch.style.display = "none";
@@ -676,12 +666,11 @@ function loadMyGifs(){
 
     //must immediately upload the favorite gifs (if any)
     updateMyGifs();
-
 }
 
 function updateMyGifs() {
     if (myGifsLS.length === 0) {
-        myGifs.className = 'searchGifWithoutResult';
+        myGifs.className = "searchGifWithoutResult";
         myGifs.innerHTML = `
         <img src= ./images/icon-mis-gifos-sin-contenido.svg>
         <h3>¡Anímate a crear tu primer GIFO!</h3>
@@ -690,34 +679,31 @@ function updateMyGifs() {
         btnShowMoreMyGifs.style.display = "none";
         //fix the section margins when the button disappears
         fixMarginSectionResult(btnShowMoreMyGifs);
-
-
-    } else if (myGifsLS.length - offSetMyGifs >=0) {
+    } else if (myGifsLS.length - offSetMyGifs >= 0) {
         //show the button showMore if there are more gifs to bring
         myGifsLS.length - offSetMyGifs >= 12
-            ? btnShowMoreMyGifs.style.display = "block" 
-            : btnShowMoreMyGifs.style.display = "none";
+            ? (btnShowMoreMyGifs.style.display = "block")
+            : (btnShowMoreMyGifs.style.display = "none");
 
         //fix the section margins when the button disappears
         fixMarginSectionResult(btnShowMoreMyGifs);
 
-        myGifs.className = 'searchGif';
+        myGifs.className = "searchGif";
 
         //if the number of gifs are less than the limit, new limit is the length of the myGifsLS array
-        if ((offSetMyGifs + limitMyGifs) > myGifsLS.length) {
+        if (offSetMyGifs + limitMyGifs > myGifsLS.length) {
             limitMyGifs = myGifsLS.length;
-        } 
+        }
 
-        for (let index = offSetMyGifs; index < limitMyGifs; index++){
+        for (let index = offSetMyGifs; index < limitMyGifs; index++) {
             const element = myGifsLS[index];
             showMyGifs(element);
         }
-
-    } 
+    }
 }
 
 //update favorite gifs when the usr press "Show More" button and Update offset
-btnShowMoreMyGifs.addEventListener('click' , () => { 
+btnShowMoreMyGifs.addEventListener("click", () => {
     offSetMyGifs += 12;
     updateMyGifs();
 });
@@ -726,33 +712,32 @@ btnShowMoreMyGifs.addEventListener('click' , () => {
 
 //CREATE GIF SECTION ================================================================================
 //===================================================================================================
-let sectionCreateGif = document.getElementById('sectionCreateGif');
-let btnStartGif = document.getElementById('btnStartGif');
-let btnSaveGif = document.getElementById('btnSaveGif');
-let btnEndGif = document.getElementById('btnEndGif');
-let btnUploadGif = document.getElementById('btnUploadGif');
-let canvasCamera = document.getElementById('canvasCamera'); //get canvas zone for show message and video
-let stepOne = document.getElementById('stepOne'); //get button node for step one
-let stepTwo = document.getElementById('stepTwo'); //get button node for step two
-let stepThree = document.getElementById('stepThree'); //get button node for step three
-let projectionLight = document.getElementById('projectionLight'); //get projection light node for animation
+let sectionCreateGif = document.getElementById("sectionCreateGif");
+let btnStartGif = document.getElementById("btnStartGif");
+let btnSaveGif = document.getElementById("btnSaveGif");
+let btnEndGif = document.getElementById("btnEndGif");
+let btnUploadGif = document.getElementById("btnUploadGif");
+let canvasCamera = document.getElementById("canvasCamera"); //get canvas zone for show message and video
+let stepOne = document.getElementById("stepOne"); //get button node for step one
+let stepTwo = document.getElementById("stepTwo"); //get button node for step two
+let stepThree = document.getElementById("stepThree"); //get button node for step three
+let projectionLight = document.getElementById("projectionLight"); //get projection light node for animation
 
 let recorder = null;
 
-
-
 createGifNav.addEventListener("click", createGif);
 
-btnStartGif.addEventListener('click' , createGifStepOne);
-stepOne.addEventListener('click' , createGifStepOne);
-
+btnStartGif.addEventListener("click", createGifStepOne);
+stepOne.addEventListener("click", createGifStepOne);
+stepTwo.addEventListener("click", createGifStepTwo);
+stepThree.addEventListener("click", createGifStepThree);
 
 stepOne.removeAttribute("disabled");
-stepTwo.setAttribute("disabled","true");
-stepThree.setAttribute("disabled","true");
+stepTwo.setAttribute("disabled", "true");
+stepThree.setAttribute("disabled", "true");
 
-
-function createGif(){
+let contador = 1;
+function createGif() {
     //hide the sections that should not appear
     ilustraHeader.style.display = "none";
     sectionSearch.style.display = "none";
@@ -765,134 +750,158 @@ function createGif(){
     navIcon.src = navIconImageClose;
     navMenu.style.display = "block";
     changeIconBurger();
-    
-    //show start buttons
-    btnStartGif.style.display = 'block';
+
+    //show / hide  buttons of step one
+    buttonsPrepare([btnStartGif],'block',[btnSaveGif,btnEndGif,btnUploadGif],'none');
+    console.log('entrada: ' + contador);
+    contador ++;
 }
 
+//STEP ONE =======================================================
 function createGifStepOne() {
     canvasCamera.innerHTML = `
     <h2>¿Nos das acceso <br> a tu cámara?</h2>
     <p>El acceso a tu cámara será válido sólo <br> por el tiempo en el que estés creando el GIFO</p>
     <video id="canvasVideo" class="canvasVideo"></video>
-    `
-    
-    stepOne.style.background = 'var(--font-color)';
-    stepOne.style.color= 'var(--color-primary)';
-    
-    stepOne.setAttribute("disabled","true");
+    <img id="showVideo" alt="">
+    `;
+
+    stepOne.style.background = "var(--font-color)";
+    stepOne.style.color = "var(--color-primary)";
+    stepTwo.style.background = "var(--color-primary)";
+    stepTwo.style.color = "var(--font-color)";
+    stepThree.style.background = "var(--color-primary)";
+    stepThree.style.color = "var(--font-color)";
+
+    // stepOne.setAttribute("disabled", "true");
     stepTwo.removeAttribute("disabled");
-    stepThree.setAttribute("disabled","true");
-    
+    stepThree.setAttribute("disabled", "true");
+
     //hide start buttons
-    btnStartGif.style.display = 'none';
+    btnStartGif.style.display = "none";
+}
+//END STEP ONE =======================================================
+
+//STEP TWO =======================================================
+function createGifStepTwo() {
+    canvasCamera.innerHTML = `
+    <video id="canvasVideo" class="canvasVideo"></video>
+    <img id="showVideo" alt="">
+    `;
+
+    let canvasVideo = document.getElementById("canvasVideo"); //get canvas for put the video to rec
+    canvasVideo.style.display = "block";
+
+    let stream = getStreamAndRecord();
+
+    //animation when video canvas appears
+    canvasVideo.style.animation =
+        "rotateAxisY 1.5s linear 0s 1 normal backwards";
+
+    stepOne.style.background = "var(--color-primary)";
+    stepOne.style.color = "var(--font-color)";
+    stepTwo.style.background = "var(--font-color)";
+    stepTwo.style.color = "var(--color-primary)";
+    stepThree.style.background = "var(--color-primary)";
+    stepThree.style.color = "var(--font-color)";
+
+    //show / hide  buttons of step two
+    buttonsPrepare([btnSaveGif],'block',[btnStartGif,btnEndGif,btnUploadGif],'none');
     
-    
-    
-    stepTwo.addEventListener('click' , () => { 
-        
-        canvasCamera.innerHTML = `
-        <video id="canvasVideo" class="canvasVideo"></video>
-        `
-        
-        let canvasVideo = document.getElementById('canvasVideo'); //get canvas for put the video to rec
-        canvasVideo.style.display = 'block';
-        
-        let stream = getStreamAndRecord();
-        console.log(stream);
-        
-        stepOne.style.background = 'var(--color-primary)';
-        stepOne.style.color= 'var(--font-color)';
-        stepTwo.style.background = 'var(--font-color)';
-        stepTwo.style.color= 'var(--color-primary)';
-       
-        //show save button
-        btnSaveGif.style.display = 'block';
-        
-        btnSaveGif.addEventListener('click' , () => {
-            //Animations Start--------------------------------------------------------------
-            projectionLight.style.display = 'block';
-            projectionLight.style.animation = 'twinkle 1.5s ease 0s infinite normal backwards';
-            filmImg.style.animation = 'rotateFilm 1.5s linear 0s infinite normal backwards';
-            //End animations start ---------------------------------------------------------
-            
-            btnSaveGif.style.display = 'none';
-            btnEndGif.style.display = 'block';
-            recordGif(stream);
-        });
+    btnSaveGif.addEventListener("click", () => {
+        saveGif(stream);
     });
+}
+//END STEP TWO =======================================================
 
+function saveGif(stream) {
+    //Animations Start--------------------------------------------------------------
+    projectionLight.style.display = "block";
+    projectionLight.style.animation =
+        "twinkle 1.5s ease 0s infinite normal backwards";
+    filmImg.style.animation =
+        "rotateAxisX 1.5s linear 0s infinite normal backwards";
+    //End animations start ---------------------------------------------------------
 
+    //show / hide  buttons of step two
+    buttonsPrepare([btnEndGif],'block',[btnStartGif,btnSaveGif,btnUploadGif],'none');
+    
+    stream.then(
+        (resultado) => {recordGif(resultado);},
+        (error) => {console.log(error);});
 }
 
+//STEP THREE =======================================================
+function createGifStepThree() {}
+//END STEP THREE =======================================================
 
 async function getStreamAndRecord() {
-    let constraints = { audio: false, video: { height: { max: 480 } } };
+    let constraints = {
+        audio: false,
+        video: { width: 480, height: { max: 320 } },
+    };
 
     try {
-        let mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
-        
+        let mediaStream = await navigator.mediaDevices.getUserMedia(
+            constraints
+        );
+
         canvasVideo.srcObject = mediaStream;
-        canvasVideo.onloadedmetadata = function(e) {
-                        canvasVideo.play();
-                    };
-        // canvasVideo.play();
-        return(mediaStream);
-        
+        canvasVideo.onloadedmetadata = function (e) {
+            canvasVideo.play();
+        };
+        console.log("en getStreamAndRecord");
+        console.log(mediaStream);
+        return mediaStream;
     } catch (error) {
-        console.log(error.name + ': '+ error.message);
+        console.log(error.name + ": " + error.message);
     }
-    
-
-    // // Prefer camera resolution nearest to 1280x720.
-    // var constraints = { audio: false, video: { height: { max: 480 } } };
-
-    // navigator.mediaDevices.getUserMedia(constraints)
-    //     .then(function(mediaStream) {
-            
-    //         canvasVideo.srcObject = mediaStream;
-    //         canvasVideo .onloadedmetadata = function(e) {
-    //             canvasVideo .play();
-    //         };
-    //         return mediaStream;
-    //     })
-    //     .catch(function(err) { 
-    //         console.log(err.name + ": " + err.message); }); 
 }
 
 function recordGif(stream) {
     recorder = RecordRTC(stream, {
-        type: 'gif',
+        type: "gif",
         frameRate: 1,
         quality: 10,
         width: 360,
         hidden: 240,
         onGifRecordingStarted: function () {
-            console.log('Started');
-        }
+            console.log("Started");
+        },
     });
     recorder.startRecording();
-
 }
 
-function saveGif () {
-    stepThree.style.background = 'var(--font-color)';
-    stepThree.style.color= 'var(--color-primary)';
+btnEndGif.addEventListener("click", () => {
+    let showVideo = document.getElementById("showVideo"); //get img node to put the result of the filming
+    
+    //Animations End---------------------------
+    projectionLight.style.display = "none";
+    projectionLight.style.animation ='';
+    filmImg.style.animation = '';
+    //End animations start --------------------
 
+    //show / hide  buttons of step two
+    buttonsPrepare([btnUploadGif],'block',[btnStartGif,btnEndGif,btnSaveGif],'none');
 
-}
+    console.log('estado boton upload');
+    console.log(btnUploadGif.style.display);
+    console.log('estado boton start');
+    console.log(btnStartGif.style.display);
 
-//END CREATE GIF SECTION --------------------------------------------------
+    recorder.stopRecording(async () => {
+        let blob = recorder.getBlob();
+        let url = URL.createObjectURL(blob);
+        canvasVideo.style.display = "none";
+        showVideo.style.display = "block";
+        showVideo.src = url;
+        let form = new FormData();
+        form.append("file", blob, "myGif.gif");
+        // createGif(form); ESTO ES IMPORTANTE
+    });
+});
 
-
-
-
-
-
-
-
-
-
+//END CREATE GIF SECTION =================================================================
 
 //FOOTER ============================================================================================
 //===================================================================================================

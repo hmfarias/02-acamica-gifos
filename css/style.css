@@ -142,6 +142,11 @@ h2 span {
   line-height: 51px;
 }
 
+.navBar .navMenu #createGifNav:active {
+  color: #FFFFFF;
+  background: #9CAFC3;
+}
+
 header h1 {
   width: 76.27%;
   margin: 24.2px auto 0;
@@ -730,6 +735,7 @@ footer .socialMedia a img {
 .sectionCreateGif .canvasContainer .canvasCamera h2 {
   width: 95%;
   margin: 0;
+  text-transform: none;
 }
 
 .sectionCreateGif .canvasContainer .canvasCamera p {
@@ -739,12 +745,47 @@ footer .socialMedia a img {
   color: var(--font-color-secondary);
   line-height: 29px;
   text-align: center;
+  text-transform: none;
 }
 
 .sectionCreateGif .canvasContainer .canvasCamera .canvasVideo {
   display: none;
-  width: 89vw;
-  height: 47vw;
+  height: 45vw;
+  -webkit-transition: 1.5s;
+  transition: 1.5s;
+}
+
+@-webkit-keyframes rotateAxisY {
+  0% {
+    -webkit-transform: rotateY(270deg);
+            transform: rotateY(270deg);
+  }
+  100% {
+    -webkit-transform: rotateY(360deg);
+            transform: rotateY(360deg);
+    -webkit-filter: blur(7px);
+            filter: blur(7px);
+  }
+}
+
+@keyframes rotateAxisY {
+  0% {
+    -webkit-transform: rotateY(270deg);
+            transform: rotateY(270deg);
+  }
+  100% {
+    -webkit-transform: rotateY(360deg);
+            transform: rotateY(360deg);
+    -webkit-filter: blur(7px);
+            filter: blur(7px);
+  }
+}
+
+.sectionCreateGif .canvasContainer .canvasCamera #showVideo {
+  display: none;
+  height: 45vw;
+  -webkit-transition: 1s;
+  transition: 1s;
 }
 
 .sectionCreateGif .stepsContainer {
@@ -804,7 +845,7 @@ footer .socialMedia a img {
   transition: 1s;
 }
 
-@-webkit-keyframes rotateFilm {
+@-webkit-keyframes rotateAxisX {
   0% {
     -webkit-transform: rotate(0deg);
             transform: rotate(0deg);
@@ -815,7 +856,7 @@ footer .socialMedia a img {
   }
 }
 
-@keyframes rotateFilm {
+@keyframes rotateAxisX {
   0% {
     -webkit-transform: rotate(0deg);
             transform: rotate(0deg);
