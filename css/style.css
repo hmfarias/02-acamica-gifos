@@ -54,6 +54,10 @@ h2 span {
   color: var(--color-primary);
 }
 
+.displayNone {
+  display: none;
+}
+
 .theme-light {
   --color-primary: #FFFFFF;
   --color-secondary: #F3F5F8;
@@ -737,6 +741,12 @@ footer .socialMedia a img {
   text-align: center;
 }
 
+.sectionCreateGif .canvasContainer .canvasCamera .canvasVideo {
+  display: none;
+  width: 89vw;
+  height: 47vw;
+}
+
 .sectionCreateGif .stepsContainer {
   width: 100%;
   margin: auto;
@@ -820,7 +830,7 @@ footer .socialMedia a img {
   width: 30%;
 }
 
-.sectionCreateGif #btnCreateGif {
+.sectionCreateGif .btnCreateGif {
   margin-top: 10px;
   margin-bottom: 26px;
 }

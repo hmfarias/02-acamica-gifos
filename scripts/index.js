@@ -727,16 +727,29 @@ btnShowMoreMyGifs.addEventListener('click' , () => {
 //CREATE GIF SECTION ================================================================================
 //===================================================================================================
 let sectionCreateGif = document.getElementById('sectionCreateGif');
-let btnCreateGif = document.getElementById('btnCreateGif');
+let btnStartGif = document.getElementById('btnStartGif');
+let btnSaveGif = document.getElementById('btnSaveGif');
+let btnEndGif = document.getElementById('btnEndGif');
+let btnUploadGif = document.getElementById('btnUploadGif');
 let canvasCamera = document.getElementById('canvasCamera'); //get canvas zone for show message and video
 let stepOne = document.getElementById('stepOne'); //get button node for step one
 let stepTwo = document.getElementById('stepTwo'); //get button node for step two
 let stepThree = document.getElementById('stepThree'); //get button node for step three
 let projectionLight = document.getElementById('projectionLight'); //get projection light node for animation
 
+let recorder = null;
+
+
+
 createGifNav.addEventListener("click", createGif);
 
-btnCreateGif.addEventListener('click' , createGifStepOne);
+btnStartGif.addEventListener('click' , createGifStepOne);
+stepOne.addEventListener('click' , createGifStepOne);
+
+
+stepOne.removeAttribute("disabled");
+stepTwo.setAttribute("disabled","true");
+stepThree.setAttribute("disabled","true");
 
 
 function createGif(){
@@ -754,23 +767,118 @@ function createGif(){
     changeIconBurger();
     
     //show start buttons
-    btnCreateGif.style.display = 'block';
+    btnStartGif.style.display = 'block';
 }
 
 function createGifStepOne() {
     canvasCamera.innerHTML = `
-        <h2>¿Nos das acceso <br> a tu cámara?</h2>
-        <p>El acceso a tu cámara será válido sólo <br> por el tiempo en el que estés creando el GIFO</p>
+    <h2>¿Nos das acceso <br> a tu cámara?</h2>
+    <p>El acceso a tu cámara será válido sólo <br> por el tiempo en el que estés creando el GIFO</p>
+    <video id="canvasVideo" class="canvasVideo"></video>
     `
-
+    
     stepOne.style.background = 'var(--font-color)';
     stepOne.style.color= 'var(--color-primary)';
+    
+    stepOne.setAttribute("disabled","true");
+    stepTwo.removeAttribute("disabled");
+    stepThree.setAttribute("disabled","true");
+    
+    //hide start buttons
+    btnStartGif.style.display = 'none';
+    
+    
+    
+    stepTwo.addEventListener('click' , () => { 
+        
+        canvasCamera.innerHTML = `
+        <video id="canvasVideo" class="canvasVideo"></video>
+        `
+        
+        let canvasVideo = document.getElementById('canvasVideo'); //get canvas for put the video to rec
+        canvasVideo.style.display = 'block';
+        
+        let stream = getStreamAndRecord();
+        console.log(stream);
+        
+        stepOne.style.background = 'var(--color-primary)';
+        stepOne.style.color= 'var(--font-color)';
+        stepTwo.style.background = 'var(--font-color)';
+        stepTwo.style.color= 'var(--color-primary)';
+       
+        //show save button
+        btnSaveGif.style.display = 'block';
+        
+        btnSaveGif.addEventListener('click' , () => {
+            //Animations Start--------------------------------------------------------------
+            projectionLight.style.display = 'block';
+            projectionLight.style.animation = 'twinkle 1.5s ease 0s infinite normal backwards';
+            filmImg.style.animation = 'rotateFilm 1.5s linear 0s infinite normal backwards';
+            //End animations start ---------------------------------------------------------
+            
+            btnSaveGif.style.display = 'none';
+            btnEndGif.style.display = 'block';
+            recordGif(stream);
+        });
+    });
 
-    //Animations Start--------------------------------------------------------------
-    projectionLight.style.display = 'block';
-    projectionLight.style.animation = 'twinkle 1.5s ease 0s infinite normal backwards';
-    filmImg.style.animation = 'rotateFilm 1.5s linear 0s infinite normal backwards';
-    //End animations start ---------------------------------------------------------
+
+}
+
+
+async function getStreamAndRecord() {
+    let constraints = { audio: false, video: { height: { max: 480 } } };
+
+    try {
+        let mediaStream = await navigator.mediaDevices.getUserMedia(constraints);
+        
+        canvasVideo.srcObject = mediaStream;
+        canvasVideo.onloadedmetadata = function(e) {
+                        canvasVideo.play();
+                    };
+        // canvasVideo.play();
+        return(mediaStream);
+        
+    } catch (error) {
+        console.log(error.name + ': '+ error.message);
+    }
+    
+
+    // // Prefer camera resolution nearest to 1280x720.
+    // var constraints = { audio: false, video: { height: { max: 480 } } };
+
+    // navigator.mediaDevices.getUserMedia(constraints)
+    //     .then(function(mediaStream) {
+            
+    //         canvasVideo.srcObject = mediaStream;
+    //         canvasVideo .onloadedmetadata = function(e) {
+    //             canvasVideo .play();
+    //         };
+    //         return mediaStream;
+    //     })
+    //     .catch(function(err) { 
+    //         console.log(err.name + ": " + err.message); }); 
+}
+
+function recordGif(stream) {
+    recorder = RecordRTC(stream, {
+        type: 'gif',
+        frameRate: 1,
+        quality: 10,
+        width: 360,
+        hidden: 240,
+        onGifRecordingStarted: function () {
+            console.log('Started');
+        }
+    });
+    recorder.startRecording();
+
+}
+
+function saveGif () {
+    stepThree.style.background = 'var(--font-color)';
+    stepThree.style.color= 'var(--color-primary)';
+
 
 }
 

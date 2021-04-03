@@ -7,6 +7,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="shortcut icon" type="image/x-icon" href="./images/logo-mobile.svg"/>
     <link rel="stylesheet" href="./css/style.css">
+    <script src="https://www.WebRTC-Experiment.com/RecordRTC.js"></script>
     <title>GIFOS</title>
 
 </head>
@@ -114,8 +115,9 @@
             
             <div class="canvasContainer">
                 <div id="canvasCamera" class="canvasCamera">
-                    <h2>Aquí podrás <br> crear tus propios <span>GIFOS</span></h2>
-                    <p>¡Crea tu GIFO en sólo 3 pasos! <br> (sólo necesitas una cámara para grabar un video)</p>
+                    <h2 id="txtCanvasTitle">Aquí podrás <br> crear tus propios <span>GIFOS</span></h2>
+                    <p id="txtCanvasParagraph">¡Crea tu GIFO en sólo 3 pasos! <br> (sólo necesitas una cámara para grabar un video)</p>
+                    <video id="canvasVideo" class="canvasVideo"></video>
                 </div>
                 <div id="leftTopCorner" class="corner"></div>
                 <div id="leftBottomCorner" class="corner"></div>
@@ -138,7 +140,10 @@
             
             <div class="separator"></div>    
             
-            <input id="btnCreateGif" class="btnRadius" type="button" value="COMENZAR">
+            <input id="btnStartGif" class="btnRadius btnCreateGif" type="button" value="COMENZAR">
+            <input id="btnSaveGif" class="btnRadius btnCreateGif" type="button" value="GRABAR">
+            <input id="btnEndGif" class="btnRadius btnCreateGif" type="button" value="FINALIZAR">
+            <input id="btnUploadGif" class="btnRadius btnCreateGif" type="button" value="SUBIR GIFO">
                 
         </section>
 
