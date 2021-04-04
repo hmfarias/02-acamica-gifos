@@ -75,7 +75,7 @@ export function fixMarginSectionResult(button) {
 
 
 //prepares the array of buttons according to the type of display sent
-export function buttonsPrepare(arrayButtons, typeDisplay, arrayButtons2, typeDisplay2) {
+export function displayPrepare(arrayButtons, typeDisplay, arrayButtons2, typeDisplay2) {
     arrayButtons.forEach(button => {
         button.style.display = typeDisplay;
     });

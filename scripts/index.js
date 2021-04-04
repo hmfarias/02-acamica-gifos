@@ -7,7 +7,7 @@ import {
     getSearchById,
     downloadGifFunction,
     fixMarginSectionResult,
-    buttonsPrepare,
+    displayPrepare,
 } from "./services.js";
 
 window.onload = function () {
@@ -20,6 +20,12 @@ window.onload = function () {
 
 let myGifsLS = []; //for use with localStorage in my gifs case
 let myFavoritesLS = []; //for use with localStorage in my favorites case
+
+// for cronometre
+let h = 0; //hours
+let m = 0; //minutes
+let s = 0; //seconds
+let idInterval = 0 ; //For interval to cronometre
 
 //function load favorites from LocalStorage
 function loadFavoritesFromLS() {
@@ -168,7 +174,14 @@ let resultsTitle = document.getElementById("resultsTitle"); //gets the h2 node t
 let searchSuggestion = document.getElementById("searchSuggestion");
 
 //when usr click in search icon
-searchIcon.addEventListener("click", searchPrepare);
+searchIcon.addEventListener("click", () => {
+    if(searchInput.value === '') {
+        searchPrepare(); 
+    } else { 
+        searchInput.value = '';
+        searchInput.focus();
+    }   
+});
 
 //function that shows SUGGESTIONS TO SEARCH
 async function showSuggestions(word) {
@@ -406,7 +419,7 @@ async function clickOnGif(gif) {
             ? (gifMaxTitle.textContent = "Unregistered Title")
             : (gifMaxTitle.textContent = info.title);
 
-        window.scrollTo(0, 0);
+        // window.scrollTo(0, 0);
         gifMax.style.display = "flex";
 
         myFavoritesLS.includes(gif.target.id) //if this gif is in favorite favorite icons must be active
@@ -722,6 +735,8 @@ let stepOne = document.getElementById("stepOne"); //get button node for step one
 let stepTwo = document.getElementById("stepTwo"); //get button node for step two
 let stepThree = document.getElementById("stepThree"); //get button node for step three
 let projectionLight = document.getElementById("projectionLight"); //get projection light node for animation
+let filmCrono = document.getElementById("filmCrono"); //get projection light node for animation
+let filmRepeat = document.getElementById("filmRepeat"); //get projection light node for animation
 
 let recorder = null;
 
@@ -751,8 +766,9 @@ function createGif() {
     navMenu.style.display = "block";
     changeIconBurger();
 
-    //show / hide  buttons of step one
-    buttonsPrepare([btnStartGif],'block',[btnSaveGif,btnEndGif,btnUploadGif],'none');
+   //show / hide  nodes 
+    displayPrepare([btnStartGif],'block',[btnSaveGif,btnEndGif,btnUploadGif, projectionLight, filmCrono, filmRepeat],'none');
+
     console.log('entrada: ' + contador);
     contador ++;
 }
@@ -805,8 +821,10 @@ function createGifStepTwo() {
     stepThree.style.background = "var(--color-primary)";
     stepThree.style.color = "var(--font-color)";
 
-    //show / hide  buttons of step two
-    buttonsPrepare([btnSaveGif],'block',[btnStartGif,btnEndGif,btnUploadGif],'none');
+    //show / hide  nodes 
+    displayPrepare([btnSaveGif],'block',[btnStartGif, btnEndGif, btnUploadGif , projectionLight, filmCrono, filmRepeat],'none');
+ 
+
     
     btnSaveGif.addEventListener("click", () => {
         saveGif(stream);
@@ -816,20 +834,42 @@ function createGifStepTwo() {
 
 function saveGif(stream) {
     //Animations Start--------------------------------------------------------------
-    projectionLight.style.display = "block";
     projectionLight.style.animation =
         "twinkle 1.5s ease 0s infinite normal backwards";
     filmImg.style.animation =
         "rotateAxisX 1.5s linear 0s infinite normal backwards";
     //End animations start ---------------------------------------------------------
-
-    //show / hide  buttons of step two
-    buttonsPrepare([btnEndGif],'block',[btnStartGif,btnSaveGif,btnUploadGif],'none');
     
+    //for cronometer -------------------------------
+    filmCrono.textContent = '00:00:00';
+    writeCronometer();
+    idInterval = setInterval(writeCronometer,1000);
+    //end cronometer----------------------------------
+
+    //show / hide  nodes 
+    displayPrepare([btnEndGif, filmCrono, projectionLight],'block',[btnStartGif, btnSaveGif, btnUploadGif, filmRepeat],'none');
+
     stream.then(
         (resultado) => {recordGif(resultado);},
         (error) => {console.log(error);});
 }
+
+function writeCronometer() {
+    let hAux = 0;
+    let mAux = 0;
+    let sAux = 0;
+    s++;
+    if (s>59){m++;s=0;}
+    if (m>59){h++;m=0;}
+    if (h>24){h=0;}
+
+    if (s<10){sAux="0"+s;}else{sAux=s;}
+    if (m<10){mAux="0"+m;}else{mAux=m;}
+    if (h<10){hAux="0"+h;}else{hAux=h;}
+    filmCrono.textContent = hAux + ":" + mAux + ":" + sAux;
+}
+
+
 
 //STEP THREE =======================================================
 function createGifStepThree() {}
@@ -850,16 +890,14 @@ async function getStreamAndRecord() {
         canvasVideo.onloadedmetadata = function (e) {
             canvasVideo.play();
         };
-        console.log("en getStreamAndRecord");
-        console.log(mediaStream);
         return mediaStream;
     } catch (error) {
         console.log(error.name + ": " + error.message);
     }
 }
 
-function recordGif(stream) {
-    recorder = RecordRTC(stream, {
+function recordGif(mediaStream) {
+    recorder = RecordRTC(mediaStream, {
         type: "gif",
         frameRate: 1,
         quality: 10,
@@ -872,22 +910,26 @@ function recordGif(stream) {
     recorder.startRecording();
 }
 
-btnEndGif.addEventListener("click", () => {
+btnEndGif.addEventListener("click", endGif) ;
+
+function endGif(){
     let showVideo = document.getElementById("showVideo"); //get img node to put the result of the filming
-    
+
+    //reset cronometre
+    clearInterval(idInterval);
+    h=0;
+    m=0;
+    s=0;
+    //---------------------
+   
     //Animations End---------------------------
-    projectionLight.style.display = "none";
     projectionLight.style.animation ='';
     filmImg.style.animation = '';
     //End animations start --------------------
 
-    //show / hide  buttons of step two
-    buttonsPrepare([btnUploadGif],'block',[btnStartGif,btnEndGif,btnSaveGif],'none');
+    //show / hide  nodes 
+    displayPrepare([btnUploadGif, filmRepeat],'block',[projectionLight, filmCrono,btnStartGif, btnEndGif, btnSaveGif],'none');
 
-    console.log('estado boton upload');
-    console.log(btnUploadGif.style.display);
-    console.log('estado boton start');
-    console.log(btnStartGif.style.display);
 
     recorder.stopRecording(async () => {
         let blob = recorder.getBlob();
@@ -899,7 +941,11 @@ btnEndGif.addEventListener("click", () => {
         form.append("file", blob, "myGif.gif");
         // createGif(form); ESTO ES IMPORTANTE
     });
-});
+}
+
+filmRepeat.addEventListener('click' , createGifStepTwo);
+
+
 
 //END CREATE GIF SECTION =================================================================
 
