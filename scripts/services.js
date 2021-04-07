@@ -3,6 +3,7 @@ const URL_BASE_TRENDING = `https://api.giphy.com/v1/gifs/trending?api_key=${API_
 const URL_BASE_TRENDING_SEARCH = `https://api.giphy.com/v1/trending/searches?api_key=${API_KEY}&limit=12`;
 const URL_BASE_SUGGESTIONS = `https://api.giphy.com/v1/gifs/search/tags?api_key=${API_KEY}&q=`;
 const URL_BASE_SEARCH = `https://api.giphy.com/v1/gifs/search?api_key=${API_KEY}&limit=12&offset=`;
+const URL_BASE_UPLOAD = `https://upload.giphy.com/v1/gifs?api_key=${API_KEY}`;
 
 
 // get all Trending gifs an return trending.data
@@ -66,6 +67,24 @@ async function downloadGif(id) {
     });
 }
 
+
+// export async function uploadGif(formData) {
+export function uploadGif(formData) {
+    // const response = await fetch(URL_BASE_UPLOAD, {
+    //     method: 'POST',
+    //     body: formData
+    // });
+    // const result = await response.json();
+    // console.log(result);
+    // return (result.data.id);
+    return('LOhwoZFUQwfMhww0rx');
+
+}
+
+
+
+
+
 //fix the section results margins when the button show more disappears
 export function fixMarginSectionResult(button) {
     button.style.display === "none" 
@@ -79,8 +98,21 @@ export function displayPrepare(arrayButtons, typeDisplay, arrayButtons2, typeDis
     arrayButtons.forEach(button => {
         button.style.display = typeDisplay;
     });
-
+    
     arrayButtons2.forEach(button2 => {
         button2.style.display = typeDisplay2;
+    });
+}
+
+
+//prepares the array of buttons according to the color and background sent
+export function formatStepButtons(arrayButtons,color,backColor,arrayButtons2,color2,backColor2) {
+    arrayButtons.forEach(button => {
+        button.style.color = color;
+        button.style.background = backColor;
+    });
+    arrayButtons2.forEach(button2 => {
+        button2.style.color = color2;
+        button2.style.background = backColor2;
     });
 }

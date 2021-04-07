@@ -6,9 +6,13 @@ import {
     getSearchByWord,
     getSearchById,
     downloadGifFunction,
+    uploadGif,
     fixMarginSectionResult,
     displayPrepare,
+    formatStepButtons,
 } from "./services.js";
+
+let control = 0;
 
 window.onload = function () {
     themeLoad(); //load de diurn or nocturn theme as appropriate
@@ -25,7 +29,7 @@ let myFavoritesLS = []; //for use with localStorage in my favorites case
 let h = 0; //hours
 let m = 0; //minutes
 let s = 0; //seconds
-let idInterval = 0 ; //For interval to cronometre
+let idInterval = 0; //For interval to cronometre
 
 //function load favorites from LocalStorage
 function loadFavoritesFromLS() {
@@ -175,12 +179,12 @@ let searchSuggestion = document.getElementById("searchSuggestion");
 
 //when usr click in search icon
 searchIcon.addEventListener("click", () => {
-    if(searchInput.value === '') {
-        searchPrepare(); 
-    } else { 
-        searchInput.value = '';
+    if (searchInput.value === "") {
+        searchPrepare();
+    } else {
+        searchInput.value = "";
         searchInput.focus();
-    }   
+    }
 });
 
 //function that shows SUGGESTIONS TO SEARCH
@@ -253,8 +257,7 @@ async function showSearch(word, offset) {
             });
 
             //suscribe each Gif to click event in order to changge it to full screen mode
-            searchGif
-                .querySelectorAll(".searchGif img")
+            searchGif.querySelectorAll(".searchGif img")
                 .forEach((gifElement) => {
                     gifElement.addEventListener("click", clickOnGif, false);
                 });
@@ -642,14 +645,13 @@ let btnShowMoreMyGifs = document.getElementById("btnShowMoreMyGifs"); //get "Sho
 async function showMyGifs(element) {
     try {
         const myGif = await getSearchById(element);
-        myGifs.innerHTML += `<img id="${myGif.id}" src="${myGif.images.fixed_height.url}">`;
 
         //create gif
         let myGifNew = document.createElement("img");
         myGifNew.src = myGif.images.fixed_height.url;
         myGifNew.alt = "Gif Mis Gifos";
         myGifNew.id = myGif.id;
-        myGifs.appendChild(favoriteGifNew);
+        myGifs.appendChild(myGifNew);
 
         //suscribe each Gif to click event in order to changge it to full screen mode and manage favorite or download
         myGifNew.addEventListener("click", clickOnGif, false);
@@ -693,23 +695,33 @@ function updateMyGifs() {
         //fix the section margins when the button disappears
         fixMarginSectionResult(btnShowMoreMyGifs);
     } else if (myGifsLS.length - offSetMyGifs >= 0) {
+        console.log('entra a myGifs');
+        console.log('lenght=');
+        console.log( myGifsLS.length);
+        console.log('resta: '+ myGifsLS.length - offSetMyGifs );
         //show the button showMore if there are more gifs to bring
         myGifsLS.length - offSetMyGifs >= 12
-            ? (btnShowMoreMyGifs.style.display = "block")
-            : (btnShowMoreMyGifs.style.display = "none");
-
+        ? (btnShowMoreMyGifs.style.display = "block")
+        : (btnShowMoreMyGifs.style.display = "none");
+        
         //fix the section margins when the button disappears
         fixMarginSectionResult(btnShowMoreMyGifs);
-
+        
         myGifs.className = "searchGif";
-
+        
         //if the number of gifs are less than the limit, new limit is the length of the myGifsLS array
         if (offSetMyGifs + limitMyGifs > myGifsLS.length) {
             limitMyGifs = myGifsLS.length;
         }
-
+        
+        console.log('offset');
+        console.log(offSetMyGifs);
+        console.log('limit');
+        console.log(limitMyGifs);
         for (let index = offSetMyGifs; index < limitMyGifs; index++) {
             const element = myGifsLS[index];
+            console.log('elemento');
+            console.log(element);
             showMyGifs(element);
         }
     }
@@ -726,6 +738,7 @@ btnShowMoreMyGifs.addEventListener("click", () => {
 //CREATE GIF SECTION ================================================================================
 //===================================================================================================
 let sectionCreateGif = document.getElementById("sectionCreateGif");
+let formGif = new FormData();//create form to upload gif
 let btnStartGif = document.getElementById("btnStartGif");
 let btnSaveGif = document.getElementById("btnSaveGif");
 let btnEndGif = document.getElementById("btnEndGif");
@@ -737,6 +750,7 @@ let stepThree = document.getElementById("stepThree"); //get button node for step
 let projectionLight = document.getElementById("projectionLight"); //get projection light node for animation
 let filmCrono = document.getElementById("filmCrono"); //get projection light node for animation
 let filmRepeat = document.getElementById("filmRepeat"); //get projection light node for animation
+
 
 let recorder = null;
 
@@ -751,7 +765,6 @@ stepOne.removeAttribute("disabled");
 stepTwo.setAttribute("disabled", "true");
 stepThree.setAttribute("disabled", "true");
 
-let contador = 1;
 function createGif() {
     //hide the sections that should not appear
     ilustraHeader.style.display = "none";
@@ -766,11 +779,8 @@ function createGif() {
     navMenu.style.display = "block";
     changeIconBurger();
 
-   //show / hide  nodes 
-    displayPrepare([btnStartGif],'block',[btnSaveGif,btnEndGif,btnUploadGif, projectionLight, filmCrono, filmRepeat],'none');
-
-    console.log('entrada: ' + contador);
-    contador ++;
+    //show / hide  nodes
+    displayPrepare([btnStartGif], "block", [btnSaveGif, btnEndGif, btnUploadGif, projectionLight, filmCrono, filmRepeat, OverlayInfoUpload], "none");
 }
 
 //STEP ONE =======================================================
@@ -782,12 +792,11 @@ function createGifStepOne() {
     <img id="showVideo" alt="">
     `;
 
-    stepOne.style.background = "var(--font-color)";
-    stepOne.style.color = "var(--color-primary)";
-    stepTwo.style.background = "var(--color-primary)";
-    stepTwo.style.color = "var(--font-color)";
-    stepThree.style.background = "var(--color-primary)";
-    stepThree.style.color = "var(--font-color)";
+    getStreamAndRecord(); //to get access to the camera
+
+    //update the color and background of the steps buttons
+    formatStepButtons([stepOne], 'var(--color-primary)', 'var(--font-color', [stepTwo, stepThree], 'var(--font-color', 'var(--color-primary)');
+
 
     // stepOne.setAttribute("disabled", "true");
     stepTwo.removeAttribute("disabled");
@@ -803,55 +812,96 @@ function createGifStepTwo() {
     canvasCamera.innerHTML = `
     <video id="canvasVideo" class="canvasVideo"></video>
     <img id="showVideo" alt="">
+    <div id="OverlayCard" class="OverlayCard">
+        <img id="cardDownloadIcon" src="./images/icon-card-download-normal.svg" alt="">
+        <img id="cardLinkIcon" src="./images/icon-card-link-normal.svg" alt="">
+    </div>
+    <div id="OverlayInfoUpload">
+        <img id="stateUploadImg" alt="ícono estado de upload">
+        <p id="stateUploadP"></p>
+    </div>
     `;
 
     let canvasVideo = document.getElementById("canvasVideo"); //get canvas for put the video to rec
+    let OverlayCard = document.getElementById("OverlayCard"); //get overlay card for the canvas video when upload
+    let cardDownloadIcon = document.getElementById("cardDownloadIcon"); //get img node with download icon
+    let cardLinkIcon = document.getElementById("cardLinkIcon"); //get img node with download icon
+    let stateUploadImg = document.getElementById("stateUploadImg"); //get img node with download icon
+    let stateUploadP = document.getElementById("stateUploadP"); //get img node with download icon
+    let OverlayInfoUpload = document.getElementById("OverlayInfoUpload"); //get img node with download icon
+    stateUploadImg.src = './images/loader.svg';
+    stateUploadP.textContent = 'Estamos subiendo tu GIFO';
+
+    OverlayInfoUpload.style.display = 'none';
+    cardDownloadIcon.addEventListener('mouseover', () => {
+        cardDownloadIcon.src = './images/icon-card-download-hover.svg'
+    });
+
+    cardDownloadIcon.addEventListener('mouseout', () => {
+        cardDownloadIcon.src = './images/icon-card-download-normal.svg'
+    });
+
+    cardLinkIcon.addEventListener('mouseover', () => {
+        cardLinkIcon.src = './images/icon-card-link-hover.svg'
+    });
+
+    cardLinkIcon.addEventListener('mouseout', () => {
+        cardLinkIcon.src = './images/icon-card-link-normal.svg'
+    });
+
     canvasVideo.style.display = "block";
 
     let stream = getStreamAndRecord();
+
+    //add the stream (promise) inside btnSaveGif to be able to make an eventlistener without parameters and then to be able to do a removeEventListener so that the timer does not duplicate
+    btnSaveGif.stream = stream;
+
+    console.log('estado del boton grabar');
+    console.log(btnSaveGif);
 
     //animation when video canvas appears
     canvasVideo.style.animation =
         "rotateAxisY 1.5s linear 0s 1 normal backwards";
 
-    stepOne.style.background = "var(--color-primary)";
-    stepOne.style.color = "var(--font-color)";
-    stepTwo.style.background = "var(--font-color)";
-    stepTwo.style.color = "var(--color-primary)";
-    stepThree.style.background = "var(--color-primary)";
-    stepThree.style.color = "var(--font-color)";
+    //update the color and background of the steps buttons
+    formatStepButtons([stepTwo], 'var(--color-primary)', 'var(--font-color', [stepOne, stepThree], 'var(--font-color', 'var(--color-primary)');
 
-    //show / hide  nodes 
-    displayPrepare([btnSaveGif],'block',[btnStartGif, btnEndGif, btnUploadGif , projectionLight, filmCrono, filmRepeat],'none');
- 
+    //show / hide  nodes
+    displayPrepare([btnSaveGif], "block", [btnStartGif, btnEndGif, btnUploadGif, projectionLight, filmCrono, filmRepeat], "none");
 
-    
-    btnSaveGif.addEventListener("click", () => {
-        saveGif(stream);
-    });
+    // btnSaveGif.addEventListener("click", () => {
+    //     saveGif(stream);
+    // });
+    btnSaveGif.addEventListener("click", saveGif);
 }
 //END STEP TWO =======================================================
 
 function saveGif(stream) {
+    console.log('stream llega:');
+    console.log(stream.target.attributes);
+    console.log(stream.target.attributes.atribstream);
     //Animations Start--------------------------------------------------------------
-    projectionLight.style.animation =
-        "twinkle 1.5s ease 0s infinite normal backwards";
-    filmImg.style.animation =
-        "rotateAxisX 1.5s linear 0s infinite normal backwards";
+    projectionLight.style.animation = "twinkle 1.5s ease 0s infinite normal backwards";
+    filmImg.style.animation = "rotateAxisX 1.5s linear 0s infinite normal backwards";
     //End animations start ---------------------------------------------------------
-    
+
     //for cronometer -------------------------------
-    filmCrono.textContent = '00:00:00';
-    writeCronometer();
-    idInterval = setInterval(writeCronometer,1000);
+    filmCrono.textContent = "00:00:00";
+    // writeCronometer();
+    idInterval = setInterval(writeCronometer, 1000);
     //end cronometer----------------------------------
 
-    //show / hide  nodes 
-    displayPrepare([btnEndGif, filmCrono, projectionLight],'block',[btnStartGif, btnSaveGif, btnUploadGif, filmRepeat],'none');
+    //show / hide  nodes
+    displayPrepare([btnEndGif, filmCrono, projectionLight], "block", [btnStartGif, btnSaveGif, btnUploadGif, filmRepeat], "none");
 
-    stream.then(
-        (resultado) => {recordGif(resultado);},
-        (error) => {console.log(error);});
+    stream.target.stream.then(
+        (resultado) => {
+            recordGif(resultado);
+        },
+        (error) => {
+            console.log(error);
+        }
+    );
 }
 
 function writeCronometer() {
@@ -859,20 +909,63 @@ function writeCronometer() {
     let mAux = 0;
     let sAux = 0;
     s++;
-    if (s>59){m++;s=0;}
-    if (m>59){h++;m=0;}
-    if (h>24){h=0;}
 
-    if (s<10){sAux="0"+s;}else{sAux=s;}
-    if (m<10){mAux="0"+m;}else{mAux=m;}
-    if (h<10){hAux="0"+h;}else{hAux=h;}
+    if (s > 59) { m++; s = 0; }
+    if (m > 59) { h++; m = 0; }
+    if (h > 24) { h = 0; }
+
+    if (s < 10) { sAux = "0" + s; } else { sAux = s; }
+    if (m < 10) { mAux = "0" + m; } else { mAux = m; }
+    if (h < 10) { hAux = "0" + h; } else { hAux = h; }
+
     filmCrono.textContent = hAux + ":" + mAux + ":" + sAux;
+}
+
+//STEP THREE =======================================================
+function createGifStepThree() {
+
+    //animation when video canvas appears
+    showVideo.style.animation = "rotateAxisY 1.5s linear 0s 1 normal backwards";
+    OverlayCard.style.animation = "rotateAxisY 1.5s linear 0s 1 normal backwards";
+    OverlayCard.style.display = 'flex';
+    OverlayInfoUpload.style.display = 'flex';
+
+    //update the color and background of the steps buttons
+    formatStepButtons([stepThree], 'var(--color-primary)', 'var(--font-color', [stepOne, stepTwo], 'var(--font-color', 'var(--color-primary)');
+    //disble other buttons
+    stepOne.setAttribute("disabled", "true");
+    stepTwo.setAttribute("disabled", "true");
+    stepThree.setAttribute("disabled", "true");
+    btnUploadGif.style.display = 'none';
+    filmCrono.style.display = 'none';
+
+
+
+    let idMygif = uploadGif(formGif); //here upload gif to giphy.com and get gif id.
+
+    //show info about the upload
+    stateUploadImg.src = './images/check.svg';
+    stateUploadP.textContent = 'GIFO subido con éxito';
+
+    console.log('id mygif:');
+    console.log(idMygif);
+    //update local Storage for my Gifs-----------------------
+    if (idMygif !== '' && idMygif) {
+        if (myGifsLS.indexOf(idMygif) === -1) {
+            //only add the gif if it doesn't exist
+            myGifsLS.push(idMygif);
+            console.log("my gifs despues de agregar: ");
+            console.log(myGifsLS);
+        }
+        localStorage.setItem("myGifs", JSON.stringify(myGifsLS));
+    }
+    //----------------------------------------------------------
+    
 }
 
 
 
-//STEP THREE =======================================================
-function createGifStepThree() {}
+
 //END STEP THREE =======================================================
 
 async function getStreamAndRecord() {
@@ -910,42 +1003,66 @@ function recordGif(mediaStream) {
     recorder.startRecording();
 }
 
-btnEndGif.addEventListener("click", endGif) ;
+btnEndGif.addEventListener("click", endSaveGif);
 
-function endGif(){
+function endSaveGif() {
     let showVideo = document.getElementById("showVideo"); //get img node to put the result of the filming
 
     //reset cronometre
     clearInterval(idInterval);
-    h=0;
-    m=0;
-    s=0;
+    h = 0; m = 0; s = 0;
+    btnSaveGif.removeEventListener("click", saveGif);
     //---------------------
-   
+
     //Animations End---------------------------
-    projectionLight.style.animation ='';
-    filmImg.style.animation = '';
+    projectionLight.style.animation = "";
+    filmImg.style.animation = "";
     //End animations start --------------------
 
-    //show / hide  nodes 
-    displayPrepare([btnUploadGif, filmRepeat],'block',[projectionLight, filmCrono,btnStartGif, btnEndGif, btnSaveGif],'none');
+    //show / hide  nodes
+    displayPrepare([btnUploadGif, filmRepeat], "block", [projectionLight, filmCrono, btnStartGif, btnEndGif, btnSaveGif], "none");
 
+    // //create form to upload gif
+    // let form = new FormData();
 
     recorder.stopRecording(async () => {
         let blob = recorder.getBlob();
+
+        //to show the gif in canvas screen
         let url = URL.createObjectURL(blob);
         canvasVideo.style.display = "none";
         showVideo.style.display = "block";
         showVideo.src = url;
-        let form = new FormData();
-        form.append("file", blob, "myGif.gif");
-        // createGif(form); ESTO ES IMPORTANTE
+        //--------------------------------
+
+        formGif.append("file", blob, "myGif.gif");
     });
+
+    btnUploadGif.addEventListener('click', () => {
+        // let idMygif = uploadGif(formGif); //here upload gif to giphy.com and get gif id.
+
+        // stateUploadImg.src='./images/check.svg';
+        // stateUploadP.textContent = 'GIFO subido con éxito';
+
+
+
+        // console.log(idMygif);
+        // //update local Storage for my Gifs-----------------------
+        // if (myGifsLS.indexOf(idMygif) === -1) {
+        //     //only add the gif if it doesn't exist
+        //     myGifsLS.push(idMygif);
+        //     console.log("my gifs despues de agregar: ");
+        //     console.log(myGifsLS);
+        // }
+        // localStorage.setItem("myGifs", JSON.stringify(myGifsLS));
+        // //----------------------------------------------------------
+    });
+
 }
 
-filmRepeat.addEventListener('click' , createGifStepTwo);
+filmRepeat.addEventListener("click", createGifStepTwo);
 
-
+btnUploadGif.addEventListener('click', createGifStepThree);
 
 //END CREATE GIF SECTION =================================================================
 
