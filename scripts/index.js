@@ -37,8 +37,6 @@ function loadFavoritesFromLS() {
     if (favoriteGifsLS) {
         myFavoritesLS = favoriteGifsLS;
     }
-    console.log("Favorites Loaded");
-    console.log(myFavoritesLS);
 }
 
 //function load myGifs from LocalStorage
@@ -47,8 +45,6 @@ function loadMyGifsFromLS() {
     if (myOwnGifs) {
         myGifsLS = myOwnGifs;
     }
-    console.log("My Gifs Loaded");
-    console.log(myGifsLS);
 }
 
 //FOR THEMES
@@ -452,32 +448,21 @@ async function clickOnGif(gif) {
 
 // add or delete the gif from the favorites section
 function manageFavorite(gif) {
-    console.log("inicio del evento click src: " + favoriteIcon.src);
-    console.log("gif ID: " + gif.target.accessKey);
-    console.log(gif);
     let gifID = gif.target.id;
-    console.log("gifID: " + gifID);
     if (myFavoritesLS.includes(gifID)) {
         favoriteIcon.src = "./images/icon-favorite-inactive.svg";
-        console.log("pasó a inactivo");
 
         //eliminate gif from Favorites
         if (myFavoritesLS.indexOf(gifID) !== -1) {
             myFavoritesLS.splice(myFavoritesLS.indexOf(gifID), 1);
-            console.log("favoritos despues de eliminar: ");
-            console.log(myFavoritesLS);
         }
     } else {
         favoriteIcon.src = "./images/icon-favorite-active.svg";
-        console.log("pasó a activo");
 
         //add gif to favorites
         if (myFavoritesLS.indexOf(gifID) === -1) {
             //only add the gif if it doesn't exist
             myFavoritesLS.push(gifID);
-            console.log("favoritos despues de agregar: ");
-            console.log(myFavoritesLS);
-            console.log(myFavoritesLS.sort());
         }
     }
     localStorage.setItem("myFavorites", JSON.stringify(myFavoritesLS));
@@ -695,10 +680,6 @@ function updateMyGifs() {
         //fix the section margins when the button disappears
         fixMarginSectionResult(btnShowMoreMyGifs);
     } else if (myGifsLS.length - offSetMyGifs >= 0) {
-        console.log('entra a myGifs');
-        console.log('lenght=');
-        console.log( myGifsLS.length);
-        console.log('resta: '+ myGifsLS.length - offSetMyGifs );
         //show the button showMore if there are more gifs to bring
         myGifsLS.length - offSetMyGifs >= 12
         ? (btnShowMoreMyGifs.style.display = "block")
@@ -714,14 +695,8 @@ function updateMyGifs() {
             limitMyGifs = myGifsLS.length;
         }
         
-        console.log('offset');
-        console.log(offSetMyGifs);
-        console.log('limit');
-        console.log(limitMyGifs);
         for (let index = offSetMyGifs; index < limitMyGifs; index++) {
             const element = myGifsLS[index];
-            console.log('elemento');
-            console.log(element);
             showMyGifs(element);
         }
     }
@@ -856,9 +831,6 @@ function createGifStepTwo() {
     //add the stream (promise) inside btnSaveGif to be able to make an eventlistener without parameters and then to be able to do a removeEventListener so that the timer does not duplicate
     btnSaveGif.stream = stream;
 
-    console.log('estado del boton grabar');
-    console.log(btnSaveGif);
-
     //animation when video canvas appears
     canvasVideo.style.animation =
         "rotateAxisY 1.5s linear 0s 1 normal backwards";
@@ -877,9 +849,6 @@ function createGifStepTwo() {
 //END STEP TWO =======================================================
 
 function saveGif(stream) {
-    console.log('stream llega:');
-    console.log(stream.target.attributes);
-    console.log(stream.target.attributes.atribstream);
     //Animations Start--------------------------------------------------------------
     projectionLight.style.animation = "twinkle 1.5s ease 0s infinite normal backwards";
     filmImg.style.animation = "rotateAxisX 1.5s linear 0s infinite normal backwards";
@@ -938,33 +907,35 @@ function createGifStepThree() {
     stepThree.setAttribute("disabled", "true");
     btnUploadGif.style.display = 'none';
     filmCrono.style.display = 'none';
-
-
-
-    let idMygif = uploadGif(formGif); //here upload gif to giphy.com and get gif id.
-
-    //show info about the upload
-    stateUploadImg.src = './images/check.svg';
-    stateUploadP.textContent = 'GIFO subido con éxito';
-
-    console.log('id mygif:');
-    console.log(idMygif);
-    //update local Storage for my Gifs-----------------------
-    if (idMygif !== '' && idMygif) {
-        if (myGifsLS.indexOf(idMygif) === -1) {
-            //only add the gif if it doesn't exist
-            myGifsLS.push(idMygif);
-            console.log("my gifs despues de agregar: ");
-            console.log(myGifsLS);
-        }
-        localStorage.setItem("myGifs", JSON.stringify(myGifsLS));
-    }
-    //----------------------------------------------------------
     
+    let idMyGif = '';
+
+    let gifUploaded = uploadGif(formGif); //here upload gif to giphy.com and get gif id.
+
+    gifUploaded.then(
+        (response) => {;
+            idMyGif = response.data.id;
+            
+            //show info about the upload
+            stateUploadImg.src = './images/check.svg';
+            stateUploadP.textContent = 'GIFO subido con éxito';
+            
+            //update local Storage for my Gifs-----------------------
+            if (idMyGif !== '' && idMyGif) {
+                if (myGifsLS.indexOf(idMyGif) === -1) {
+                    //only add the gif if it doesn't exist
+                    myGifsLS.push(idMyGif);
+                }
+                localStorage.setItem("myGifs", JSON.stringify(myGifsLS));
+            }
+            //----------------------------------------------------------
+        })
+    .catch(
+        (error) => {
+            console.log(error);
+        }
+    );
 }
-
-
-
 
 //END STEP THREE =======================================================
 
@@ -997,7 +968,7 @@ function recordGif(mediaStream) {
         width: 360,
         hidden: 240,
         onGifRecordingStarted: function () {
-            console.log("Started");
+            // console.log("Started");
         },
     });
     recorder.startRecording();
@@ -1037,27 +1008,6 @@ function endSaveGif() {
 
         formGif.append("file", blob, "myGif.gif");
     });
-
-    btnUploadGif.addEventListener('click', () => {
-        // let idMygif = uploadGif(formGif); //here upload gif to giphy.com and get gif id.
-
-        // stateUploadImg.src='./images/check.svg';
-        // stateUploadP.textContent = 'GIFO subido con éxito';
-
-
-
-        // console.log(idMygif);
-        // //update local Storage for my Gifs-----------------------
-        // if (myGifsLS.indexOf(idMygif) === -1) {
-        //     //only add the gif if it doesn't exist
-        //     myGifsLS.push(idMygif);
-        //     console.log("my gifs despues de agregar: ");
-        //     console.log(myGifsLS);
-        // }
-        // localStorage.setItem("myGifs", JSON.stringify(myGifsLS));
-        // //----------------------------------------------------------
-    });
-
 }
 
 filmRepeat.addEventListener("click", createGifStepTwo);

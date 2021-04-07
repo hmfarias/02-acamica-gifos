@@ -68,16 +68,13 @@ async function downloadGif(id) {
 }
 
 
-// export async function uploadGif(formData) {
-export function uploadGif(formData) {
-    // const response = await fetch(URL_BASE_UPLOAD, {
-    //     method: 'POST',
-    //     body: formData
-    // });
-    // const result = await response.json();
-    // console.log(result);
-    // return (result.data.id);
-    return('LOhwoZFUQwfMhww0rx');
+export async function uploadGif(formData) {
+    const response = await fetch(URL_BASE_UPLOAD, {
+        method: 'POST',
+        body: formData
+    });
+    const result = await response.json();
+    return (result);
 
 }
 
