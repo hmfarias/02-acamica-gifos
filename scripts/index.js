@@ -754,14 +754,6 @@ function createGif() {
     btnSaveGif.removeEventListener("click", saveGif);
     //---------------------
 
-
-
-    // ilustraHeader.style.display = "none";
-    // sectionSearch.style.display = "none";
-    // sectionResults.style.display = "none";
-    // sectionFavorites.style.display = "none";
-    // sectionMyGifs.style.display = "none";
-    // sectionTrending.style.display = "none";
     //show createGif section
     sectionCreateGif.style.display = "flex";
     navIcon.src = navIconImageClose;
@@ -789,7 +781,16 @@ function createGifStepOne() {
     <img id="showVideo" alt="">
     `;
 
-    getStreamAndRecord(); //to get access to the camera
+    let streamTest=getStreamAndRecord(); //to get access to the camera
+    streamTest.then((result) => {
+        if(result === undefined) {
+            window.alert('Sin acceso a la cámara');
+            logo.click();
+        } else {
+            releaseCamera();
+
+        }
+    });
 
     //update the color and background of the steps buttons
     formatStepButtons([stepOne], 'var(--color-primary)', 'var(--font-color', [stepTwo, stepThree], 'var(--font-color', 'var(--color-primary)');
@@ -872,7 +873,7 @@ function createGifStepTwo() {
 }
 //END STEP TWO =======================================================
 
-function saveGif(stream) {
+function saveGif(event) {
     //Animations Start--------------------------------------------------------------
     projectionLight.style.animation = "twinkle 1.5s ease 0s infinite normal backwards";
     filmImg.style.animation = "rotateAxisX 1.5s linear 0s infinite normal backwards";
@@ -887,7 +888,7 @@ function saveGif(stream) {
     //show / hide  nodes
     displayPrepare([btnEndGif, filmCrono, projectionLight], "block", [btnStartGif, btnSaveGif, btnUploadGif, filmRepeat], "none");
 
-    stream.target.stream.then(
+    event.target.stream.then(
         (resultado) => {
             recordGif(resultado);
         },
@@ -1063,9 +1064,36 @@ function endSaveGif() {
         showVideo.style.display = "block";
         showVideo.src = url;
         //--------------------------------
-
+        formGif = new FormData();//create form to upload gif
         formGif.append("file", blob, "myGif.gif");
     });
+    //release cammera hardware
+    releaseCamera();
+
+
+}
+
+//release the hardware camera
+function releaseCamera () {
+    // get the Steam 
+    canvasVideo.pause();
+    canvasVideo.src = '';
+
+    // now get the Steam 
+    let streamVideo = canvasVideo.srcObject;
+    console.log('streamVideo');
+    console.log(streamVideo);
+    // now get all tracks
+    let tracks = streamVideo.getTracks();
+    // now close each track by having forEach loop
+    tracks.forEach(function(track) {
+       // stopping every track
+       console.log('track');
+       console.log(track);
+       track.stop();
+    });
+    streamVideo.srcObject = 'null';
+    console.log(streamVideo.srcObject);
 }
 
 filmRepeat.addEventListener("click", createGifStepTwo);
