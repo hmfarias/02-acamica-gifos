@@ -709,7 +709,7 @@ footer .socialMedia a img {
 }
 
 .sectionCreateGif .canvasContainer {
-  width: 95vw;
+  width: 95%;
   height: 53.85vw;
   margin: auto;
   border: 1px solid var(--font-color);
@@ -805,7 +805,7 @@ footer .socialMedia a img {
 
 .sectionCreateGif .canvasContainer .canvasCamera #showVideo {
   display: none;
-  width: 75%;
+  width: 80%;
   height: 45vw;
   -webkit-transition: 1s;
   transition: 1s;
@@ -818,7 +818,7 @@ footer .socialMedia a img {
           justify-content: flex-end;
   position: absolute;
   background-color: rgba(87, 46, 229, 0.7);
-  width: 72%;
+  width: 77%;
   height: 45vw;
   margin: auto;
   margin: auto;
@@ -936,6 +936,8 @@ footer .socialMedia a img {
 }
 
 .sectionCreateGif .stepsContainer .filmContainer #filmTai {
+  -ms-flex-item-align: end;
+      align-self: flex-end;
   width: 30%;
 }
 
