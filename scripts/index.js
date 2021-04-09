@@ -429,7 +429,7 @@ async function clickOnGif(gif) {
         favoriteIcon.id = gif.target.id;
 
         //save the id and id for the gif inside the object subscribed to the click event
-        downloadIcon.id = gif.target.id;
+        downloadIcon.key = gif.target.id;
 
         //save the name for the gif inside the object subscribed to the click event
         let string = info.title;
@@ -682,19 +682,19 @@ function updateMyGifs() {
     } else if (myGifsLS.length - offSetMyGifs >= 0) {
         //show the button showMore if there are more gifs to bring
         myGifsLS.length - offSetMyGifs >= 12
-        ? (btnShowMoreMyGifs.style.display = "block")
-        : (btnShowMoreMyGifs.style.display = "none");
-        
+            ? (btnShowMoreMyGifs.style.display = "block")
+            : (btnShowMoreMyGifs.style.display = "none");
+
         //fix the section margins when the button disappears
         fixMarginSectionResult(btnShowMoreMyGifs);
-        
+
         myGifs.className = "searchGif";
-        
+
         //if the number of gifs are less than the limit, new limit is the length of the myGifsLS array
         if (offSetMyGifs + limitMyGifs > myGifsLS.length) {
             limitMyGifs = myGifsLS.length;
         }
-        
+
         for (let index = offSetMyGifs; index < limitMyGifs; index++) {
             const element = myGifsLS[index];
             showMyGifs(element);
@@ -713,7 +713,7 @@ btnShowMoreMyGifs.addEventListener("click", () => {
 //CREATE GIF SECTION ================================================================================
 //===================================================================================================
 let sectionCreateGif = document.getElementById("sectionCreateGif");
-let formGif = new FormData();//create form to upload gif
+let formGif = null;//create form to upload gif
 let btnStartGif = document.getElementById("btnStartGif");
 let btnSaveGif = document.getElementById("btnSaveGif");
 let btnEndGif = document.getElementById("btnEndGif");
@@ -741,21 +741,43 @@ stepTwo.setAttribute("disabled", "true");
 stepThree.setAttribute("disabled", "true");
 
 function createGif() {
+
+    formGif = new FormData();//create form to upload gif
     //hide the sections that should not appear
-    ilustraHeader.style.display = "none";
-    sectionSearch.style.display = "none";
-    sectionResults.style.display = "none";
-    sectionFavorites.style.display = "none";
-    sectionMyGifs.style.display = "none";
-    sectionTrending.style.display = "none";
+    displayPrepare([navMenu], "block", [ilustraHeader, sectionSearch, sectionResults, sectionFavorites, sectionMyGifs, sectionTrending], "none");
+
+    formatStepButtons([], 'var(--color-primary)', 'var(--font-color', [stepOne, stepTwo, stepThree], 'var(--font-color', 'var(--color-primary)');
+
+    //reset cronometre
+    clearInterval(idInterval);
+    h = 0; m = 0; s = 0;
+    btnSaveGif.removeEventListener("click", saveGif);
+    //---------------------
+
+
+
+    // ilustraHeader.style.display = "none";
+    // sectionSearch.style.display = "none";
+    // sectionResults.style.display = "none";
+    // sectionFavorites.style.display = "none";
+    // sectionMyGifs.style.display = "none";
+    // sectionTrending.style.display = "none";
     //show createGif section
     sectionCreateGif.style.display = "flex";
     navIcon.src = navIconImageClose;
-    navMenu.style.display = "block";
+    // navMenu.style.display = "block";
     changeIconBurger();
 
     //show / hide  nodes
-    displayPrepare([btnStartGif], "block", [btnSaveGif, btnEndGif, btnUploadGif, projectionLight, filmCrono, filmRepeat, OverlayInfoUpload], "none");
+    displayPrepare([btnStartGif], "block", [btnSaveGif, btnEndGif, btnUploadGif, projectionLight, filmCrono, filmRepeat,], "none");
+
+    canvasCamera.innerHTML = `
+    <h2 id="txtCanvasTitle">Aquí podrás <br> crear tus propios <span>GIFOS</span></h2>
+    <p id="txtCanvasParagraph">¡Crea tu GIFO en sólo 3 pasos!<br> (sólo necesitas una cámara para grabar un video)</p>
+    <video id="canvasVideo" class="canvasVideo"></video>
+    <img id="showVideo" alt="">
+    `;
+
 }
 
 //STEP ONE =======================================================
@@ -805,6 +827,8 @@ function createGifStepTwo() {
     let stateUploadP = document.getElementById("stateUploadP"); //get img node with download icon
     let OverlayInfoUpload = document.getElementById("OverlayInfoUpload"); //get img node with download icon
     stateUploadImg.src = './images/loader.svg';
+    stateUploadImg.style.animation = "rotateAxisX 3s linear 0s infinite normal backwards";
+
     stateUploadP.textContent = 'Estamos subiendo tu GIFO';
 
     OverlayInfoUpload.style.display = 'none';
@@ -907,19 +931,26 @@ function createGifStepThree() {
     stepThree.setAttribute("disabled", "true");
     btnUploadGif.style.display = 'none';
     filmCrono.style.display = 'none';
-    
+    displayPrepare([], "block", [filmRepeat, btnUploadGif, projectionLight, filmCrono, btnStartGif, btnEndGif, btnSaveGif], "none");
+
     let idMyGif = '';
 
     let gifUploaded = uploadGif(formGif); //here upload gif to giphy.com and get gif id.
 
     gifUploaded.then(
-        (response) => {;
+        (response) => {
             idMyGif = response.data.id;
-            
+
             //show info about the upload
             stateUploadImg.src = './images/check.svg';
+            stateUploadImg.style.animation = "rotateAxisX 3s linear 0s 2 normal backwards";
             stateUploadP.textContent = 'GIFO subido con éxito';
-            
+            setTimeout(function () {
+                OverlayInfoUpload.style.display = 'none';
+                OverlayCard.style.backgroundColor = 'rgba(87, 46, 229, 0)';
+            }, 4000);
+
+
             //update local Storage for my Gifs-----------------------
             if (idMyGif !== '' && idMyGif) {
                 if (myGifsLS.indexOf(idMyGif) === -1) {
@@ -929,14 +960,41 @@ function createGifStepThree() {
                 localStorage.setItem("myGifs", JSON.stringify(myGifsLS));
             }
             //----------------------------------------------------------
+
+            //download manage
+            //save the id gif's inside the object subscribed to the click event
+            cardDownloadIcon.key = idMyGif;
+            cardLinkIcon.key = idMyGif;
+            
+            //subscribe download icon to the click event
+            //save the name for the gif inside the object subscribed to the click event
+            let numberGif = myGifsLS.length + 1;
+            cardDownloadIcon.name = 'MY-Gif'+ numberGif;
+            cardDownloadIcon.addEventListener("click", downloadGifFunction, false);
+            cardLinkIcon.addEventListener("click", showLink, false);
         })
-    .catch(
-        (error) => {
-            console.log(error);
-        }
-    );
+        .catch(
+            (error) => {
+                console.log(error);
+            }
+        );
 }
 
+
+
+async function showLink (event) {
+    try {
+        let info = await getSearchById(event.target.key);
+        let urlMyGif = info.url;
+        window.open(urlMyGif);
+
+    } catch (error) {
+        console.log(error);
+    }
+
+
+
+}
 //END STEP THREE =======================================================
 
 async function getStreamAndRecord() {
