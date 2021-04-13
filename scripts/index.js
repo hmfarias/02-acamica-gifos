@@ -383,15 +383,41 @@ async function showTrending() {
         info.forEach((element) => {
             // construct the inerHTML for trendings carrousel
             trendingGif.innerHTML += `
-                <img id="${element.id}" src="${element.images.fixed_height.url}" alt= "${element.title}"/>
+                <div class="gifTrendingContainer">
+                    <img id="${element.id}" src="${element.images.fixed_height.url}" alt= "${element.title}"/>
+                    <div id="divHover${element.id}" class="divHover"></div>
+                </div>
             `;
         });
         //suscribe each Gif to click event in order to changge it to full screen mode
-        trendingGif
-            .querySelectorAll(".trendingGif img")
-            .forEach((gifElement) => {
-                gifElement.addEventListener("click", clickOnGif, false);
+        let arrayTrendings = trendingGif.querySelectorAll(".trendingGif img");
+        console.log('array trendings');
+        console.log(arrayTrendings);
+
+        arrayTrendings.forEach(gifElement => {
+            gifElement.addEventListener("click", clickOnGif, false);
+
+            gifElement.addEventListener("mouseover", (event) => {
+                let idHover = 'divHover'+event.target.getAttribute('id');
+                let divHover = document.getElementById(idHover);
+                console.log(divHover);
+
+                divHover.style.display = 'block';
+
+                divHover.addEventListener('mouseout' , () => {
+                    divHover.style.display = 'none';
+                });
             });
+        });
+
+        // trendingGif.querySelectorAll(".trendingGif img").forEach((gifElement) => {
+        //         gifElement.addEventListener("click", clickOnGif, false);
+        // });
+
+
+
+
+
     } catch (error) {
         console.error(error);
     }
