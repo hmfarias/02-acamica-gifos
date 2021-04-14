@@ -390,7 +390,7 @@ async function showTrending() {
                 ? (usrTrend = "Unregistered User")
                 : (usrTrend = element.username);
             element.title === ""
-                ? (titleTrend= "Unregistered Title")
+                ? (titleTrend = "Unregistered Title")
                 : (titleTrend = element.title);
 
 
@@ -406,42 +406,102 @@ async function showTrending() {
                             <h3 class="divHover__infoGif--title">${titleTrend}</h3>
                         </div>
 
-                        <div class="divHover__icons">
-                            <img id="favoriteIconT" class="divHover__button" src="./images/icon-card-favorite-normal.svg" alt="icono favorito">
-                            <img id="downloadIconT" class="divHover__button" src="./images/icon-card-download-normal.svg" alt="descargar gif">
-                            <img id="maxIconT" class="divHover__button" src="./images/icon-card-max-normal.svg" alt="descargar gif">
+                        <div class="divHover__icons" id="divHover__icons">
+                            <img id="${element.id}" key="favorite" class="divHover__button" src="./images/icon-card-favorite-normal.svg" alt="icono favorito">
+                            <img id="${element.id}" key="download" class="divHover__button" src="./images/icon-card-download-normal.svg" alt="descargar gif">
+                            <img id="${element.id}" key="max" class="divHover__button" src="./images/icon-card-max-normal.svg" alt="descargar gif">
                         </div>
 
                     </div>
                 </div>
             `;
         });
+
+
         //suscribe each Gif to click event in order to changge it to full screen mode
-        let arrayTrendings = trendingGif.querySelectorAll(".trendingGif img");
+        let arrayTrendings = trendingGif.querySelectorAll(".gifTrendingContainer > img");
 
         arrayTrendings.forEach(gifElement => {
             gifElement.addEventListener("click", clickOnGif, false);
-            
+
             //mouseover event for gif's card, only must be functional in desktop display
             if (desktopDisplay.matches) {
                 gifElement.addEventListener("mouseover", (event) => {
-                    let idHover = 'divHover'+event.target.getAttribute('id');
+                    let idHover = 'divHover' + event.target.getAttribute('id');
                     let divHover = document.getElementById(idHover);
-    
+
                     divHover.style.display = 'block';
-    
-                    divHover.addEventListener('mouseout' , () => {
+
+                    divHover.addEventListener('mouseout', () => {
                         divHover.style.display = 'none';
                     });
                 });
             }
         });
 
-        // trendingGif.querySelectorAll(".trendingGif img").forEach((gifElement) => {
-        //         gifElement.addEventListener("click", clickOnGif, false);
-        // });
+        // subscribe the overlay icons to the click event
+        let arrayIcon = trendingGif.querySelectorAll(".divHover__icons > img");
+        arrayIcon.forEach(icon => {
+
+            switch (icon.getAttribute('key')) {
+
+                //for favorite icons ============================================
+                case 'favorite':
+
+                    //if the gif is already a favorite, its icon must be active
+                    myFavoritesLS.includes(icon.id)
+                        ? icon.src = './images/icon-card-favorite-active.svg'
+                        : icon.src = './images/icon-card-favorite-normal.svg';
+
+                    icon.addEventListener('mouseover', () => {
+                        //if it is already included in favorites the active icon is not changed
+                        myFavoritesLS.includes(icon.id)
+                            ?icon.src = './images/icon-card-favorite-active.svg'
+                            :icon.src = './images/icon-card-favorite-hover.svg';
+                    });
+
+                    icon.addEventListener('mouseout', () => {
+                        myFavoritesLS.includes(icon.id)
+                            ? icon.src = './images/icon-card-favorite-active.svg'
+                            : icon.src = './images/icon-card-favorite-normal.svg'
+                    });
+
+                    icon.addEventListener('click', () => {
+                        myFavoritesLS.includes(icon.id)
+                            ? icon.src = './images/icon-card-favorite-normal.svg'
+                            : icon.src = './images/icon-card-favorite-active.svg';
+
+                        //call function to manage the favorites asign
+                        manageFavorite(icon);
+                    });
 
 
+                    break;
+
+
+
+                //for download icons ============================================
+                case 'download':
+                    icon.addEventListener('mouseover', () => {
+                        icon.src = './images/icon-card-download-hover.svg';
+                    });
+                    icon.addEventListener('mouseout', () => {
+                        icon.src = './images/icon-card-download-normal.svg';
+                    });
+                    break;
+
+
+                //for max icons ============================================
+                case 'max':
+                    icon.addEventListener('mouseover', () => {
+                        icon.src = './images/icon-card-max-hover.svg';
+                    });
+                    icon.addEventListener('mouseout', () => {
+                        icon.src = './images/icon-card-max-normal.svg';
+                    });
+                    break;
+            }
+        });
 
 
 
@@ -449,6 +509,11 @@ async function showTrending() {
         console.error(error);
     }
 }
+
+
+
+
+
 
 let gifMax = document.getElementById("gifMax"); //get Div node for show the gif in max window
 let gifMaxClose = document.getElementById("gifMaxClose"); //get img node for close max window
@@ -501,7 +566,13 @@ async function clickOnGif(gif) {
 
 // add or delete the gif from the favorites section
 function manageFavorite(gif) {
-    let gifID = gif.target.id;
+    let gifID = null
+
+    //if the call comes from a pointer event
+    Object.prototype.toString.call(gif) === '[object PointerEvent]'
+        ? gifID = gif.target.id
+        : gifID = gif.id;
+
     if (myFavoritesLS.includes(gifID)) {
         favoriteIcon.src = "./images/icon-favorite-inactive.svg";
 
@@ -520,6 +591,10 @@ function manageFavorite(gif) {
     }
     localStorage.setItem("myFavorites", JSON.stringify(myFavoritesLS));
     // favoriteIcon.removeEventListener("click", manageFavorite, false);
+
+    if (sectionFavorites.style.display === "block") {
+        loadFavorites(); //update favorites
+    }
 }
 
 // if usr click over the X icon or in a blank part of the window then close
@@ -834,9 +909,9 @@ function createGifStepOne() {
     <img id="showVideo" alt="">
     `;
 
-    let streamTest=getStreamAndRecord(); //to get access to the camera
+    let streamTest = getStreamAndRecord(); //to get access to the camera
     streamTest.then((result) => {
-        if(result === undefined) {
+        if (result === undefined) {
             window.alert('Sin acceso a la cámara');
             logo.click();
         } else {
@@ -1019,11 +1094,11 @@ function createGifStepThree() {
             //save the id gif's inside the object subscribed to the click event
             cardDownloadIcon.key = idMyGif;
             cardLinkIcon.key = idMyGif;
-            
+
             //subscribe download icon to the click event
             //save the name for the gif inside the object subscribed to the click event
             let numberGif = myGifsLS.length + 1;
-            cardDownloadIcon.name = 'MY-Gif'+ numberGif;
+            cardDownloadIcon.name = 'MY-Gif' + numberGif;
             cardDownloadIcon.addEventListener("click", downloadGifFunction, false);
             cardLinkIcon.addEventListener("click", showLink, false);
         })
@@ -1036,7 +1111,7 @@ function createGifStepThree() {
 
 
 
-async function showLink (event) {
+async function showLink(event) {
     try {
         let info = await getSearchById(event.target.key);
         let urlMyGif = info.url;
@@ -1127,7 +1202,7 @@ function endSaveGif() {
 }
 
 //release the hardware camera
-function releaseCamera () {
+function releaseCamera() {
     // get the Steam 
     canvasVideo.pause();
     canvasVideo.src = '';
@@ -1139,11 +1214,11 @@ function releaseCamera () {
     // now get all tracks
     let tracks = streamVideo.getTracks();
     // now close each track by having forEach loop
-    tracks.forEach(function(track) {
-       // stopping every track
-       console.log('track');
-       console.log(track);
-       track.stop();
+    tracks.forEach(function (track) {
+        // stopping every track
+        console.log('track');
+        console.log(track);
+        track.stop();
     });
     streamVideo.srcObject = 'null';
     console.log(streamVideo.srcObject);

@@ -1,4 +1,5 @@
-const API_KEY= '4SgwG4zh1E8ChFfX2AFRCifOP8Y1bXGx';
+// const API_KEY= '4SgwG4zh1E8ChFfX2AFRCifOP8Y1bXGx';
+const API_KEY= 'mS9UWuLe1OBeyO4BsY2M6U1oWfwEGoT7';
 const URL_BASE_TRENDING = `https://api.giphy.com/v1/gifs/trending?api_key=${API_KEY}&limit=12`;
 const URL_BASE_TRENDING_SEARCH = `https://api.giphy.com/v1/trending/searches?api_key=${API_KEY}&limit=12`;
 const URL_BASE_SUGGESTIONS = `https://api.giphy.com/v1/gifs/search/tags?api_key=${API_KEY}&q=`;
