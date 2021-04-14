@@ -523,7 +523,8 @@ header #ilustraHeader {
   padding-top: 46px;
 }
 
-.trending #pMobile, .trending #pDesktop {
+.trending #pMobile,
+.trending #pDesktop {
   font-family: "Roboto", sans-serif;
   font-weight: 300;
   font-size: 16px;
@@ -550,13 +551,10 @@ header #ilustraHeader {
 
 .trending .trendingGif .gifTrendingContainer {
   position: relative;
-}
-
-.trending .trendingGif .gifTrendingContainer img {
   margin: 0px 11px 0 11px;
 }
 
-.trending .trendingGif .gifTrendingContainer img:first-of-type {
+.trending .trendingGif .gifTrendingContainer:first-of-type {
   margin-left: 22px;
 }
 
@@ -566,8 +564,53 @@ header #ilustraHeader {
   top: 0;
   left: 0;
   width: 100%;
-  height: 300px;
+  height: 100%;
   display: none;
+}
+
+.trending .trendingGif .gifTrendingContainer .divHover .divHover__infoGif {
+  color: #ffffff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  font-family: "Roboto", sans-serif;
+  position: absolute;
+  bottom: 7px;
+  left: 14px;
+}
+
+.trending .trendingGif .gifTrendingContainer .divHover .divHover__infoGif .divHover__infoGif--usr {
+  font-size: 15px;
+  color: #ffffff;
+  text-align: left;
+  font-weight: 100;
+}
+
+.trending .trendingGif .gifTrendingContainer .divHover .divHover__infoGif .divHover__infoGif--title {
+  font-size: 16px;
+  color: #ffffff;
+  text-align: left;
+  padding: 0;
+  line-height: 19px;
+}
+
+.trending .trendingGif .gifTrendingContainer .divHover .divHover__icons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.trending .trendingGif .gifTrendingContainer .divHover .divHover__icons .divHover__button {
+  margin-right: 11px;
+  width: 32px;
 }
 
 footer {

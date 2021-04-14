@@ -12,7 +12,7 @@ import {
     formatStepButtons,
 } from "./services.js";
 
-let control = 0;
+let desktopDisplay = window.matchMedia('(min-width: 1440px)');
 
 window.onload = function () {
     themeLoad(); //load de diurn or nocturn theme as appropriate
@@ -379,35 +379,62 @@ let trendingDescription = document.getElementById("trendingDescription"); //get 
 async function showTrending() {
     try {
         let info = await getTrendings();
+
         trendingGif.innerHTML = "";
         info.forEach((element) => {
+
+            //prepare usr and title text for the card
+            let usrTrend = '';
+            let titleTrend = '';
+            element.username === ''
+                ? (usrTrend = "Unregistered User")
+                : (usrTrend = element.username);
+            element.title === ""
+                ? (titleTrend= "Unregistered Title")
+                : (titleTrend = element.title);
+
+
             // construct the inerHTML for trendings carrousel
             trendingGif.innerHTML += `
                 <div class="gifTrendingContainer">
                     <img id="${element.id}" src="${element.images.fixed_height.url}" alt= "${element.title}"/>
-                    <div id="divHover${element.id}" class="divHover"></div>
+                    
+                    <div id="divHover${element.id}" class="divHover">
+                        
+                        <div class="divHover__infoGif">
+                            <h4 class="divHover__infoGif--usr">${usrTrend}</h4>
+                            <h3 class="divHover__infoGif--title">${titleTrend}</h3>
+                        </div>
+
+                        <div class="divHover__icons">
+                            <img id="favoriteIconT" class="divHover__button" src="./images/icon-card-favorite-normal.svg" alt="icono favorito">
+                            <img id="downloadIconT" class="divHover__button" src="./images/icon-card-download-normal.svg" alt="descargar gif">
+                            <img id="maxIconT" class="divHover__button" src="./images/icon-card-max-normal.svg" alt="descargar gif">
+                        </div>
+
+                    </div>
                 </div>
             `;
         });
         //suscribe each Gif to click event in order to changge it to full screen mode
         let arrayTrendings = trendingGif.querySelectorAll(".trendingGif img");
-        console.log('array trendings');
-        console.log(arrayTrendings);
 
         arrayTrendings.forEach(gifElement => {
             gifElement.addEventListener("click", clickOnGif, false);
-
-            gifElement.addEventListener("mouseover", (event) => {
-                let idHover = 'divHover'+event.target.getAttribute('id');
-                let divHover = document.getElementById(idHover);
-                console.log(divHover);
-
-                divHover.style.display = 'block';
-
-                divHover.addEventListener('mouseout' , () => {
-                    divHover.style.display = 'none';
+            
+            //mouseover event for gif's card, only must be functional in desktop display
+            if (desktopDisplay.matches) {
+                gifElement.addEventListener("mouseover", (event) => {
+                    let idHover = 'divHover'+event.target.getAttribute('id');
+                    let divHover = document.getElementById(idHover);
+    
+                    divHover.style.display = 'block';
+    
+                    divHover.addEventListener('mouseout' , () => {
+                        divHover.style.display = 'none';
+                    });
                 });
-            });
+            }
         });
 
         // trendingGif.querySelectorAll(".trendingGif img").forEach((gifElement) => {
