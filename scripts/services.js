@@ -46,6 +46,8 @@ export async function getSearchById(id) {
 
 //download the gif passed in the id parameter and name it according to the name parameter
 export async function downloadGifFunction(event) {
+    console.log('evento');
+    console.log(event);
     const a = document.createElement("a");
     a.href = await downloadGif(event.target.key);
     a.download = event.target.name;

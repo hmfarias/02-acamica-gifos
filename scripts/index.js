@@ -393,6 +393,8 @@ async function showTrending() {
                 ? (titleTrend = "Unregistered Title")
                 : (titleTrend = element.title);
 
+                let nameGif = titleTrend.replace(/ /g, "-"); //for download 
+    
 
             // construct the inerHTML for trendings carrousel
             trendingGif.innerHTML += `
@@ -407,16 +409,17 @@ async function showTrending() {
                         </div>
 
                         <div class="divHover__icons" id="divHover__icons">
-                            <img id="${element.id}" key="favorite" class="divHover__button" src="./images/icon-card-favorite-normal.svg" alt="icono favorito">
-                            <img id="${element.id}" key="download" class="divHover__button" src="./images/icon-card-download-normal.svg" alt="descargar gif">
-                            <img id="${element.id}" key="max" class="divHover__button" src="./images/icon-card-max-normal.svg" alt="descargar gif">
+                            <img id="${element.id}" src="./images/icon-card-favorite-normal.svg" alt="favorite" key="${element.id}" class="divHover__button" >
+
+                            <img id="${element.id}" src="./images/icon-card-download-normal.svg" alt="download"  class="divHover__button" name=${nameGif}>
+
+                            <img id="${element.id}" key="${element.id}" class="divHover__button" src="./images/icon-card-max-normal.svg" alt="max">
                         </div>
 
                     </div>
                 </div>
             `;
         });
-
 
         //suscribe each Gif to click event in order to changge it to full screen mode
         let arrayTrendings = trendingGif.querySelectorAll(".gifTrendingContainer > img");
@@ -442,12 +445,10 @@ async function showTrending() {
         // subscribe the overlay icons to the click event
         let arrayIcon = trendingGif.querySelectorAll(".divHover__icons > img");
         arrayIcon.forEach(icon => {
-
-            switch (icon.getAttribute('key')) {
-
+            icon.key = icon.id;
+            switch (icon.getAttribute('alt')) {
                 //for favorite icons ============================================
                 case 'favorite':
-
                     //if the gif is already a favorite, its icon must be active
                     myFavoritesLS.includes(icon.id)
                         ? icon.src = './images/icon-card-favorite-active.svg'
@@ -474,11 +475,7 @@ async function showTrending() {
                         //call function to manage the favorites asign
                         manageFavorite(icon);
                     });
-
-
                     break;
-
-
 
                 //for download icons ============================================
                 case 'download':
@@ -488,23 +485,25 @@ async function showTrending() {
                     icon.addEventListener('mouseout', () => {
                         icon.src = './images/icon-card-download-normal.svg';
                     });
-                    break;
-
-
-                //for max icons ============================================
-                case 'max':
-                    icon.addEventListener('mouseover', () => {
-                        icon.src = './images/icon-card-max-hover.svg';
-                    });
                     icon.addEventListener('mouseout', () => {
-                        icon.src = './images/icon-card-max-normal.svg';
+                        icon.src = './images/icon-card-download-normal.svg';
                     });
+                    icon.addEventListener('click', downloadGifFunction, false);
+                    break;
+                    
+                    //for max icons ============================================
+                    case 'max':
+                        icon.addEventListener('mouseover', () => {
+                            icon.src = './images/icon-card-max-hover.svg';
+                        });
+                        icon.addEventListener('mouseout', () => {
+                            icon.src = './images/icon-card-max-normal.svg';
+                        });
+                        icon.addEventListener('click', clickOnGif, false);
                     break;
             }
         });
-
-
-
+        
     } catch (error) {
         console.error(error);
     }
