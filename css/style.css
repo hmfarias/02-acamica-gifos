@@ -390,6 +390,18 @@ header #ilustraHeader {
   display: block;
 }
 
+@media only screen and (min-width: 1440px) {
+  header h1 {
+    width: 40%;
+    font-size: 35px;
+    line-height: 50px;
+    font-weight: bold;
+  }
+  header .imageHeader {
+    width: 27.7%;
+  }
+}
+
 .sectionSearch {
   margin-bottom: 45px;
 }
@@ -426,7 +438,7 @@ header #ilustraHeader {
   width: 85%;
   font-family: "Roboto", sans-serif;
   font-size: 16px;
-  color: #9CAFC3;
+  color: #9cafc3;
   text-align: left;
   background: var(--color-primary);
 }
@@ -458,7 +470,7 @@ header #ilustraHeader {
 .sectionSearch .search .searchSuggestion hr {
   width: 91.65%;
   margin: auto;
-  border-top: 1px solid #9CAFC3;
+  border-top: 1px solid #9cafc3;
 }
 
 .sectionSearch .search .searchSuggestion p {
@@ -466,7 +478,7 @@ header #ilustraHeader {
   font-family: "Roboto", sans-serif;
   font-size: 16px;
   line-height: 21px;
-  color: #9CAFC3;
+  color: #9cafc3;
   text-align: left;
   margin: 0 0 0 15px;
 }
@@ -481,6 +493,7 @@ header #ilustraHeader {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
+  line-height: 19px;
 }
 
 .sectionSearch h3 {
@@ -489,6 +502,19 @@ header #ilustraHeader {
   text-align: center;
   line-height: 25px;
   margin-top: 31px;
+}
+
+@media only screen and (min-width: 1440px) {
+  .sectionSearch .trendingDescription {
+    font-size: 16px;
+  }
+  .sectionSearch .search {
+    margin: 0 auto 73px auto;
+    width: 38.26%;
+  }
+  .sectionSearch h3 {
+    font-size: 18px;
+  }
 }
 
 .sectionResults {
@@ -518,10 +544,9 @@ header #ilustraHeader {
 .sectionResults .searchGif .gifSearchContainer {
   position: relative;
   width: 100%;
-  border: 3px solid red;
 }
 
-.sectionResults .searchGif .gifSearchContainer img {
+.sectionResults .searchGif .gifSearchContainer > img {
   width: 41.6vw;
   height: 41.6vw;
 }
@@ -609,6 +634,43 @@ header #ilustraHeader {
   color: #50E3C2;
   font-size: 22px;
   text-align: center;
+}
+
+@media only screen and (min-width: 1440px) {
+  .sectionResults {
+    width: 78.33%;
+    margin: auto;
+  }
+  .sectionResults hr {
+    margin: 35px auto 80px;
+    width: 23.47%;
+  }
+  .sectionResults .searchGif {
+    -ms-grid-columns: (23.07%)[4];
+        grid-template-columns: repeat(4, 23.07%);
+    -ms-grid-rows: (200px)[3];
+        grid-template-rows: repeat(3, 200px);
+    -webkit-column-gap: 29px;
+            column-gap: 29px;
+    row-gap: 28px;
+    width: 100%;
+    margin: 60px auto 0;
+  }
+  .sectionResults .searchGif .gifSearchContainer > img {
+    width: 100%;
+    max-width: 100%;
+    height: 200px;
+    max-height: 200px;
+  }
+  .sectionResults .searchGifWithoutResult {
+    width: 78.33%;
+  }
+  .sectionResults .searchGifWithoutResult img {
+    width: 10.42%;
+  }
+  .sectionResults h2 {
+    font-size: 35px;
+  }
 }
 
 .trending {

@@ -202,6 +202,7 @@ async function showSuggestions(word) {
                 imgSearchSuggest.src = searchIconImage;
                 let paragraphSuggest = document.createElement("p");
                 paragraphSuggest.textContent = element.name;
+                paragraphSuggest.style.lineHeight = "25px";
 
                 //add the items from the suggestion list to the container
                 searchSuggestion.appendChild(divContainSuggest);
