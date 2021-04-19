@@ -12,6 +12,7 @@
 html {
   background: var(--color-primary);
   scroll-behavior: smooth;
+  border-top: 5px solid var(--burguer-background);
 }
 
 h1, h2, h3, p {
@@ -238,6 +239,7 @@ h2 span {
   --font-color: #572EE5;
   --font-color-secondary: #000000;
   --burguer-background:  rgba(87, 46, 229, 0.9);
+  --createGif-color: #572EE5;
 }
 
 .theme-dark {
@@ -246,6 +248,7 @@ h2 span {
   --font-color: #FFFFFF;
   --font-color-secondary: #FFFFFF;
   --burguer-background: #000000;
+  --createGif-color: #37383C;
 }
 
 .navBar {
@@ -262,7 +265,6 @@ h2 span {
   padding-left: 5.86%;
   padding-right: 6.93%;
   padding-top: 29px;
-  border-top: 5px solid var(--burguer-background);
   margin-bottom: 24.2px;
 }
 
@@ -285,7 +287,7 @@ h2 span {
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
   font-size: 15px;
-  color: #FFFFFF;
+  color: #ffffff;
   line-height: 60px;
   text-align: center;
   cursor: pointer;
@@ -297,17 +299,12 @@ h2 span {
   border-top: px solid rgba(87, 46, 229, 0.5);
 }
 
-.navBar .navMenu a {
-  text-decoration: none;
-  color: #FFFFFF;
-}
-
 .navBar .navMenu #createGifNav {
   width: 54px;
   height: 54px;
   margin: auto;
   background: var(--burguer-background);
-  border: 1px solid #FFFFFF;
+  border: 1px solid #ffffff;
   border-radius: 50%;
   text-align: center;
   font-size: 36px;
@@ -317,8 +314,57 @@ h2 span {
 }
 
 .navBar .navMenu #createGifNav:active {
-  color: #FFFFFF;
-  background: #9CAFC3;
+  color: #ffffff;
+  background: #9cafc3;
+}
+
+@media only screen and (min-width: 1440px) {
+  .navBar {
+    -webkit-box-align: start;
+        -ms-flex-align: start;
+            align-items: flex-start;
+    padding-left: 0%;
+    padding-right: 0%;
+    padding-top: 20px;
+    margin-bottom: 0px;
+    width: 78.33%;
+    margin: auto auto 76px auto;
+  }
+  .navBar .logo {
+    width: 65px;
+  }
+  .navBar .navIcon {
+    display: none;
+  }
+  .navBar .navMenu {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    position: unset;
+    width: 94.73%;
+    height: 0px;
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+  }
+  .navBar .navMenu li {
+    font-weight: bold;
+    font-size: 13px;
+    color: var(--font-color);
+    line-height: 47px;
+    margin-left: 53px;
+    text-transform: uppercase;
+  }
+  .navBar .navMenu hr {
+    display: none;
+  }
+  .navBar .navMenu #createGifNav {
+    margin: 0 0 0 60px;
+    background: #FFFFFF;
+    border: 1px solid var(--font-color);
+    margin-top: 0px;
+    color: var(--createGif-color);
+  }
 }
 
 header h1 {
@@ -465,13 +511,74 @@ header #ilustraHeader {
   -webkit-column-gap: 21px;
           column-gap: 21px;
   row-gap: 25px;
-  justify-items: center;
   width: 88.8vw;
   margin: 38px auto 0;
 }
 
-.sectionResults .searchGif img {
+.sectionResults .searchGif .gifSearchContainer {
+  position: relative;
+  width: 100%;
+  border: 3px solid red;
+}
+
+.sectionResults .searchGif .gifSearchContainer img {
   width: 41.6vw;
+  height: 41.6vw;
+}
+
+.sectionResults .searchGif .gifSearchContainer .divHoverSearch {
+  background-color: rgba(87, 46, 229, 0.7);
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  display: none;
+}
+
+.sectionResults .searchGif .gifSearchContainer .divHoverSearch .divHoverSearch__infoGif {
+  color: #ffffff;
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+      -ms-flex-direction: column;
+          flex-direction: column;
+  font-family: "Roboto", sans-serif;
+  position: absolute;
+  bottom: 7px;
+  left: 14px;
+}
+
+.sectionResults .searchGif .gifSearchContainer .divHoverSearch .divHoverSearch__infoGif .divHoverSearch__infoGif--usr {
+  font-size: 15px;
+  color: #ffffff;
+  text-align: left;
+  font-weight: 100;
+}
+
+.sectionResults .searchGif .gifSearchContainer .divHoverSearch .divHoverSearch__infoGif .divHoverSearch__infoGif--title {
+  font-size: 16px;
+  color: #ffffff;
+  text-align: left;
+  padding: 0;
+  line-height: 19px;
+}
+
+.sectionResults .searchGif .gifSearchContainer .divHoverSearch .divHoverSearch__icons {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
+  margin-top: 10px;
+}
+
+.sectionResults .searchGif .gifSearchContainer .divHoverSearch .divHoverSearch__icons .divHoverSearch__button {
+  margin-right: 11px;
+  width: 32px;
 }
 
 .sectionResults .searchGifWithoutResult {
@@ -504,12 +611,6 @@ header #ilustraHeader {
   text-align: center;
 }
 
-.sectionResults img {
-  display: block;
-  width: 28px;
-  margin: 22px auto 7px auto;
-}
-
 .trending {
   background: VAR(--color-secondary);
 }
@@ -537,7 +638,36 @@ header #ilustraHeader {
   display: none;
 }
 
-.trending .trendingGif {
+.trending .trendingContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-align: center;
+      -ms-flex-align: center;
+          align-items: center;
+  width: 90.07%;
+  margin: 0 auto 50px auto;
+}
+
+.trending .trendingContainer .btnScroll {
+  min-width: 40px;
+  height: 40px;
+  color: var(--font-color);
+  background-color: var(--color-secondary);
+  font-size: 21px;
+  border: 1px solid var(--font-color);
+  margin-left: 22px;
+  margin-right: 22px;
+  text-align: center;
+  display: none;
+}
+
+.trending .trendingContainer .btnScroll:hover {
+  color: var(--color-secondary);
+  background-color: var(--font-color);
+}
+
+.trending .trendingContainer .trendingGif {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -546,19 +676,19 @@ header #ilustraHeader {
       -ms-flex-direction: row;
           flex-direction: row;
   overflow: scroll;
-  margin: 32px 0px 82px 0px;
+  margin: 32px 0px 32px 0px;
 }
 
-.trending .trendingGif .gifTrendingContainer {
+.trending .trendingContainer .trendingGif .gifTrendingContainer {
   position: relative;
   margin: 0px 11px 0 11px;
 }
 
-.trending .trendingGif .gifTrendingContainer:first-of-type {
-  margin-left: 22px;
+.trending .trendingContainer .trendingGif .gifTrendingContainer:first-of-type {
+  margin: 0px 11px 0 0;
 }
 
-.trending .trendingGif .gifTrendingContainer .divHover {
+.trending .trendingContainer .trendingGif .gifTrendingContainer .divHover {
   background-color: rgba(87, 46, 229, 0.7);
   position: absolute;
   top: 0;
@@ -568,7 +698,7 @@ header #ilustraHeader {
   display: none;
 }
 
-.trending .trendingGif .gifTrendingContainer .divHover .divHover__infoGif {
+.trending .trendingContainer .trendingGif .gifTrendingContainer .divHover .divHover__infoGif {
   color: #ffffff;
   display: -webkit-box;
   display: -ms-flexbox;
@@ -583,14 +713,14 @@ header #ilustraHeader {
   left: 14px;
 }
 
-.trending .trendingGif .gifTrendingContainer .divHover .divHover__infoGif .divHover__infoGif--usr {
+.trending .trendingContainer .trendingGif .gifTrendingContainer .divHover .divHover__infoGif .divHover__infoGif--usr {
   font-size: 15px;
   color: #ffffff;
   text-align: left;
   font-weight: 100;
 }
 
-.trending .trendingGif .gifTrendingContainer .divHover .divHover__infoGif .divHover__infoGif--title {
+.trending .trendingContainer .trendingGif .gifTrendingContainer .divHover .divHover__infoGif .divHover__infoGif--title {
   font-size: 16px;
   color: #ffffff;
   text-align: left;
@@ -598,7 +728,7 @@ header #ilustraHeader {
   line-height: 19px;
 }
 
-.trending .trendingGif .gifTrendingContainer .divHover .divHover__icons {
+.trending .trendingContainer .trendingGif .gifTrendingContainer .divHover .divHover__icons {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
@@ -608,7 +738,7 @@ header #ilustraHeader {
   margin-top: 10px;
 }
 
-.trending .trendingGif .gifTrendingContainer .divHover .divHover__icons .divHover__button {
+.trending .trendingContainer .trendingGif .gifTrendingContainer .divHover .divHover__icons .divHover__button {
   margin-right: 11px;
   width: 32px;
 }

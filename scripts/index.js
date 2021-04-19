@@ -246,17 +246,130 @@ async function showSearch(word, offset) {
                 //fix the section margins when the button disappears
                 fixMarginSectionResult(btnShowMore);
 
+                //prepare usr and title text for the card
+                let usrSearch = '';
+                let titleSearch = '';
+                element.username === ''
+                    ? (usrSearch = "Unregistered User")
+                    : (usrSearch = element.username);
+                element.title === ""
+                    ? (titleSearch = "Unregistered Title")
+                    : (titleSearch = element.title);
+
+                let nameGifSearch = titleSearch.replace(/ /g, "-"); //for download 
+
                 searchGif.className = "searchGif";
                 searchGif.innerHTML += `
-                <img id="${element.id}" src="${element.images.fixed_height.url}">
+                    <div class="gifSearchContainer">
+                        <img id="${element.id}" src="${element.images.fixed_height.url}" alt= "${titleSearch}"/>
+
+                        <div id="divHoverSearch${element.id}" class="divHoverSearch">
+
+                            <div class="divHoverSearch__infoGif">
+                                <h4 class="divHoverSearch__infoGif--usr">${usrSearch}</h4>
+                                <h3 class="divHoverSearch__infoGif--title">${titleSearch}</h3>
+                            </div>
+
+                            <div class="divHoverSearch__icons" id="divHoverSearch__icons">
+
+                                <img id="${element.id}" src="./images/icon-card-favorite-normal.svg" alt="favorite" key="${element.id}" class="divHoverSearch__button" >
+
+                                <img id="${element.id}" src="./images/icon-card-download-normal.svg" alt="download"  class="divHoverSearch__button" name=${nameGifSearch}>
+
+                                <img id="${element.id}" key="${element.id}" class="divHoverSearch__button" src="./images/icon-card-max-normal.svg" alt="max">
+                            </div>
+
+                        </div>
+                    </div>
                 `;
             });
 
             //suscribe each Gif to click event in order to changge it to full screen mode
-            searchGif.querySelectorAll(".searchGif img")
+            searchGif.querySelectorAll(".gifSearchContainer > img")
                 .forEach((gifElement) => {
                     gifElement.addEventListener("click", clickOnGif, false);
+                    //mouseover event for gif's card, only must be functional in desktop display
+                    if (desktopDisplay.matches) {
+                        gifElement.addEventListener("mouseover", (event) => {
+                            let idHoverSearch = 'divHoverSearch' + event.target.getAttribute('id');
+                            let divHoverSearch = document.getElementById(idHoverSearch);
+
+                            divHoverSearch.style.display = 'block';
+
+                            divHoverSearch.addEventListener('mouseout', () => {
+                                divHoverSearch.style.display = 'none';
+                            });
+                        });
+                    }
                 });
+
+            // subscribe the overlay icons to the click event
+            searchGif.querySelectorAll(".divHoverSearch__icons > img")
+            .forEach(icon => {
+                icon.key = icon.id;
+                switch (icon.getAttribute('alt')) {
+                    //for favorite icons ============================================
+                    case 'favorite':
+                        //if the gif is already a favorite, its icon must be active
+                        myFavoritesLS.includes(icon.id)
+                            ? icon.src = './images/icon-card-favorite-active.svg'
+                            : icon.src = './images/icon-card-favorite-normal.svg';
+
+                        icon.addEventListener('mouseover', () => {
+                            //if it is already included in favorites the active icon is not changed
+                            myFavoritesLS.includes(icon.id)
+                                ? icon.src = './images/icon-card-favorite-active.svg'
+                                : icon.src = './images/icon-card-favorite-hover.svg';
+                        });
+
+                        icon.addEventListener('mouseout', () => {
+                            myFavoritesLS.includes(icon.id)
+                                ? icon.src = './images/icon-card-favorite-active.svg'
+                                : icon.src = './images/icon-card-favorite-normal.svg'
+                        });
+
+                        icon.addEventListener('click', () => {
+                            myFavoritesLS.includes(icon.id)
+                                ? icon.src = './images/icon-card-favorite-normal.svg'
+                                : icon.src = './images/icon-card-favorite-active.svg';
+
+                            //call function to manage the favorites asign
+                            manageFavorite(icon);
+                        });
+                        break;
+
+                    //for download icons ============================================
+                    case 'download':
+                        icon.addEventListener('mouseover', () => {
+                            icon.src = './images/icon-card-download-hover.svg';
+                        });
+                        icon.addEventListener('mouseout', () => {
+                            icon.src = './images/icon-card-download-normal.svg';
+                        });
+                        icon.addEventListener('mouseout', () => {
+                            icon.src = './images/icon-card-download-normal.svg';
+                        });
+                        icon.addEventListener('click', downloadGifFunction, false);
+                        break;
+
+                    //for max icons ============================================
+                    case 'max':
+                        icon.addEventListener('mouseover', () => {
+                            icon.src = './images/icon-card-max-hover.svg';
+                        });
+                        icon.addEventListener('mouseout', () => {
+                            icon.src = './images/icon-card-max-normal.svg';
+                        });
+                        icon.addEventListener('click', clickOnGif, false);
+                        break;
+                }
+            });
+
+
+
+
+
+
 
             //after search, show ilustra header again
             ilustraHeader.style.display = "block";
@@ -374,6 +487,29 @@ btnShowMore.addEventListener("click", () => {
 let sectionTrending = document.getElementById("sectionTrending"); //get DIV node where show the trending gifs
 let trendingGif = document.getElementById("trendingGif"); //get DIV node where show the trending gifs
 let trendingDescription = document.getElementById("trendingDescription"); //get DIV node where places the trendig descriptions
+let btnScrollLeft = document.getElementById("btnScrollLeft"); //get button node for scrolling
+let btnScrollRight = document.getElementById("btnScrollRight"); //get button node for scrolling
+
+
+var scrollAmount = 0;
+var scrollMin = 0;
+var scrollMax = trendingGif.clientWidth;
+btnScrollLeft.addEventListener('click', () => {
+    trendingGif.scrollTo({
+        top: 0,
+        left: Math.max(scrollAmount -= 500, scrollMin),
+        behavior: 'smooth'
+    });
+});
+
+btnScrollRight.addEventListener('click', () => {
+    trendingGif.scrollTo({
+        top: 0,
+        left: Math.max(scrollAmount += 500, scrollMax),
+        behavior: 'smooth'
+    });
+
+});
 
 //function that shows trending gifs
 async function showTrending() {
@@ -393,13 +529,13 @@ async function showTrending() {
                 ? (titleTrend = "Unregistered Title")
                 : (titleTrend = element.title);
 
-                let nameGif = titleTrend.replace(/ /g, "-"); //for download 
-    
+            let nameGif = titleTrend.replace(/ /g, "-"); //for download 
+
 
             // construct the inerHTML for trendings carrousel
             trendingGif.innerHTML += `
                 <div class="gifTrendingContainer">
-                    <img id="${element.id}" src="${element.images.fixed_height.url}" alt= "${element.title}"/>
+                    <img id="${element.id}" src="${element.images.fixed_height.url}" alt= "${titleTrend}"/>
                     
                     <div id="divHover${element.id}" class="divHover">
                         
@@ -422,25 +558,24 @@ async function showTrending() {
         });
 
         //suscribe each Gif to click event in order to changge it to full screen mode
-        let arrayTrendings = trendingGif.querySelectorAll(".gifTrendingContainer > img");
+        trendingGif.querySelectorAll(".gifTrendingContainer > img")
+            .forEach(gifElement => {
+                gifElement.addEventListener("click", clickOnGif, false);
 
-        arrayTrendings.forEach(gifElement => {
-            gifElement.addEventListener("click", clickOnGif, false);
+                //mouseover event for gif's card, only must be functional in desktop display
+                if (desktopDisplay.matches) {
+                    gifElement.addEventListener("mouseover", (event) => {
+                        let idHover = 'divHover' + event.target.getAttribute('id');
+                        let divHover = document.getElementById(idHover);
 
-            //mouseover event for gif's card, only must be functional in desktop display
-            if (desktopDisplay.matches) {
-                gifElement.addEventListener("mouseover", (event) => {
-                    let idHover = 'divHover' + event.target.getAttribute('id');
-                    let divHover = document.getElementById(idHover);
+                        divHover.style.display = 'block';
 
-                    divHover.style.display = 'block';
-
-                    divHover.addEventListener('mouseout', () => {
-                        divHover.style.display = 'none';
+                        divHover.addEventListener('mouseout', () => {
+                            divHover.style.display = 'none';
+                        });
                     });
-                });
-            }
-        });
+                }
+            });
 
         // subscribe the overlay icons to the click event
         let arrayIcon = trendingGif.querySelectorAll(".divHover__icons > img");
@@ -457,8 +592,8 @@ async function showTrending() {
                     icon.addEventListener('mouseover', () => {
                         //if it is already included in favorites the active icon is not changed
                         myFavoritesLS.includes(icon.id)
-                            ?icon.src = './images/icon-card-favorite-active.svg'
-                            :icon.src = './images/icon-card-favorite-hover.svg';
+                            ? icon.src = './images/icon-card-favorite-active.svg'
+                            : icon.src = './images/icon-card-favorite-hover.svg';
                     });
 
                     icon.addEventListener('mouseout', () => {
@@ -490,20 +625,20 @@ async function showTrending() {
                     });
                     icon.addEventListener('click', downloadGifFunction, false);
                     break;
-                    
-                    //for max icons ============================================
-                    case 'max':
-                        icon.addEventListener('mouseover', () => {
-                            icon.src = './images/icon-card-max-hover.svg';
-                        });
-                        icon.addEventListener('mouseout', () => {
-                            icon.src = './images/icon-card-max-normal.svg';
-                        });
-                        icon.addEventListener('click', clickOnGif, false);
+
+                //for max icons ============================================
+                case 'max':
+                    icon.addEventListener('mouseover', () => {
+                        icon.src = './images/icon-card-max-hover.svg';
+                    });
+                    icon.addEventListener('mouseout', () => {
+                        icon.src = './images/icon-card-max-normal.svg';
+                    });
+                    icon.addEventListener('click', clickOnGif, false);
                     break;
             }
         });
-        
+
     } catch (error) {
         console.error(error);
     }
