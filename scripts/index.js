@@ -73,13 +73,16 @@ navIcon.addEventListener("click", () => {
 
 //function to change the burger menu icon when the user clicks on it
 function changeIconBurger() {
+    if (desktopDisplay.matches) {
+        navMenu.style.display = "flex";
+    }else {
     if (navMenu.style.display === "" || navMenu.style.display === "none") {
         navIcon.src = navIconImageClose;
         navMenu.style.display = "block";
     } else {
         navIcon.src = navIconImageBurger;
-        navMenu.style.display = "none";
-        // navMenu.style.display = "none";
+            navMenu.style.display = "none";
+        }
     }
 }
 // END FOR BURGER MENU IN MOBILE MODE ---------
@@ -233,7 +236,7 @@ searchGif.innerHTML = "";
 
 let btnShowMore = document.getElementById("btnShowMore"); //get "Show More" button node
 
-//function that shows search gifs
+//function that shows the searched gifs
 async function showSearch(word, offset) {
     try {
         const info = await getSearchByWord(word, offset);
@@ -306,65 +309,65 @@ async function showSearch(word, offset) {
 
             // subscribe the overlay icons to the click event
             searchGif.querySelectorAll(".divHoverSearch__icons > img")
-            .forEach(icon => {
-                icon.key = icon.id;
-                switch (icon.getAttribute('alt')) {
-                    //for favorite icons ============================================
-                    case 'favorite':
-                        //if the gif is already a favorite, its icon must be active
-                        myFavoritesLS.includes(icon.id)
-                            ? icon.src = './images/icon-card-favorite-active.svg'
-                            : icon.src = './images/icon-card-favorite-normal.svg';
-
-                        icon.addEventListener('mouseover', () => {
-                            //if it is already included in favorites the active icon is not changed
+                .forEach(icon => {
+                    icon.key = icon.id;
+                    switch (icon.getAttribute('alt')) {
+                        //for favorite icons ============================================
+                        case 'favorite':
+                            //if the gif is already a favorite, its icon must be active
                             myFavoritesLS.includes(icon.id)
                                 ? icon.src = './images/icon-card-favorite-active.svg'
-                                : icon.src = './images/icon-card-favorite-hover.svg';
-                        });
+                                : icon.src = './images/icon-card-favorite-normal.svg';
 
-                        icon.addEventListener('mouseout', () => {
-                            myFavoritesLS.includes(icon.id)
-                                ? icon.src = './images/icon-card-favorite-active.svg'
-                                : icon.src = './images/icon-card-favorite-normal.svg'
-                        });
+                            icon.addEventListener('mouseover', () => {
+                                //if it is already included in favorites the active icon is not changed
+                                myFavoritesLS.includes(icon.id)
+                                    ? icon.src = './images/icon-card-favorite-active.svg'
+                                    : icon.src = './images/icon-card-favorite-hover.svg';
+                            });
 
-                        icon.addEventListener('click', () => {
-                            myFavoritesLS.includes(icon.id)
-                                ? icon.src = './images/icon-card-favorite-normal.svg'
-                                : icon.src = './images/icon-card-favorite-active.svg';
+                            icon.addEventListener('mouseout', () => {
+                                myFavoritesLS.includes(icon.id)
+                                    ? icon.src = './images/icon-card-favorite-active.svg'
+                                    : icon.src = './images/icon-card-favorite-normal.svg'
+                            });
 
-                            //call function to manage the favorites asign
-                            manageFavorite(icon);
-                        });
-                        break;
+                            icon.addEventListener('click', () => {
+                                myFavoritesLS.includes(icon.id)
+                                    ? icon.src = './images/icon-card-favorite-normal.svg'
+                                    : icon.src = './images/icon-card-favorite-active.svg';
 
-                    //for download icons ============================================
-                    case 'download':
-                        icon.addEventListener('mouseover', () => {
-                            icon.src = './images/icon-card-download-hover.svg';
-                        });
-                        icon.addEventListener('mouseout', () => {
-                            icon.src = './images/icon-card-download-normal.svg';
-                        });
-                        icon.addEventListener('mouseout', () => {
-                            icon.src = './images/icon-card-download-normal.svg';
-                        });
-                        icon.addEventListener('click', downloadGifFunction, false);
-                        break;
+                                //call function to manage the favorites asign
+                                manageFavorite(icon);
+                            });
+                            break;
 
-                    //for max icons ============================================
-                    case 'max':
-                        icon.addEventListener('mouseover', () => {
-                            icon.src = './images/icon-card-max-hover.svg';
-                        });
-                        icon.addEventListener('mouseout', () => {
-                            icon.src = './images/icon-card-max-normal.svg';
-                        });
-                        icon.addEventListener('click', clickOnGif, false);
-                        break;
-                }
-            });
+                        //for download icons ============================================
+                        case 'download':
+                            icon.addEventListener('mouseover', () => {
+                                icon.src = './images/icon-card-download-hover.svg';
+                            });
+                            icon.addEventListener('mouseout', () => {
+                                icon.src = './images/icon-card-download-normal.svg';
+                            });
+                            icon.addEventListener('mouseout', () => {
+                                icon.src = './images/icon-card-download-normal.svg';
+                            });
+                            icon.addEventListener('click', downloadGifFunction, false);
+                            break;
+
+                        //for max icons ============================================
+                        case 'max':
+                            icon.addEventListener('mouseover', () => {
+                                icon.src = './images/icon-card-max-hover.svg';
+                            });
+                            icon.addEventListener('mouseout', () => {
+                                icon.src = './images/icon-card-max-normal.svg';
+                            });
+                            icon.addEventListener('click', clickOnGif, false);
+                            break;
+                    }
+                });
 
 
 
@@ -492,25 +495,55 @@ let btnScrollLeft = document.getElementById("btnScrollLeft"); //get button node 
 let btnScrollRight = document.getElementById("btnScrollRight"); //get button node for scrolling
 
 
+
+//FOR SCROLLING ---------------------------------------------
 var scrollAmount = 0;
 var scrollMin = 0;
-var scrollMax = trendingGif.clientWidth;
+// var scrollMax = trendingGif.clientWidth;
+var scrollMed = trendingGif.clientWidth;
+var scrollMax = trendingGif.clientWidth + 714;
+
+let xScroll = null;
 btnScrollLeft.addEventListener('click', () => {
-    trendingGif.scrollTo({
-        top: 0,
-        left: Math.max(scrollAmount -= 500, scrollMin),
-        behavior: 'smooth'
-    });
+    btnScrollRight.style.display = 'block';
+    xScroll = getScrollPositionX();
+    if (xScroll>scrollMin) {
+        trendingGif.scrollTo({
+            top: 0,
+            left: Math.max(scrollAmount -= 700, scrollMin),
+            behavior: 'smooth'
+        });
+    }
+    xScroll===scrollMin 
+    ?btnScrollLeft.style.display = 'none'
+    :btnScrollLeft.style.display = 'block';
 });
 
 btnScrollRight.addEventListener('click', () => {
-    trendingGif.scrollTo({
-        top: 0,
-        left: Math.max(scrollAmount += 500, scrollMax),
-        behavior: 'smooth'
-    });
-
+    btnScrollLeft.style.display = 'block';
+    xScroll = getScrollPositionX();
+    if(xScroll<=scrollMax ){
+        trendingGif.scrollTo({
+            top: 0,
+            left: Math.min(scrollAmount += 700, scrollMax),
+            behavior: 'smooth'
+        });  
+    }
+    xScroll>=scrollMax || xScroll>scrollMed
+    ?btnScrollRight.style.display = 'none'
+    :btnScrollRight.style.display = 'block';
 });
+
+//function returns x axis position in trendingGif
+const getScrollPositionX = () => {
+    if(trendingGif.pageXOffset !== undefined){
+        return trendingGif.pageXOffset;
+    } else {
+        return trendingGif.scrollLeft;
+    }      
+};
+//END FOR SCROLLING ---------------------------------------------
+
 
 //function that shows trending gifs
 async function showTrending() {
@@ -801,15 +834,168 @@ async function showFavorites(id) {
     try {
         const favorite = await getSearchById(id);
 
-        //create gif
-        let favoriteGifNew = document.createElement("img");
-        favoriteGifNew.src = favorite.images.fixed_height.url;
-        favoriteGifNew.alt = "Gif favorito";
-        favoriteGifNew.id = favorite.id;
-        favoriteGifs.appendChild(favoriteGifNew);
+        //prepare usr and title text for the card
+        let usrFavorite = '';
+        let titleFavorite = '';
+        favorite.username === ''
+            ? (usrFavorite = "Unregistered User")
+            : (usrFavorite = favorite.username);
+        favorite.title === ""
+            ? (titleFavorite = "Unregistered Title")
+            : (titleFavorite = favorite.title);
+
+        let nameGifFavorite = titleFavorite.replace(/ /g, "-"); //for download 
+
+        //create Div container
+        //<div class="gifSearchContainer">
+        let gifFavoriteContainterNew = document.createElement("div");
+        gifFavoriteContainterNew.className = "gifSearchContainer";
+
+        //<img id="${element.id}" src="${element.images.fixed_height.url}" alt= "${titleSearch}"/>
+        let imgGifNew = document.createElement("img");
+        imgGifNew.src = favorite.images.fixed_height.url;
+        imgGifNew.alt = titleFavorite;
+        imgGifNew.id = favorite.id;
+
+        //<div id="divHoverSearch${element.id}" class="divHoverSearch">
+        let divHoverFavoriteNew = document.createElement("div");
+        divHoverFavoriteNew.id = `divHoverFavorite${favorite.id}`;
+        divHoverFavoriteNew.className = "divHoverSearch";
+
+        // --------------------------------------------------------
+        //<div class="divHoverSearch__infoGif">
+        let divHoverFavorite__infoGifNew = document.createElement("div");
+        divHoverFavorite__infoGifNew.className = "divHoverSearch__infoGif";
+
+        //<h4 class="divHoverSearch__infoGif--usr">${usrSearch}</h4>
+        let h4New = document.createElement("h4");
+        h4New.className = "divHoverSearch__infoGif--usr";
+        h4New.textContent = usrFavorite;
+
+        //<h3 class="divHoverSearch__infoGif--title">${titleSearch}</h3>
+        let h3New = document.createElement("h3");
+        h3New.className = "divHoverSearch__infoGif--title";
+        h3New.textContent = titleFavorite;
+
+        divHoverFavorite__infoGifNew.appendChild(h4New);
+        divHoverFavorite__infoGifNew.appendChild(h3New);
+        // --------------------------------------------------------
+
+        //<div class="divHoverSearch__icons" id="divHoverSearch__icons">
+        let divHoverFavorite_iconsNew = document.createElement("div");
+        divHoverFavorite_iconsNew.id = 'divHoverFavorite__icons';
+        divHoverFavorite_iconsNew.className = "divHoverSearch__icons";
+
+        // <img id="${element.id}" src="./images/icon-card-favorite-normal.svg" alt="favorite" key="${element.id}" class="divHoverSearch__button" >
+        let imgFavoriteNew = document.createElement("img");
+        imgFavoriteNew.id = favorite.id;
+        imgFavoriteNew.src = './images/icon-card-favorite-normal.svg';
+        imgFavoriteNew.alt = 'favorite';
+        imgFavoriteNew.key = favorite.id;
+        imgFavoriteNew.className = 'divHoverSearch__button';
+
+        // <img id="${element.id}" src="./images/icon-card-download-normal.svg" alt="download"  class="divHoverSearch__button" name=${nameGifSearch}>
+        let imgDownNew = document.createElement("img");
+        imgDownNew.id = favorite.id;
+        imgDownNew.src = './images/icon-card-download-normal.svg';
+        imgDownNew.alt = 'download';
+        imgDownNew.key = favorite.id;
+        imgDownNew.className = 'divHoverSearch__button';
+        imgDownNew.name = nameGifFavorite;
+
+        // <img id="${element.id}" key="${element.id}" class="divHoverSearch__button" src="./images/icon-card-max-normal.svg" alt="max">
+        let imgMaxNew = document.createElement("img");
+        imgMaxNew.id = favorite.id;
+        imgMaxNew.key = favorite.id;
+        imgMaxNew.className = 'divHoverSearch__button';
+        imgMaxNew.src = './images/icon-card-max-normal.svg';
+        imgMaxNew.alt = 'max';
+
+        divHoverFavorite_iconsNew.appendChild(imgFavoriteNew);
+        divHoverFavorite_iconsNew.appendChild(imgDownNew);
+        divHoverFavorite_iconsNew.appendChild(imgMaxNew);
+
+        divHoverFavoriteNew.appendChild(divHoverFavorite__infoGifNew);
+        divHoverFavoriteNew.appendChild(divHoverFavorite_iconsNew);
+
+        gifFavoriteContainterNew.appendChild(imgGifNew);
+        gifFavoriteContainterNew.appendChild(divHoverFavoriteNew);
+
+        favoriteGifs.appendChild(gifFavoriteContainterNew);
+
+
 
         //suscribe each Gif to click event in order to changge it to full screen mode and manage favorite or download
-        favoriteGifNew.addEventListener("click", clickOnGif, false);
+        imgGifNew.addEventListener("click", clickOnGif, false);
+
+        //mouseover event for gif's card, only must be functional in desktop display
+        if (desktopDisplay.matches) {
+            gifFavoriteContainterNew.addEventListener("mouseover", (event) => {
+                let idHoverFavorite = 'divHoverFavorite' + event.target.getAttribute('id');
+                let divHoverFavorite = document.getElementById(idHoverFavorite);
+
+                divHoverFavoriteNew.style.display = 'block';
+
+                divHoverFavoriteNew.addEventListener('mouseout', () => {
+                    divHoverFavoriteNew.style.display = 'none';
+                });
+            });
+        }
+
+        // subscribe the overlay icons to the click event
+
+        //For FAVORITE icon -----------------------------------------------
+        //if the gif is already a favorite, its icon must be active
+        myFavoritesLS.includes(imgFavoriteNew.id)
+        ? imgFavoriteNew.src = './images/icon-card-favorite-active.svg'
+        : imgFavoriteNew.src = './images/icon-card-favorite-normal.svg';
+        
+        imgFavoriteNew.addEventListener('mouseover', () => {
+            //if it is already included in favorites the active icon is not changed
+            myFavoritesLS.includes(imgFavoriteNew.id)
+            ? imgFavoriteNew.src = './images/icon-card-favorite-active.svg'
+            : imgFavoriteNew.src = './images/icon-card-favorite-hover.svg';
+        });
+        
+        imgFavoriteNew.addEventListener('mouseout', () => {
+            myFavoritesLS.includes(imgFavoriteNew.id)
+            ? imgFavoriteNew.src = './images/icon-card-favorite-active.svg'
+            : imgFavoriteNew.src = './images/icon-card-favorite-normal.svg'
+        });
+        
+        imgFavoriteNew.addEventListener('click', () => {
+            myFavoritesLS.includes(imgFavoriteNew.id)
+            ? imgFavoriteNew.src = './images/icon-card-favorite-normal.svg'
+            : imgFavoriteNew.src = './images/icon-card-favorite-active.svg';
+            
+            //call function to manage the favorites asign
+            manageFavorite(imgFavoriteNew);
+        });
+        //END For FAVORITE icon -----------------------------------------------
+        
+        //For DOWNLOAD icon -----------------------------------------------
+        imgDownNew.addEventListener('mouseover', () => {
+            imgDownNew.src = './images/icon-card-download-hover.svg';
+        });
+        imgDownNew.addEventListener('mouseout', () => {
+            imgDownNew.src = './images/icon-card-download-normal.svg';
+        });
+        imgDownNew.addEventListener('mouseout', () => {
+            imgDownNew.src = './images/icon-card-download-normal.svg';
+        });
+        imgDownNew.addEventListener('click', downloadGifFunction, false);
+        //END For DOWNLOAD icon -----------------------------------------------
+        
+        //For MAX icon -----------------------------------------------
+        imgMaxNew.addEventListener('mouseover', () => {
+            imgMaxNew.src = './images/icon-card-max-hover.svg';
+        });
+        imgMaxNew.addEventListener('mouseout', () => {
+            imgMaxNew.src = './images/icon-card-max-normal.svg';
+        });
+        imgMaxNew.addEventListener('click', clickOnGif, false);
+        //END For MAX icon -----------------------------------------------
+        
     } catch (error) {
         console.error(error);
     }

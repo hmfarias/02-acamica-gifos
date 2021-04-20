@@ -87,9 +87,13 @@ export async function uploadGif(formData) {
 
 //fix the section results margins when the button show more disappears
 export function fixMarginSectionResult(button) {
-    button.style.display === "none" 
-    ? sectionResults.style.marginBottom ='74px'
-    : sectionResults.style.marginBottom ='0';
+    if(button.style.display === "none") {
+        sectionResults.style.marginBottom ='74px';
+        sectionFavorites.style.marginBottom ='74px';
+    } else {
+        sectionResults.style.marginBottom ='0';
+        sectionFavorites.style.marginBottom ='0';
+    }
 }
 
 
