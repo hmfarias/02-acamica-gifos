@@ -1,3 +1,4 @@
+@charset "UTF-8";
 @import url(../css/reset.css);
 @import url("https://fonts.googleapis.com/css2?family=Montserrat:wght@300;500;700&family=Roboto:wght@300;400&display=swap");
 *,
@@ -231,6 +232,64 @@ h2 span {
   100% {
     -webkit-transform: rotate(360deg);
             transform: rotate(360deg);
+  }
+}
+
+@-webkit-keyframes pulse {
+  0% {
+    /* con esto hago que el boton se haga apenas dos puntos pequeño (1 es igual, 1.5 es un 50% mas grande, 0.5 es un 50% mas chico, etc etc) */
+    -webkit-transform: scale(0.98);
+            transform: scale(0.98);
+    /* tambien agrego una pequeña sombra gris que no se vea totalmente gris sino que tenga cierta transparencia */
+    -webkit-box-shadow: 0 0 0 0 rgba(95, 95, 95, 0.2);
+            box-shadow: 0 0 0 0 rgba(95, 95, 95, 0.2);
+  }
+  /* ahora avanzo en la animación hasta el 70% */
+  70% {
+    /* con esto hago que el boton se haga de tamaño normal (1 es igual, 1.5 es un %0% mas grande, 0.5 es un 50% mas chico, etc etc) */
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    /* tambien agrego una pequeña sombra gris que no se vea totalmente gris  */
+    -webkit-box-shadow: 0 0 0 25px rgba(95, 95, 95, 0);
+            box-shadow: 0 0 0 25px rgba(95, 95, 95, 0);
+  }
+  /* ahora configuro el final de la animacion */
+  100% {
+    /* con esto hago que el boton se haga apenas un punto pequeño (1 es igual, 1.5 es un %0% mas grande, 0.5 es un 50% mas chico, etc etc) */
+    -webkit-transform: scale(0.98);
+            transform: scale(0.98);
+    /* tambien agrego una pequeña sombra gris que no se vea totalmente gris */
+    -webkit-box-shadow: 0 0 0 0 rgba(95, 95, 95, 0);
+            box-shadow: 0 0 0 0 rgba(95, 95, 95, 0);
+  }
+}
+
+@keyframes pulse {
+  0% {
+    /* con esto hago que el boton se haga apenas dos puntos pequeño (1 es igual, 1.5 es un 50% mas grande, 0.5 es un 50% mas chico, etc etc) */
+    -webkit-transform: scale(0.98);
+            transform: scale(0.98);
+    /* tambien agrego una pequeña sombra gris que no se vea totalmente gris sino que tenga cierta transparencia */
+    -webkit-box-shadow: 0 0 0 0 rgba(95, 95, 95, 0.2);
+            box-shadow: 0 0 0 0 rgba(95, 95, 95, 0.2);
+  }
+  /* ahora avanzo en la animación hasta el 70% */
+  70% {
+    /* con esto hago que el boton se haga de tamaño normal (1 es igual, 1.5 es un %0% mas grande, 0.5 es un 50% mas chico, etc etc) */
+    -webkit-transform: scale(1);
+            transform: scale(1);
+    /* tambien agrego una pequeña sombra gris que no se vea totalmente gris  */
+    -webkit-box-shadow: 0 0 0 25px rgba(95, 95, 95, 0);
+            box-shadow: 0 0 0 25px rgba(95, 95, 95, 0);
+  }
+  /* ahora configuro el final de la animacion */
+  100% {
+    /* con esto hago que el boton se haga apenas un punto pequeño (1 es igual, 1.5 es un %0% mas grande, 0.5 es un 50% mas chico, etc etc) */
+    -webkit-transform: scale(0.98);
+            transform: scale(0.98);
+    /* tambien agrego una pequeña sombra gris que no se vea totalmente gris */
+    -webkit-box-shadow: 0 0 0 0 rgba(95, 95, 95, 0);
+            box-shadow: 0 0 0 0 rgba(95, 95, 95, 0);
   }
 }
 

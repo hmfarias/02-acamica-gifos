@@ -1325,6 +1325,7 @@ stepThree.addEventListener("click", createGifStepThree);
 
 stepOne.removeAttribute("disabled");
 stepTwo.setAttribute("disabled", "true");
+stepTwo.style.animation = "unset";  
 stepThree.setAttribute("disabled", "true");
 
 function createGif() {
@@ -1385,6 +1386,7 @@ function createGifStepOne() {
 
     // stepOne.setAttribute("disabled", "true");
     stepTwo.removeAttribute("disabled");
+    stepTwo.style.animation = "pulse 1.5s infinite";  
     stepThree.setAttribute("disabled", "true");
 
     //hide start buttons
@@ -1406,7 +1408,7 @@ function createGifStepTwo() {
         <p id="stateUploadP"></p>
     </div>
     `;
-
+    stepTwo.style.animation = "unset";  
     let canvasVideo = document.getElementById("canvasVideo"); //get canvas for put the video to rec
     let OverlayCard = document.getElementById("OverlayCard"); //get overlay card for the canvas video when upload
     let cardDownloadIcon = document.getElementById("cardDownloadIcon"); //get img node with download icon
@@ -1516,6 +1518,7 @@ function createGifStepThree() {
     //disble other buttons
     stepOne.setAttribute("disabled", "true");
     stepTwo.setAttribute("disabled", "true");
+    stepTwo.style.animation = "unset";  
     stepThree.setAttribute("disabled", "true");
     btnUploadGif.style.display = 'none';
     filmCrono.style.display = 'none';
