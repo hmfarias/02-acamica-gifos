@@ -24,6 +24,7 @@ window.onload = function () {
 
 let myGifsLS = []; //for use with localStorage in my gifs case
 let myFavoritesLS = []; //for use with localStorage in my favorites case
+let arrTrending = []; //for slide in max mode
 
 // for cronometre
 let h = 0; //hours
@@ -369,12 +370,6 @@ async function showSearch(word, offset) {
                     }
                 });
 
-
-
-
-
-
-
             //after search, show ilustra header again
             ilustraHeader.style.display = "block";
             sectionSearch.style.marginTop = "0px";
@@ -477,14 +472,13 @@ function searchPrepare() {
     }
     iconsUpdate();
 }
-
 //search more gifs when the usr press "Show More" button and Update offset
 btnShowMore.addEventListener("click", () => {
     offset += 12;
     showSearch(searchInput.value, offset);
 });
-
 //END RESULT SECTION --------------------------------------------------
+
 
 //TRENDING SECTION ==================================================================================
 //===================================================================================================
@@ -501,18 +495,14 @@ let speed = 30;
 let distance = trendingGif.scrollWidth/3*2;
 let step = 40
 let distance2 = trendingGif.scrollWidth;
-console.log({distance2});
 
 btnScrollRight.addEventListener('click', () => {
     sideScroll(trendingGif,'right',speed,distance,step);
-    console.log(trendingGif.scrollLeft);
 });
 
 btnScrollLeft.addEventListener('click', () => {
     sideScroll(trendingGif,'left',speed,distance,step);
-    console.log(trendingGif.scrollLeft);
 });
-
 
 //function to scroll left or right
 function sideScroll(element,direction,speed,distance,step){
@@ -529,20 +519,17 @@ function sideScroll(element,direction,speed,distance,step){
         }
     }, speed);
 }
-
-
-
-
 //END FOR SCROLLING ---------------------------------------------
-
 
 //function that shows trending gifs
 async function showTrending() {
     try {
         let info = await getTrendings();
-
+        arrTrending = [];
         trendingGif.innerHTML = "";
         info.forEach((element) => {
+            // for slide in max mode
+            arrTrending.push(element.id)
 
             //prepare usr and title text for the card
             let usrTrend = '';
@@ -686,6 +673,8 @@ let favoriteIcon = document.getElementById("favoriteIcon"); //get img node for f
 //show gif max window with details and buttons download and favorite
 async function clickOnGif(gif) {
     try {
+        console.log('arrTrending');
+        console.log(arrTrending);
         let info = await getSearchById(gif.target.id);
         selectedGif.src = info.images.original.url;
         info.username === ""
@@ -1546,15 +1535,11 @@ function createGifStepThree() {
                 showVideo.style.animation = 'none';
                 
                 showVideo.addEventListener('mouseover' , (event) => {
-                    console.log('entra');
-                    console.log(event);
                     OverlayCard.style.display = 'flex';
                     OverlayCard.style.animation = 'none';
                 });
                 
                 OverlayCard.addEventListener('mouseout' , (event) => {
-                    console.log('sale');
-                    console.log(event);
                     OverlayCard.style.display = 'none';
                 });
             }
@@ -1635,7 +1620,6 @@ function recordGif(mediaStream) {
         width: 360,
         hidden: 240,
         onGifRecordingStarted: function () {
-            // console.log("Started");
         },
     });
     recorder.startRecording();
@@ -1689,19 +1673,14 @@ function releaseCamera() {
 
     // now get the Steam 
     let streamVideo = canvasVideo.srcObject;
-    console.log('streamVideo');
-    console.log(streamVideo);
     // now get all tracks
     let tracks = streamVideo.getTracks();
     // now close each track by having forEach loop
     tracks.forEach(function (track) {
         // stopping every track
-        console.log('track');
-        console.log(track);
         track.stop();
     });
     streamVideo.srcObject = 'null';
-    console.log(streamVideo.srcObject);
 }
 
 filmRepeat.addEventListener("click", createGifStepTwo);

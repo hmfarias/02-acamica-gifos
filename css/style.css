@@ -355,10 +355,11 @@ h2 span {
   cursor: pointer;
 }
 
-.navBar .navMenu hr {
+.navBar .navMenu .separator {
   width: 10.93%;
+  height: 2px;
   margin: auto;
-  border-top: px solid rgba(87, 46, 229, 0.5);
+  border-top: 2px solid rgba(255, 255, 255, 0.5);
 }
 
 .navBar .navMenu #createGifNav {
@@ -416,7 +417,7 @@ h2 span {
     margin-left: 53px;
     text-transform: uppercase;
   }
-  .navBar .navMenu hr {
+  .navBar .navMenu .separator {
     display: none;
   }
   .navBar .navMenu #createGifNav {
