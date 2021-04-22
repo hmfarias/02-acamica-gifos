@@ -90,21 +90,23 @@ export function fixMarginSectionResult(button) {
     if(button.style.display === "none") {
         sectionResults.style.marginBottom ='74px';
         sectionFavorites.style.marginBottom ='74px';
+        sectionMyGifs.style.marginBottom ='74px';
     } else {
         sectionResults.style.marginBottom ='0';
         sectionFavorites.style.marginBottom ='0';
+        sectionMyGifs.style.marginBottom ='0';
     }
 }
 
 
-//prepares the array of buttons according to the type of display sent
-export function displayPrepare(arrayButtons, typeDisplay, arrayButtons2, typeDisplay2) {
-    arrayButtons.forEach(button => {
-        button.style.display = typeDisplay;
+//prepares the array of nodes according to the type of display sent
+export function displayPrepare(arrayNodes, typeDisplay, arrayNodes2, typeDisplay2) {
+    arrayNodes.forEach(node => {
+        node.style.display = typeDisplay;
     });
     
-    arrayButtons2.forEach(button2 => {
-        button2.style.display = typeDisplay2;
+    arrayNodes2.forEach(node2 => {
+        node2.style.display = typeDisplay2;
     });
 }
 

@@ -241,6 +241,7 @@ h2 span {
   --font-color-secondary: #000000;
   --burguer-background:  rgba(87, 46, 229, 0.9);
   --createGif-color: #572EE5;
+  --modal-color: rgba(255, 255, 255, 0.95);
 }
 
 .theme-dark {
@@ -250,6 +251,7 @@ h2 span {
   --font-color-secondary: #FFFFFF;
   --burguer-background: #000000;
   --createGif-color: #37383C;
+  --modal-color: rgba(66, 62, 62, 0.95);
 }
 
 .navBar {
@@ -327,9 +329,8 @@ h2 span {
     padding-left: 0%;
     padding-right: 0%;
     padding-top: 20px;
-    margin-bottom: 0px;
     width: 78.33%;
-    margin: auto auto 76px auto;
+    margin: auto auto 18px auto;
   }
   .navBar .logo {
     width: 65px;
@@ -579,7 +580,7 @@ header #ilustraHeader {
           flex-direction: column;
   font-family: "Roboto", sans-serif;
   position: absolute;
-  bottom: 7px;
+  bottom: 30px;
   left: 14px;
 }
 
@@ -655,8 +656,6 @@ header #ilustraHeader {
   .sectionResults .searchGif {
     -ms-grid-columns: (23.07%)[4];
         grid-template-columns: repeat(4, 23.07%);
-    -ms-grid-rows: (200px)[3];
-        grid-template-rows: repeat(3, 200px);
     -webkit-column-gap: 29px;
             column-gap: 29px;
     row-gap: 28px;
@@ -781,7 +780,7 @@ header #ilustraHeader {
           flex-direction: column;
   font-family: "Roboto", sans-serif;
   position: absolute;
-  bottom: 7px;
+  bottom: 40px;
   left: 14px;
 }
 
@@ -839,11 +838,13 @@ header #ilustraHeader {
   }
   .trending .trendingContainer .trendingGif {
     width: 100%;
+    position: relative;
   }
   .trending .trendingContainer .trendingGif .gifTrendingContainer > img {
-    width: 375px;
+    -o-object-fit: cover;
+       object-fit: cover;
+    width: 357px;
     height: 275px;
-    overflow: hidden;
   }
 }
 
@@ -917,9 +918,6 @@ footer p {
 
 @media only screen and (min-width: 1440px) {
   footer {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
         -ms-flex-direction: row;
@@ -927,51 +925,24 @@ footer p {
     -webkit-box-pack: justify;
         -ms-flex-pack: justify;
             justify-content: space-between;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
     width: 78.33%;
     height: 116px;
-    margin: auto;
   }
   footer .socialMediaContainer {
-    display: -webkit-box;
-    display: -ms-flexbox;
-    display: flex;
+    height: 100%;
     -webkit-box-orient: horizontal;
     -webkit-box-direction: normal;
         -ms-flex-direction: row;
             flex-direction: row;
-    -webkit-box-align: center;
-        -ms-flex-align: center;
-            align-items: center;
   }
   footer .socialMediaContainer p {
-    font-family: "Roboto", sans-serif;
     font-size: 13px;
-    font-weight: 400;
-    color: var(--font-color-secondary);
-    letter-spacing: 0;
-    line-height: 20px;
     margin: 0 17px 0 0;
     line-height: 15px;
   }
-  footer .socialMediaContainer .socialMedia {
-    margin: 1px 0 0px;
-  }
-  footer .socialMediaContainer .socialMedia a:link, footer .socialMediaContainer .socialMedia a:visited, footer .socialMediaContainer .socialMedia a:active {
-    text-decoration: none;
-  }
-  footer .socialMediaContainer .socialMedia a img {
-    margin-right: 19px;
-    width: 20px;
-    height: 20px;
-  }
   footer p {
-    font-family: "Roboto", sans-serif;
-    font-weight: 400;
     font-size: 13px;
-    color: var(--font-color-secondary);
+    margin: 0;
   }
 }
 
@@ -987,7 +958,7 @@ footer p {
   position: fixed;
   width: 100%;
   height: 100%;
-  background-color: rgba(255, 255, 255, 0.95);
+  background-color: var(--modal-color);
   top: 0;
   left: 0;
   z-index: 1000;
@@ -1019,6 +990,7 @@ footer p {
   -ms-flex-item-align: center;
       align-self: center;
   width: 84.8%;
+  color: var(--font-color-secondary);
 }
 
 .gifMaxDetails .gifMaxDescript {
@@ -1034,9 +1006,9 @@ footer p {
   display: -webkit-box;
   display: -ms-flexbox;
   display: flex;
-  -webkit-box-pack: justify;
-      -ms-flex-pack: justify;
-          justify-content: space-between;
+  -webkit-box-pack: end;
+      -ms-flex-pack: end;
+          justify-content: flex-end;
   -webkit-box-align: center;
       -ms-flex-align: center;
           align-items: center;
@@ -1045,6 +1017,33 @@ footer p {
 
 .gifMaxDetails .gifMaxIcons img {
   width: 32px;
+  margin-left: 21px;
+}
+
+@media only screen and (min-width: 1440px) {
+  .gifMaxClose {
+    margin-right: 20%;
+    margin-top: 66px;
+  }
+  .gifMaxGif {
+    width: 695px;
+    height: auto;
+    max-height: 75%;
+    margin-top: 50px;
+  }
+  .gifMaxDetails {
+    width: 695px;
+  }
+  .gifMaxDetails .gifMaxIcons {
+    -webkit-box-pack: end;
+        -ms-flex-pack: end;
+            justify-content: flex-end;
+    width: 28%;
+  }
+  .gifMaxDetails .gifMaxIcons img {
+    width: 36px;
+    margin-left: 21px;
+  }
 }
 
 .sectionCreateGif {
@@ -1085,7 +1084,7 @@ footer p {
   margin-left: 1px;
   -webkit-clip-path: polygon(0 38%, 100% 0, 100% 100%, 0 64%);
           clip-path: polygon(0 38%, 100% 0, 100% 100%, 0 64%);
-  background-image: linear-gradient(267deg, rgba(136, 243, 226, 0) 22%, #50E3C2 100%);
+  background-image: linear-gradient(267deg, rgba(136, 243, 226, 0) 22%, #50e3c2 100%);
 }
 
 .sectionCreateGif .canvasContainer {
@@ -1201,7 +1200,6 @@ footer p {
   width: 77%;
   height: 45vw;
   margin: auto;
-  margin: auto;
 }
 
 .sectionCreateGif .canvasContainer .canvasCamera #OverlayCard img {
@@ -1214,7 +1212,6 @@ footer p {
   display: none;
   width: 72%;
   height: 45vw;
-  margin: auto;
   margin: auto;
   position: absolute;
   display: -webkit-box;
@@ -1234,7 +1231,7 @@ footer p {
 
 .sectionCreateGif .canvasContainer .canvasCamera #OverlayInfoUpload p {
   font-size: 15px;
-  color: #FFFFFF;
+  color: #ffffff;
   text-align: center;
   font-weight: 700;
 }
@@ -1276,7 +1273,8 @@ footer p {
   background: var(--color-primary);
 }
 
-.sectionCreateGif .stepsContainer #filmCrono, .sectionCreateGif .stepsContainer #filmRepeat {
+.sectionCreateGif .stepsContainer #filmCrono,
+.sectionCreateGif .stepsContainer #filmRepeat {
   display: none;
   font-family: "Montserrat", sans-serif;
   font-weight: 700;
@@ -1289,9 +1287,7 @@ footer p {
   display: none;
   margin: 0;
   font-size: 10px;
-  text-decoration: underline;
-  -webkit-text-decoration-color: #5ED7C6;
-          text-decoration-color: #5ED7C6;
+  border-bottom: 2px solid #5ed7c6;
 }
 
 .sectionCreateGif .stepsContainer .filmContainer {
@@ -1331,5 +1327,83 @@ footer p {
   height: 6px;
   background-color: var(--font-color);
   margin: 20px auto;
+}
+
+@media only screen and (min-width: 1440px) {
+  .sectionCreateGif {
+    width: 78.33%;
+    position: relative;
+  }
+  .sectionCreateGif .cameraContainer {
+    position: absolute;
+    top: 20%;
+    left: 0;
+  }
+  .sectionCreateGif .cameraContainer #cameraImg {
+    width: 123px;
+  }
+  .sectionCreateGif .canvasContainer {
+    width: 61.07%;
+    height: 43.4vh;
+    margin: 0 auto 0 auto;
+  }
+  .sectionCreateGif .canvasContainer .corner {
+    width: 2vw;
+    height: 2vw;
+  }
+  .sectionCreateGif .canvasContainer .canvasCamera {
+    width: 97%;
+  }
+  .sectionCreateGif .canvasContainer .canvasCamera .canvasVideo {
+    height: 86.7%;
+  }
+  .sectionCreateGif .canvasContainer .canvasCamera #showVideo {
+    width: unset;
+    height: 86.7%;
+  }
+  .sectionCreateGif .canvasContainer .canvasCamera #OverlayCard {
+    width: 70%;
+    height: 84%;
+  }
+  .sectionCreateGif .stepsContainer {
+    height: 75px;
+    margin: unset;
+    -webkit-box-pack: center;
+        -ms-flex-pack: center;
+            justify-content: center;
+    position: relative;
+  }
+  .sectionCreateGif .stepsContainer #filmRepeat {
+    font-size: 13px;
+  }
+  .sectionCreateGif .stepsContainer .filmContainer {
+    -ms-flex-item-align: unset;
+        -ms-grid-row-align: unset;
+        align-self: unset;
+    -webkit-box-pack: unset;
+        -ms-flex-pack: unset;
+            justify-content: unset;
+    margin-top: unset;
+    width: unset;
+    height: auto;
+    position: absolute;
+    right: 0;
+  }
+  .sectionCreateGif .stepsContainer .filmContainer #filmImg {
+    -ms-flex-item-align: unset;
+        -ms-grid-row-align: unset;
+        align-self: unset;
+    width: unset;
+  }
+  .sectionCreateGif .stepsContainer .filmContainer #filmTai {
+    -ms-flex-item-align: unset;
+        -ms-grid-row-align: unset;
+        align-self: unset;
+    width: unset;
+  }
+  .sectionCreateGif .separator {
+    width: 70.5%;
+    margin: 0 auto;
+  }
 }
 /*# sourceMappingURL=style.css.map */

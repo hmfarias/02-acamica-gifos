@@ -75,12 +75,12 @@ navIcon.addEventListener("click", () => {
 function changeIconBurger() {
     if (desktopDisplay.matches) {
         navMenu.style.display = "flex";
-    }else {
-    if (navMenu.style.display === "" || navMenu.style.display === "none") {
-        navIcon.src = navIconImageClose;
-        navMenu.style.display = "block";
     } else {
-        navIcon.src = navIconImageBurger;
+        if (navMenu.style.display === "" || navMenu.style.display === "none") {
+            navIcon.src = navIconImageClose;
+            navMenu.style.display = "block";
+        } else {
+            navIcon.src = navIconImageBurger;
             navMenu.style.display = "none";
         }
     }
@@ -497,51 +497,42 @@ let btnScrollRight = document.getElementById("btnScrollRight"); //get button nod
 
 
 //FOR SCROLLING ---------------------------------------------
-var scrollAmount = 0;
-var scrollMin = 0;
-// var scrollMax = trendingGif.clientWidth;
-var scrollMed = trendingGif.clientWidth;
-var scrollMax = trendingGif.clientWidth + 714;
-
-let xScroll = null;
-btnScrollLeft.addEventListener('click', () => {
-    btnScrollRight.style.display = 'block';
-    xScroll = getScrollPositionX();
-    if (xScroll>scrollMin) {
-        trendingGif.scrollTo({
-            top: 0,
-            left: Math.max(scrollAmount -= 700, scrollMin),
-            behavior: 'smooth'
-        });
-    }
-    xScroll===scrollMin 
-    ?btnScrollLeft.style.display = 'none'
-    :btnScrollLeft.style.display = 'block';
-});
+let speed = 30;
+let distance = trendingGif.scrollWidth/3*2;
+let step = 40
+let distance2 = trendingGif.scrollWidth;
+console.log({distance2});
 
 btnScrollRight.addEventListener('click', () => {
-    btnScrollLeft.style.display = 'block';
-    xScroll = getScrollPositionX();
-    if(xScroll<=scrollMax ){
-        trendingGif.scrollTo({
-            top: 0,
-            left: Math.min(scrollAmount += 700, scrollMax),
-            behavior: 'smooth'
-        });  
-    }
-    xScroll>=scrollMax || xScroll>scrollMed
-    ?btnScrollRight.style.display = 'none'
-    :btnScrollRight.style.display = 'block';
+    sideScroll(trendingGif,'right',speed,distance,step);
+    console.log(trendingGif.scrollLeft);
 });
 
-//function returns x axis position in trendingGif
-const getScrollPositionX = () => {
-    if(trendingGif.pageXOffset !== undefined){
-        return trendingGif.pageXOffset;
-    } else {
-        return trendingGif.scrollLeft;
-    }      
-};
+btnScrollLeft.addEventListener('click', () => {
+    sideScroll(trendingGif,'left',speed,distance,step);
+    console.log(trendingGif.scrollLeft);
+});
+
+
+//function to scroll left or right
+function sideScroll(element,direction,speed,distance,step){
+    let scrollAmount = 0;
+    var slideTimer = setInterval(function(){
+        if(direction == 'left'){
+            element.scrollLeft -= step;
+        } else {
+            element.scrollLeft += step;
+        }
+        scrollAmount += step;
+        if(scrollAmount >= distance){
+            window.clearInterval(slideTimer);
+        }
+    }, speed);
+}
+
+
+
+
 //END FOR SCROLLING ---------------------------------------------
 
 
@@ -931,8 +922,8 @@ async function showFavorites(id) {
         //mouseover event for gif's card, only must be functional in desktop display
         if (desktopDisplay.matches) {
             gifFavoriteContainterNew.addEventListener("mouseover", (event) => {
-                let idHoverFavorite = 'divHoverFavorite' + event.target.getAttribute('id');
-                let divHoverFavorite = document.getElementById(idHoverFavorite);
+                // let idHoverFavorite = 'divHoverFavorite' + event.target.getAttribute('id');
+                // let divHoverFavorite = document.getElementById(idHoverFavorite);
 
                 divHoverFavoriteNew.style.display = 'block';
 
@@ -947,32 +938,32 @@ async function showFavorites(id) {
         //For FAVORITE icon -----------------------------------------------
         //if the gif is already a favorite, its icon must be active
         myFavoritesLS.includes(imgFavoriteNew.id)
-        ? imgFavoriteNew.src = './images/icon-card-favorite-active.svg'
-        : imgFavoriteNew.src = './images/icon-card-favorite-normal.svg';
-        
+            ? imgFavoriteNew.src = './images/icon-card-favorite-active.svg'
+            : imgFavoriteNew.src = './images/icon-card-favorite-normal.svg';
+
         imgFavoriteNew.addEventListener('mouseover', () => {
             //if it is already included in favorites the active icon is not changed
             myFavoritesLS.includes(imgFavoriteNew.id)
-            ? imgFavoriteNew.src = './images/icon-card-favorite-active.svg'
-            : imgFavoriteNew.src = './images/icon-card-favorite-hover.svg';
+                ? imgFavoriteNew.src = './images/icon-card-favorite-active.svg'
+                : imgFavoriteNew.src = './images/icon-card-favorite-hover.svg';
         });
-        
+
         imgFavoriteNew.addEventListener('mouseout', () => {
             myFavoritesLS.includes(imgFavoriteNew.id)
-            ? imgFavoriteNew.src = './images/icon-card-favorite-active.svg'
-            : imgFavoriteNew.src = './images/icon-card-favorite-normal.svg'
+                ? imgFavoriteNew.src = './images/icon-card-favorite-active.svg'
+                : imgFavoriteNew.src = './images/icon-card-favorite-normal.svg'
         });
-        
+
         imgFavoriteNew.addEventListener('click', () => {
             myFavoritesLS.includes(imgFavoriteNew.id)
-            ? imgFavoriteNew.src = './images/icon-card-favorite-normal.svg'
-            : imgFavoriteNew.src = './images/icon-card-favorite-active.svg';
-            
+                ? imgFavoriteNew.src = './images/icon-card-favorite-normal.svg'
+                : imgFavoriteNew.src = './images/icon-card-favorite-active.svg';
+
             //call function to manage the favorites asign
             manageFavorite(imgFavoriteNew);
         });
         //END For FAVORITE icon -----------------------------------------------
-        
+
         //For DOWNLOAD icon -----------------------------------------------
         imgDownNew.addEventListener('mouseover', () => {
             imgDownNew.src = './images/icon-card-download-hover.svg';
@@ -985,7 +976,7 @@ async function showFavorites(id) {
         });
         imgDownNew.addEventListener('click', downloadGifFunction, false);
         //END For DOWNLOAD icon -----------------------------------------------
-        
+
         //For MAX icon -----------------------------------------------
         imgMaxNew.addEventListener('mouseover', () => {
             imgMaxNew.src = './images/icon-card-max-hover.svg';
@@ -995,7 +986,7 @@ async function showFavorites(id) {
         });
         imgMaxNew.addEventListener('click', clickOnGif, false);
         //END For MAX icon -----------------------------------------------
-        
+
     } catch (error) {
         console.error(error);
     }
@@ -1008,16 +999,12 @@ function loadFavorites() {
     offSetFavorites = 0;
     limitFavorites = 12;
     favoriteGifs.innerHTML = "";
+    
     //hide the sections that should not appear
-    ilustraHeader.style.display = "none";
-    sectionSearch.style.display = "none";
-    sectionResults.style.display = "none";
-    sectionMyGifs.style.display = "none";
-    sectionCreateGif.style.display = "none";
-    //show favorites section
-    sectionFavorites.style.display = "block";
+    displayPrepare([sectionTrending,sectionFavorites,navMenu], "block", [ilustraHeader, sectionSearch, sectionResults, sectionMyGifs,sectionCreateGif], "none");
     navIcon.src = navIconImageClose;
-    navMenu.style.display = "block";
+    
+    // navMenu.style.display = "block";
     changeIconBurger();
 
     //must immediately upload the favorite gifs (if any)
@@ -1070,25 +1057,179 @@ btnShowMoreFavorites.addEventListener("click", () => {
 //===================================================================================================
 let offSetMyGifs = 0;
 let limitMyGifs = 12; // mark the limit of gifs to bring
+let countNameGif = 0;
 let sectionMyGifs = document.getElementById("sectionMyGifs"); //get the myGifs Section node
 let myGifsNav = document.getElementById("myGifsNav"); //get the myGifs li node from the menu
 let myGifs = document.getElementById("myGifs"); //get the myGifs div node wher puts myGifs
 let btnShowMoreMyGifs = document.getElementById("btnShowMoreMyGifs"); //get "Show More" button node
 
 //function that shows search gifs by id
-async function showMyGifs(element) {
+async function showMyGifs(id) {
     try {
-        const myGif = await getSearchById(element);
+        const myGif = await getSearchById(id);
 
-        //create gif
-        let myGifNew = document.createElement("img");
-        myGifNew.src = myGif.images.fixed_height.url;
-        myGifNew.alt = "Gif Mis Gifos";
-        myGifNew.id = myGif.id;
-        myGifs.appendChild(myGifNew);
+        //prepare usr and title text for the card
+        let usrMyGif = '';
+        let titleMyGif = '';
+        countNameGif ++;
+        myGif.username === ''
+            ? (usrMyGif = "Unregistered User")
+            : (usrMyGif = myGif.username);
+        myGif.title === ""
+            ? (titleMyGif = `My Gif ${countNameGif}`)
+            : (titleMyGif = myGif.title);
+
+        let nameGifMyGif = titleMyGif.replace(/ /g, "-"); //for download 
+
+        //create Div container
+        //<div class="gifSearchContainer">
+        let gifMyGifContainterNew = document.createElement("div");
+        gifMyGifContainterNew.className = "gifSearchContainer";
+
+        //<img id="${element.id}" src="${element.images.fixed_height.url}" alt= "${titleSearch}"/>
+        let imgGifNew = document.createElement("img");
+        imgGifNew.src = myGif.images.fixed_height.url;
+        imgGifNew.alt = titleMyGif;
+        imgGifNew.id = myGif.id;
+
+        //<div id="divHoverSearch${element.id}" class="divHoverSearch">
+        let divHoverMyGifNew = document.createElement("div");
+        divHoverMyGifNew.id = `divHoverFavorite${myGif.id}`;
+        divHoverMyGifNew.className = "divHoverSearch";
+
+        // --------------------------------------------------------
+        //<div class="divHoverSearch__infoGif">
+        let divHoverMyGif__infoGifNew = document.createElement("div");
+        divHoverMyGif__infoGifNew.className = "divHoverSearch__infoGif";
+
+        //<h4 class="divHoverSearch__infoGif--usr">${usrSearch}</h4>
+        let h4New = document.createElement("h4");
+        h4New.className = "divHoverSearch__infoGif--usr";
+        h4New.textContent = usrMyGif;
+
+        //<h3 class="divHoverSearch__infoGif--title">${titleSearch}</h3>
+        let h3New = document.createElement("h3");
+        h3New.className = "divHoverSearch__infoGif--title";
+        h3New.textContent = titleMyGif;
+
+        divHoverMyGif__infoGifNew.appendChild(h4New);
+        divHoverMyGif__infoGifNew.appendChild(h3New);
+        // --------------------------------------------------------
+       
+        //<div class="divHoverSearch__icons" id="divHoverSearch__icons">
+        let divHoverMyGif_iconsNew = document.createElement("div");
+        divHoverMyGif_iconsNew.id = 'divHoverFavorite__icons';
+        divHoverMyGif_iconsNew.className = "divHoverSearch__icons";
+
+        // <img id="${element.id}" src="./images/icon-card-favorite-normal.svg" alt="favorite" key="${element.id}" class="divHoverSearch__button" >
+        let imgFavoriteNew = document.createElement("img");
+        imgFavoriteNew.id = myGif.id;
+        imgFavoriteNew.src = './images/icon-card-favorite-normal.svg';
+        imgFavoriteNew.alt = 'favorite';
+        imgFavoriteNew.key = myGif.id;
+        imgFavoriteNew.className = 'divHoverSearch__button';
+
+        // <img id="${element.id}" src="./images/icon-card-download-normal.svg" alt="download"  class="divHoverSearch__button" name=${nameGifSearch}>
+        let imgDownNew = document.createElement("img");
+        imgDownNew.id = myGif.id;
+        imgDownNew.src = './images/icon-card-download-normal.svg';
+        imgDownNew.alt = 'download';
+        imgDownNew.key = myGif.id;
+        imgDownNew.className = 'divHoverSearch__button';
+        imgDownNew.name = nameGifMyGif;
+
+        // <img id="${element.id}" key="${element.id}" class="divHoverSearch__button" src="./images/icon-card-max-normal.svg" alt="max">
+        let imgMaxNew = document.createElement("img");
+        imgMaxNew.id = myGif.id;
+        imgMaxNew.key = myGif.id;
+        imgMaxNew.className = 'divHoverSearch__button';
+        imgMaxNew.src = './images/icon-card-max-normal.svg';
+        imgMaxNew.alt = 'max';
+
+        divHoverMyGif_iconsNew.appendChild(imgFavoriteNew);
+        divHoverMyGif_iconsNew.appendChild(imgDownNew);
+        divHoverMyGif_iconsNew.appendChild(imgMaxNew);
+
+        divHoverMyGifNew.appendChild(divHoverMyGif__infoGifNew);
+        divHoverMyGifNew.appendChild(divHoverMyGif_iconsNew);
+
+        gifMyGifContainterNew.appendChild(imgGifNew);
+        gifMyGifContainterNew.appendChild(divHoverMyGifNew);
+
+        myGifs.appendChild(gifMyGifContainterNew);
+
+
 
         //suscribe each Gif to click event in order to changge it to full screen mode and manage favorite or download
-        myGifNew.addEventListener("click", clickOnGif, false);
+        imgGifNew.addEventListener("click", clickOnGif, false);
+
+        //mouseover event for gif's card, only must be functional in desktop display
+        if (desktopDisplay.matches) {
+            gifMyGifContainterNew.addEventListener("mouseover", (event) => {
+                // let idHoverMyGif = 'divHoverMyGif' + event.target.getAttribute('id');
+                // let divHoverMyGif = document.getElementById(idHoverMyGif);
+
+                divHoverMyGifNew.style.display = 'block';
+
+                divHoverMyGifNew.addEventListener('mouseout', () => {
+                    divHoverMyGifNew.style.display = 'none';
+                });
+            });
+        }
+        // subscribe the overlay icons to the click event
+
+        //For FAVORITE icon -----------------------------------------------
+        //if the gif is already a favorite, its icon must be active
+        myFavoritesLS.includes(imgFavoriteNew.id)
+            ? imgFavoriteNew.src = './images/icon-card-favorite-active.svg'
+            : imgFavoriteNew.src = './images/icon-card-favorite-normal.svg';
+
+        imgFavoriteNew.addEventListener('mouseover', () => {
+            //if it is already included in favorites the active icon is not changed
+            myFavoritesLS.includes(imgFavoriteNew.id)
+                ? imgFavoriteNew.src = './images/icon-card-favorite-active.svg'
+                : imgFavoriteNew.src = './images/icon-card-favorite-hover.svg';
+        });
+
+        imgFavoriteNew.addEventListener('mouseout', () => {
+            myFavoritesLS.includes(imgFavoriteNew.id)
+                ? imgFavoriteNew.src = './images/icon-card-favorite-active.svg'
+                : imgFavoriteNew.src = './images/icon-card-favorite-normal.svg'
+        });
+
+        imgFavoriteNew.addEventListener('click', () => {
+            myFavoritesLS.includes(imgFavoriteNew.id)
+                ? imgFavoriteNew.src = './images/icon-card-favorite-normal.svg'
+                : imgFavoriteNew.src = './images/icon-card-favorite-active.svg';
+
+            //call function to manage the favorites asign
+            manageFavorite(imgFavoriteNew);
+        });
+        //END For FAVORITE icon -----------------------------------------------
+
+        //For DOWNLOAD icon -----------------------------------------------
+        imgDownNew.addEventListener('mouseover', () => {
+            imgDownNew.src = './images/icon-card-download-hover.svg';
+        });
+        imgDownNew.addEventListener('mouseout', () => {
+            imgDownNew.src = './images/icon-card-download-normal.svg';
+        });
+        imgDownNew.addEventListener('mouseout', () => {
+            imgDownNew.src = './images/icon-card-download-normal.svg';
+        });
+        imgDownNew.addEventListener('click', downloadGifFunction, false);
+        //END For DOWNLOAD icon -----------------------------------------------
+
+        //For MAX icon -----------------------------------------------
+        imgMaxNew.addEventListener('mouseover', () => {
+            imgMaxNew.src = './images/icon-card-max-hover.svg';
+        });
+        imgMaxNew.addEventListener('mouseout', () => {
+            imgMaxNew.src = './images/icon-card-max-normal.svg';
+        });
+        imgMaxNew.addEventListener('click', clickOnGif, false);
+        //END For MAX icon -----------------------------------------------
+
     } catch (error) {
         console.error(error);
     }
@@ -1100,17 +1241,14 @@ myGifsNav.addEventListener("click", loadMyGifs);
 function loadMyGifs() {
     offSetMyGifs = 0;
     limitMyGifs = 12;
+    countNameGif = 0;
     myGifs.innerHTML = "";
+    
     //hide the sections that should not appear
-    ilustraHeader.style.display = "none";
-    sectionSearch.style.display = "none";
-    sectionResults.style.display = "none";
-    sectionFavorites.style.display = "none";
-    sectionCreateGif.style.display = "none";
-    //show favorites section
-    sectionMyGifs.style.display = "block";
+    displayPrepare([sectionTrending,sectionMyGifs,navMenu], "block", [ilustraHeader, sectionSearch, sectionResults, sectionFavorites,sectionCreateGif], "none");
     navIcon.src = navIconImageClose;
-    navMenu.style.display = "block";
+   
+    // navMenu.style.display = "block";
     changeIconBurger();
 
     //must immediately upload the favorite gifs (if any)
@@ -1258,10 +1396,10 @@ function createGifStepOne() {
 function createGifStepTwo() {
     canvasCamera.innerHTML = `
     <video id="canvasVideo" class="canvasVideo"></video>
-    <img id="showVideo" alt="">
+    <img id="showVideo" alt="mi gif grabado">
     <div id="OverlayCard" class="OverlayCard">
-        <img id="cardDownloadIcon" src="./images/icon-card-download-normal.svg" alt="">
-        <img id="cardLinkIcon" src="./images/icon-card-link-normal.svg" alt="">
+        <img id="cardDownloadIcon" src="./images/icon-card-download-normal.svg" alt="icono download">
+        <img id="cardLinkIcon" src="./images/icon-card-link-normal.svg" alt="icono link">
     </div>
     <div id="OverlayInfoUpload">
         <img id="stateUploadImg" alt="ícono estado de upload">
@@ -1395,10 +1533,28 @@ function createGifStepThree() {
             stateUploadImg.src = './images/check.svg';
             stateUploadImg.style.animation = "rotateAxisX 3s linear 0s 2 normal backwards";
             stateUploadP.textContent = 'GIFO subido con éxito';
-            setTimeout(function () {
-                OverlayInfoUpload.style.display = 'none';
-                OverlayCard.style.backgroundColor = 'rgba(87, 46, 229, 0)';
-            }, 4000);
+            
+            if (desktopDisplay.matches) {
+                setTimeout(function () {
+                    OverlayInfoUpload.style.display = 'none';
+                    OverlayCard.style.display = 'none';
+                }, 5000);
+
+                showVideo.style.animation = 'none';
+                
+                showVideo.addEventListener('mouseover' , (event) => {
+                    console.log('entra');
+                    console.log(event);
+                    OverlayCard.style.display = 'flex';
+                    OverlayCard.style.animation = 'none';
+                });
+                
+                OverlayCard.addEventListener('mouseout' , (event) => {
+                    console.log('sale');
+                    console.log(event);
+                    OverlayCard.style.display = 'none';
+                });
+            }
 
 
             //update local Storage for my Gifs-----------------------
