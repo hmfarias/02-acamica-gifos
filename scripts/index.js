@@ -725,9 +725,10 @@ async function clickOnGif(gif) {
 // add or delete the gif from the favorites section
 function manageFavorite(gif) {
     let gifID = null
-
+    console.log(gif);
+    console.log(Object.prototype.toString.call(gif));
     //if the call comes from a pointer event
-    Object.prototype.toString.call(gif) === '[object PointerEvent]'
+    Object.prototype.toString.call(gif) === '[object PointerEvent]' || Object.prototype.toString.call(gif) === '[object MouseEvent]'
         ? gifID = gif.target.id
         : gifID = gif.id;
 
@@ -823,17 +824,18 @@ let btnShowMoreFavorites = document.getElementById("btnShowMoreFavorites"); //ge
 async function showFavorites(id) {
     try {
         const favorite = await getSearchById(id);
-
+        console.log(favorite);
         //prepare usr and title text for the card
         let usrFavorite = '';
         let titleFavorite = '';
         favorite.username === ''
             ? (usrFavorite = "Unregistered User")
             : (usrFavorite = favorite.username);
-        favorite.title === ""
+        favorite.title === "" || favorite.title === undefined
             ? (titleFavorite = "Unregistered Title")
             : (titleFavorite = favorite.title);
-
+        console.log(favorite.title);
+            console.log({titleFavorite});
         let nameGifFavorite = titleFavorite.replace(/ /g, "-"); //for download 
 
         //create Div container
