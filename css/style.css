@@ -57,6 +57,24 @@ h2 span {
   color: var(--color-primary);
 }
 
+.btnScroll {
+  min-width: 40px;
+  height: 40px;
+  color: var(--font-color);
+  background-color: var(--color-secondary);
+  font-size: 21px;
+  border: 1px solid var(--font-color);
+  margin-left: 22px;
+  margin-right: 22px;
+  text-align: center;
+  display: none;
+}
+
+.btnScroll:hover {
+  color: var(--color-secondary);
+  background-color: var(--font-color);
+}
+
 .displayNone {
   display: none;
 }
@@ -784,24 +802,6 @@ header #ilustraHeader {
   margin: 0 auto 50px auto;
 }
 
-.trending .trendingContainer .btnScroll {
-  min-width: 40px;
-  height: 40px;
-  color: var(--font-color);
-  background-color: var(--color-secondary);
-  font-size: 21px;
-  border: 1px solid var(--font-color);
-  margin-left: 22px;
-  margin-right: 22px;
-  text-align: center;
-  display: none;
-}
-
-.trending .trendingContainer .btnScroll:hover {
-  color: var(--color-secondary);
-  background-color: var(--font-color);
-}
-
 .trending .trendingContainer .trendingGif {
   display: -webkit-box;
   display: -ms-flexbox;
@@ -1035,12 +1035,22 @@ footer p {
   margin-top: 64px;
 }
 
-.gifMaxGif {
-  -ms-flex-item-align: center;
-      -ms-grid-row-align: center;
-      align-self: center;
+.gifMax .slideContainer {
+  display: -webkit-box;
+  display: -ms-flexbox;
+  display: flex;
   width: 84.8%;
+  -ms-flex-item-align: center;
+      align-self: center;
   margin-top: 78px;
+}
+
+.gifMax .slideContainer .gifMaxGif {
+  width: 100%;
+}
+
+.gifMax .slideContainer input {
+  display: none;
 }
 
 .gifMaxDetails {
@@ -1089,11 +1099,25 @@ footer p {
     margin-right: 20%;
     margin-top: 66px;
   }
-  .gifMaxGif {
-    width: 695px;
+  .gifMax .slideContainer {
+    display: -webkit-box;
+    display: -ms-flexbox;
+    display: flex;
+    -webkit-box-align: center;
+        -ms-flex-align: center;
+            align-items: center;
+    width: 863px;
     height: auto;
     max-height: 75%;
+    -ms-flex-item-align: center;
+        align-self: center;
     margin-top: 50px;
+  }
+  .gifMax .slideContainer .gifMaxGif {
+    width: 100%;
+  }
+  .gifMax .slideContainer input {
+    display: block;
   }
   .gifMaxDetails {
     width: 695px;
@@ -1134,7 +1158,7 @@ footer p {
   display: flex;
   margin-bottom: 10px;
   position: relative;
-  width: 90px;
+  width: 181px;
   height: 119px;
 }
 
@@ -1417,6 +1441,8 @@ footer p {
     position: absolute;
     top: 20%;
     left: 0;
+    width: 214px;
+    height: 162px;
   }
   .sectionCreateGif .cameraContainer #cameraImg {
     width: 123px;

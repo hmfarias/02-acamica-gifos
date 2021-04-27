@@ -15,7 +15,8 @@
 <body>
     <header>
         <nav id="navBar" class="navBar">
-            <a href="./index.html" class="logo"> <img id="logo" class="logo" src="./images/logo-mobile.svg" alt="GIFOs logo"></a>
+            <a href="./index.html" class="logo"> <img id="logo" class="logo" src="./images/logo-mobile.svg"
+                    alt="GIFOs logo"></a>
             <ul id="navMenu" class="navMenu">
                 <li id="changeMode">Modo Nocturno</li>
                 <li class="separator"></li>
@@ -210,8 +211,12 @@
 
     <div id="gifMax" class="gifMax">
         <img id="gifMaxClose" class="gifMaxClose" src="./images/close.svg" alt="cerrar">
-        <img id="selectedGif" class="gifMaxGif" src="./images/pelicula.svg" alt="selected gif">
-       
+        <div class="slideContainer">
+            <input id="btnLeft" class="btnScroll" type="button" value="<">
+            <img id="selectedGif" class="gifMaxGif" src="./images/pelicula.svg" alt="selected gif">
+            <input id="btnRight" class="btnScroll" type="button" value=">">
+        </div>
+
         <div class="gifMaxDetails">
             <div class="gifMaxDescript">
                 <h4>.</h4>

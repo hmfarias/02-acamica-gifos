@@ -22,6 +22,9 @@ window.onload = function () {
     showTrendingSearch(); //load the trendings search suggestions
 };
 
+//if the page size changes, it must be updated
+window.onresize = () => {logo.click()};
+
 let myGifsLS = []; //for use with localStorage in my gifs case
 let myFavoritesLS = []; //for use with localStorage in my favorites case
 let arrTrending = []; //for slide in max mode
@@ -679,12 +682,18 @@ let gifMaxTitle = document.querySelector("#gifMax h3"); // get h3 node  to put t
 let downloadIcon = document.getElementById("downloadIcon"); //get img node with download icon
 
 let favoriteIcon = document.getElementById("favoriteIcon"); //get img node for favorite icon
+let btnLeft = document.getElementById("btnLeft"); //get button node for left scroll
+let btnRight = document.getElementById("btnRight"); //get button node for right scroll
 
 //show gif max window with details and buttons download and favorite
 async function clickOnGif(gif) {
     try {
-        console.log('arrTrending');
-        console.log(arrTrending);
+        let placeInArray = null;
+        placeInArray = arrTrending.indexOf(gif.target.id);
+        btnLeft.key = placeInArray;
+        btnRight.key = placeInArray;
+        btnLeft.array=arrTrending;
+        btnRight.array=arrTrending;
         let info = await getSearchById(gif.target.id);
         selectedGif.src = info.images.original.url;
         info.username === ""
@@ -717,16 +726,121 @@ async function clickOnGif(gif) {
 
         //subscribe download icon to the click event
         downloadIcon.addEventListener("click", downloadGifFunction, false);
+
+        btnLeft.addEventListener("click", previousGif);
+
+        btnRight.addEventListener("click", nextGif);
+        
     } catch (error) {
         console.error(error);
     }
 }
 
+async function previousGif (event){
+    selectedGif.src = "./images/loading.gif";
+    let prevIndex = parseInt(event.target.key) === 0
+    ?limitMyGifs-1
+    :event.target.key - 1;
+    let prevId= null;
+    prevId = event.target.array[prevIndex];
+    
+    let placeInArray = null;
+    placeInArray = arrTrending.indexOf(prevId);
+    btnLeft.key = placeInArray;
+    btnRight.key = placeInArray;
+    btnLeft.array = arrTrending;
+    btnRight.array = arrTrending;
+    
+    let info = await getSearchById(prevId);
+    selectedGif.src = info.images.original.url;
+    info.username === ""
+    ? (gifMaxUser.textContent = "Unregistered User")
+    : (gifMaxUser.textContent = info.username);
+    info.title === ""
+    ? (gifMaxTitle.textContent = "Unregistered Title")
+    : (gifMaxTitle.textContent = info.title);
+    
+    myFavoritesLS.includes(info.id) //if this gif is in favorite favorite icons must be active
+    ? (favoriteIcon.src = "./images/icon-favorite-active.svg")
+    : (favoriteIcon.src = "./images/icon-favorite-inactive.svg");
+    
+    //save the id of the gif inside the object subscribed to the click event
+    favoriteIcon.id = info.id;
+    
+    //save the id and id for the gif inside the object subscribed to the click event
+    downloadIcon.key = info.id;
+    
+    //save the name for the gif inside the object subscribed to the click event
+    let string = info.title;
+    let formatedNname = string.replace(/ /g, "-");
+    downloadIcon.name = formatedNname;
+    
+    //subscribe favorite icon to the click event
+    favoriteIcon.addEventListener("click", manageFavorite, false);
+    
+    //subscribe download icon to the click event
+    downloadIcon.addEventListener("click", downloadGifFunction, false);
+    
+    btnLeft.addEventListener("click", previousGif);
+    
+    btnRight.addEventListener("click", nextGif);
+}
+
+async function nextGif (event){
+    selectedGif.src = "./images/loading.gif";
+    let nextIndex = parseInt(event.target.key) === limitMyGifs-1 
+        ?0
+        :event.target.key + 1;
+    let nextId= null;
+    nextId = event.target.array[nextIndex];
+
+    let placeInArray = null;
+    placeInArray = arrTrending.indexOf(nextId);
+    btnLeft.key = placeInArray;
+    btnRight.key = placeInArray;
+    btnLeft.array=arrTrending;
+    btnRight.array = arrTrending;
+
+    let info = await getSearchById(nextId);
+    selectedGif.src = info.images.original.url;
+    info.username === ""
+        ? (gifMaxUser.textContent = "Unregistered User")
+        : (gifMaxUser.textContent = info.username);
+    info.title === ""
+        ? (gifMaxTitle.textContent = "Unregistered Title")
+        : (gifMaxTitle.textContent = info.title);
+
+    myFavoritesLS.includes(info.id) //if this gif is in favorite favorite icons must be active
+        ? (favoriteIcon.src = "./images/icon-favorite-active.svg")
+        : (favoriteIcon.src = "./images/icon-favorite-inactive.svg");
+
+    //save the id of the gif inside the object subscribed to the click event
+    favoriteIcon.id = info.id;
+
+    //save the id and id for the gif inside the object subscribed to the click event
+    downloadIcon.key = info.id;
+
+    //save the name for the gif inside the object subscribed to the click event
+    let string = info.title;
+    let formatedNname = string.replace(/ /g, "-");
+    downloadIcon.name = formatedNname;
+
+    //subscribe favorite icon to the click event
+    favoriteIcon.addEventListener("click", manageFavorite, false);
+
+    //subscribe download icon to the click event
+    downloadIcon.addEventListener("click", downloadGifFunction, false);
+
+    btnLeft.addEventListener("click", previousGif);
+
+    btnRight.addEventListener("click", nextGif);
+
+}
+
+
 // add or delete the gif from the favorites section
 function manageFavorite(gif) {
     let gifID = null
-    console.log(gif);
-    console.log(Object.prototype.toString.call(gif));
     //if the call comes from a pointer event
     Object.prototype.toString.call(gif) === '[object PointerEvent]' || Object.prototype.toString.call(gif) === '[object MouseEvent]'
         ? gifID = gif.target.id
@@ -824,7 +938,6 @@ let btnShowMoreFavorites = document.getElementById("btnShowMoreFavorites"); //ge
 async function showFavorites(id) {
     try {
         const favorite = await getSearchById(id);
-        console.log(favorite);
         //prepare usr and title text for the card
         let usrFavorite = '';
         let titleFavorite = '';
@@ -834,8 +947,6 @@ async function showFavorites(id) {
         favorite.title === "" || favorite.title === undefined
             ? (titleFavorite = "Unregistered Title")
             : (titleFavorite = favorite.title);
-        console.log(favorite.title);
-            console.log({titleFavorite});
         let nameGifFavorite = titleFavorite.replace(/ /g, "-"); //for download 
 
         //create Div container
@@ -1351,6 +1462,9 @@ function createGif() {
 
     //show / hide  nodes
     displayPrepare([btnStartGif], "block", [btnSaveGif, btnEndGif, btnUploadGif, projectionLight, filmCrono, filmRepeat,], "none");
+    btnStartGif.style.visibility = "visible";
+    btnSaveGif.style.visibility = "hidden";
+
 
     canvasCamera.innerHTML = `
     <h2 id="txtCanvasTitle">Aquí podrás <br> crear tus propios <span>GIFOS</span></h2>
@@ -1391,7 +1505,8 @@ function createGifStepOne() {
     stepThree.setAttribute("disabled", "true");
 
     //hide start buttons
-    btnStartGif.style.display = "none";
+    // btnStartGif.style.display = "none";
+    btnStartGif.style.visibility = "hidden";
 }
 //END STEP ONE =======================================================
 
@@ -1454,7 +1569,9 @@ function createGifStepTwo() {
     formatStepButtons([stepTwo], 'var(--color-primary)', 'var(--font-color', [stepOne, stepThree], 'var(--font-color', 'var(--color-primary)');
 
     //show / hide  nodes
-    displayPrepare([btnSaveGif], "block", [btnStartGif, btnEndGif, btnUploadGif, projectionLight, filmCrono, filmRepeat], "none");
+    displayPrepare([btnSaveGif], "block", [btnStartGif,btnEndGif, btnUploadGif, projectionLight, filmCrono, filmRepeat], "none");
+    btnStartGif.style.visibility = "hidden";
+    btnSaveGif.style.visibility = "visible";
 
     // btnSaveGif.addEventListener("click", () => {
     //     saveGif(stream);
@@ -1479,6 +1596,9 @@ function saveGif(event) {
 
     //show / hide  nodes
     displayPrepare([btnEndGif, filmCrono, projectionLight], "block", [btnStartGif, btnSaveGif, btnUploadGif, filmRepeat], "none");
+    btnStartGif.style.visibility = "hidden";
+    btnSaveGif.style.visibility = "hidden";
+
 
     event.target.stream.then(
         (resultado) => {
@@ -1525,7 +1645,10 @@ function createGifStepThree() {
     stepThree.setAttribute("disabled", "true");
     btnUploadGif.style.display = 'none';
     filmCrono.style.display = 'none';
-    displayPrepare([], "block", [filmRepeat, btnUploadGif, projectionLight, filmCrono, btnStartGif, btnEndGif, btnSaveGif], "none");
+    displayPrepare([], "block", [btnStartGif, filmRepeat, btnUploadGif, projectionLight, filmCrono, btnEndGif, btnSaveGif], "none");
+    btnStartGif.style.visibility = "hidden";
+    btnSaveGif.style.visibility = "hidden";
+
 
     let idMyGif = '';
 
@@ -1540,9 +1663,11 @@ function createGifStepThree() {
             stateUploadImg.style.animation = "rotateAxisX 3s linear 0s 2 normal backwards";
             stateUploadP.textContent = 'GIFO subido con éxito';
             
-            if (desktopDisplay.matches) {
+            setTimeout(function () {
+                OverlayInfoUpload.style.display = 'none';
+            }, 5000);
+           if (desktopDisplay.matches) {
                 setTimeout(function () {
-                    OverlayInfoUpload.style.display = 'none';
                     OverlayCard.style.display = 'none';
                 }, 5000);
 
@@ -1556,7 +1681,7 @@ function createGifStepThree() {
                 OverlayCard.addEventListener('mouseout' , (event) => {
                     OverlayCard.style.display = 'none';
                 });
-            }
+           }
 
 
             //update local Storage for my Gifs-----------------------
@@ -1658,7 +1783,10 @@ function endSaveGif() {
     //End animations start --------------------
 
     //show / hide  nodes
-    displayPrepare([btnUploadGif, filmRepeat], "block", [projectionLight, filmCrono, btnStartGif, btnEndGif, btnSaveGif], "none");
+    displayPrepare([btnUploadGif, filmRepeat], "block", [projectionLight, filmCrono, btnEndGif, btnSaveGif], "none");
+    btnStartGif.style.visibility = "hidden";
+    // btnSavetGif.style.visibility = "hidden";
+
 
     // //create form to upload gif
     // let form = new FormData();
