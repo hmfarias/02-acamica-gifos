@@ -58,11 +58,15 @@ let searchIcon = document.getElementById("searchIcon"); // search icon
 let searchingIcon = document.getElementById("searchingIcon"); // the search icon appears on the left of the search bar
 let cameraImg = document.getElementById("cameraImg");
 let filmImg = document.getElementById("filmImg");
+let tape1 = document.getElementById("tape1");
+let tape2 = document.getElementById("tape2");
 let navIconImageClose = ""; // X icon in light mode
 let navIconImageBurger = ""; // burger icon in light mode
 let searchIconImage = ""; // search icon in dark mode
 let cameraImage = ""; //camera img in create my gif section
 let filmImage = ""; //film img in create my gif section
+let tape1Image = ""; //tape1 img in create my gif section
+let tape2Image = ""; //tape2 img in create my gif section
 let ilustraHeader = document.getElementById("ilustraHeader");
 
 let searching = false; //variable to know if searching mode is active or not
@@ -108,6 +112,8 @@ function iconsUpdate() {
         searchIconImage = "./images/icon-search.svg"; //search icon in light mode
         cameraImage = "./images/camara.svg"; //camera img in create my gif section
         filmImage = "./images/film.svg"; //film img in create my gif section
+        tape1Image = "./images/element_cinta1.svg"; //tape img in create my gif section
+        tape2Image = "./images/element_cinta2.svg"; //tape img in create my gif section
     } else {
         logo.src = "./images/logo-mobile-modo-noct.svg"; //principal logo dark mode
         navIconImageClose = "./images/close-modo-noct.svg"; // X icon in dark mode
@@ -115,8 +121,10 @@ function iconsUpdate() {
         searchIconImage = "./images/icon-search-modo-noct.svg"; // search icon in dark mode
         cameraImage = "./images/camara-modo-noc.svg"; //camera img in create my gif section
         filmImage = "./images/film-noct.svg"; //film img in create my gif section
+        tape1Image = "./images/element_cinta1-modo-noc.svg"; //tape img in create my gif section
+        tape2Image = "./images/element_cinta2-modo-noc.svg"; //tape img in create my gif section
     }
-
+    
     //update the burger icon
     navMenu.style.display === "none" || navMenu.style.display === ""
         ? (navIcon.src = navIconImageBurger)
@@ -133,6 +141,8 @@ function iconsUpdate() {
     //update img in create Gif Section
     cameraImg.src = cameraImage;
     filmImg.src = filmImage;
+    tape1.src = tape1Image;
+    tape2.src = tape2Image;
 }
 
 // function to toggle between light and dark theme
@@ -1455,6 +1465,8 @@ function saveGif(event) {
     //Animations Start--------------------------------------------------------------
     projectionLight.style.animation = "twinkle 1.5s ease 0s infinite normal backwards";
     filmImg.style.animation = "rotateAxisX 1.5s linear 0s infinite normal backwards";
+    tape1.style.animation = "rotateAxisX 1.5s linear 0s infinite normal backwards";
+    tape2.style.animation = "rotateAxisX 1.5s linear 0s infinite normal backwards";
     //End animations start ---------------------------------------------------------
 
     //for cronometer -------------------------------
@@ -1639,6 +1651,8 @@ function endSaveGif() {
     //Animations End---------------------------
     projectionLight.style.animation = "";
     filmImg.style.animation = "";
+    tape1.style.animation = "";
+    tape2.style.animation = "";
     //End animations start --------------------
 
     //show / hide  nodes
