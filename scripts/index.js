@@ -23,9 +23,9 @@ window.onload = function () {
 };
 
 //if the page size changes, it must be updated
-window.onresize = () => {
-	logo.click();
-};
+// window.onresize = () => {
+// 	logo.click();
+// };
 
 let myGifsLS = []; //for use with localStorage in my gifs case
 let myFavoritesLS = []; //for use with localStorage in my favorites case
