@@ -31,6 +31,8 @@ let myGifsLS = []; //for use with localStorage in my gifs case
 let myFavoritesLS = []; //for use with localStorage in my favorites case
 let arrTrending = []; //for slide in max mode (desktop)
 let arrSearch = []; //for slide in max mode (desktop)
+let arrFavorite = []; //for slide in max mode (desktop)
+let arrMyGif = []; //for slide in max mode (desktop)
 let arrActive = []; //for slide in max mode (desktop)
 
 // for cronometre
@@ -150,6 +152,9 @@ function iconsUpdate() {
 	filmImg.src = filmImage;
 	tape1.src = tape1Image;
 	tape2.src = tape2Image;
+
+	//update the gifmax icon
+	gifMaxClose.src = navIconImageClose;
 }
 
 // function to toggle between light and dark theme
@@ -308,8 +313,6 @@ async function showSearch(word, offset) {
                     </div>
                 `;
 			});
-			console.log("arrSearch");
-			console.log(arrSearch);
 
 			//suscribe each Gif to click event in order to changge it to full screen mode
 			searchGif
@@ -695,30 +698,19 @@ let btnRight = document.getElementById("btnRight"); //get button node for right 
 //show gif max window with details and buttons download and favorite
 async function clickOnGif(gif) {
 	try {
-		arrActive = [];
-		console.log("gif");
-		console.log(gif);
-		console.log("gif.taget.fromArray");
-		console.log(gif.target.id);
+		arrActive = []; //active array for slide on max for desktop mode
 		switch (gif.target.fromArray) {
 			case "search":
-				console.log("es de search");
 				arrActive = arrSearch;
 				break;
 			case "trend":
-				console.log("es de trend");
 				arrActive = arrTrending;
 				break;
 			case "favorite":
 				arrActive = myFavoritesLS;
-				console.log("es de favorite");
 				break;
 			case "mygif":
 				arrActive = myGifsLS;
-				console.log("es de mygif");
-				break;
-			default:
-				console.log("error no esta asignado a ningun array");
 				break;
 		}
 		let placeInArray = null;
@@ -736,7 +728,7 @@ async function clickOnGif(gif) {
 			? (gifMaxTitle.textContent = "Unregistered Title")
 			: (gifMaxTitle.textContent = info.title);
 
-		// window.scrollTo(0, 0);
+		window.scrollTo(0, 0);
 		gifMax.style.display = "flex";
 
 		myFavoritesLS.includes(gif.target.id) //if this gif is in favorite favorite icons must be active
@@ -771,7 +763,9 @@ async function clickOnGif(gif) {
 async function previousGif(event) {
 	selectedGif.src = "./images/loading.gif";
 	let prevIndex =
-		parseInt(event.target.key) === 0 ? limitMyGifs - 1 : event.target.key - 1;
+		parseInt(event.target.key) === 0
+			? event.target.array.length - 1
+			: event.target.key - 1;
 	let prevId = null;
 	prevId = event.target.array[prevIndex];
 
@@ -820,7 +814,9 @@ async function previousGif(event) {
 async function nextGif(event) {
 	selectedGif.src = "./images/loading.gif";
 	let nextIndex =
-		parseInt(event.target.key) === limitMyGifs - 1 ? 0 : event.target.key + 1;
+		parseInt(event.target.key) === event.target.array.length - 1
+			? 0
+			: event.target.key + 1;
 	let nextId = null;
 	nextId = event.target.array[nextIndex];
 
@@ -832,7 +828,7 @@ async function nextGif(event) {
 	btnRight.array = arrActive;
 
 	let info = await getSearchById(nextId);
-	selectedGif.src = info.images.original.url;
+	selectedGif.src = info.images.original.url; //img to wait load
 	info.username === ""
 		? (gifMaxUser.textContent = "Unregistered User")
 		: (gifMaxUser.textContent = info.username);
@@ -1116,6 +1112,7 @@ async function showFavorites(id) {
 		//END For DOWNLOAD icon -----------------------------------------------
 
 		//For MAX icon -----------------------------------------------
+		imgMaxNew.fromArray = "favorite";
 		imgMaxNew.addEventListener("mouseover", () => {
 			imgMaxNew.src = "./images/icon-card-max-hover.svg";
 		});
@@ -1366,6 +1363,7 @@ async function showMyGifs(id) {
 		//END For DOWNLOAD icon -----------------------------------------------
 
 		//For MAX icon -----------------------------------------------
+		imgMaxNew.fromArray = "mygif";
 		imgMaxNew.addEventListener("mouseover", () => {
 			imgMaxNew.src = "./images/icon-card-max-hover.svg";
 		});
