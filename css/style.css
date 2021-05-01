@@ -1055,6 +1055,7 @@ footer p {
 
 .gifMax .slideContainer .gifMaxGif {
   width: 100%;
+  height: auto;
 }
 
 .gifMax .slideContainer input {
