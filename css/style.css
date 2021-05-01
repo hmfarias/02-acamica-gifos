@@ -447,7 +447,7 @@ h2 span {
   }
   .navBar .navMenu #createGifNav {
     margin: 0 0 0 60px;
-    background: #FFFFFF;
+    background: #ffffff;
     border: 1px solid var(--font-color);
     margin-top: 0px;
     color: var(--createGif-color);
@@ -726,7 +726,7 @@ header #ilustraHeader {
 .sectionResults .searchGifWithoutResult h3 {
   margin-top: 29px;
   margin-bottom: 0;
-  color: #50E3C2;
+  color: #50e3c2;
   font-size: 22px;
   text-align: center;
 }

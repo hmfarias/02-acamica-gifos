@@ -23,9 +23,6 @@ window.onload = function () {
 };
 
 //if the page size changes, it must be updated
-// window.onresize = () => {
-// 	logo.click();
-// };
 (function () {
 	var width = window.innerWidth;
 
@@ -203,8 +200,6 @@ changeMode.addEventListener("click", () => {
 //SEARCH SECTION ====================================================================================
 //===================================================================================================
 let sectionSearch = document.getElementById("sectionSearch"); //gets the Section node corresponding to the search, to be able to hide it and show it accordingly
-let search = document.getElementById("search"); //gets the div node that contains the Div node for search bar, and the div node for the hints
-let searchContainer = document.getElementById("searchContainer"); //gets the div node that contains the search bar
 let resultsTitle = document.getElementById("resultsTitle"); //gets the h2 node to put the search text  title in it
 let searchSuggestion = document.getElementById("searchSuggestion");
 
@@ -482,8 +477,6 @@ function searchGifs() {
 
 function searchPrepare() {
 	//the usr want close the search. So hide section results, if ilustra header is hide or search results its not empty
-	// if (ilustraHeader.style.display === "none" || searchGif.innerHTML !== 0) {
-
 	if (searching) {
 		ilustraHeader.style.display = "block";
 		sectionSearch.style.marginTop = "0px";
@@ -531,7 +524,6 @@ let btnScrollRight = document.getElementById("btnScrollRight"); //get button nod
 let speed = 30;
 let distance = (trendingGif.scrollWidth / 3) * 2;
 let step = 40;
-let distance2 = trendingGif.scrollWidth;
 
 btnScrollRight.addEventListener("click", () => {
 	sideScroll(trendingGif, "right", speed, distance, step);
@@ -1675,9 +1667,6 @@ function createGifStepTwo() {
 	btnStartGif.style.visibility = "hidden";
 	btnSaveGif.style.visibility = "visible";
 
-	// btnSaveGif.addEventListener("click", () => {
-	//     saveGif(stream);
-	// });
 	btnSaveGif.addEventListener("click", saveGif);
 }
 //END STEP TWO =======================================================
@@ -1737,7 +1726,6 @@ function writeCronometer() {
 	if (h > 24) {
 		h = 0;
 	}
-
 	if (s < 10) {
 		sAux = "0" + s;
 	} else {
@@ -1929,10 +1917,6 @@ function endSaveGif() {
 		"none"
 	);
 	btnStartGif.style.visibility = "hidden";
-	// btnSavetGif.style.visibility = "hidden";
-
-	// //create form to upload gif
-	// let form = new FormData();
 
 	recorder.stopRecording(async () => {
 		let blob = recorder.getBlob();
