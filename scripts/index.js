@@ -26,6 +26,15 @@ window.onload = function () {
 // window.onresize = () => {
 // 	logo.click();
 // };
+(function () {
+	var width = window.innerWidth;
+
+	window.addEventListener("resize", function () {
+		if (window.innerWidth !== width) {
+			logo.click();
+		}
+	});
+})();
 
 let myGifsLS = []; //for use with localStorage in my gifs case
 let myFavoritesLS = []; //for use with localStorage in my favorites case
