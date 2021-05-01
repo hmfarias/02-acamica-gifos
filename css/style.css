@@ -1047,6 +1047,7 @@ footer p {
   display: -ms-flexbox;
   display: flex;
   width: 84.8%;
+  height: auto;
   -ms-flex-item-align: center;
       align-self: center;
   margin-top: 78px;
