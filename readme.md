@@ -2,7 +2,7 @@
 
 Desarrollo Web Full Stack - Proyecto integrador Sprint 2 - HTML, CSS, JavaScript
 
-Sitio: https://hmfarias.github.io/acamica-gifos/
+Sitio: https://hmfarias.github.io/02-acamica-gifos/
 
 Repositorio: https://github.com/hmfarias/acamica-gifos.git
 
